@@ -45,8 +45,6 @@ Route::get('/auth/user', [UserController::class, 'index'])->middleware('auth:san
 
 
 
-
-
 // Create a product (POST) /api/products
 
 
