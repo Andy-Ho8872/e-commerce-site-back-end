@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Hash; // 密碼加密功能
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException; // 顯示錯誤訊息
 use App\Models\User; // 使用 User Model
+use Illuminate\Support\Facades\App;
 
 class UserController extends Controller
 {
@@ -20,24 +21,32 @@ class UserController extends Controller
 
 
     // 建立使用者(註冊)
-    public function register(Request $request) 
-    {
+    public function register(Request $request) {
         // 驗證使用者的帳號密碼是否已經被註冊 or 符合規則
-        $request->validate([
+        $validatedResult = $request->validate([
             'email' => 'required|email|unique:users|max:255', // 電子郵件不重複
-            'password' => 'required|min:6|alpha_num' // 只能輸入英文與數字
+            'password' => 'required|alpha_num|min:6' // 只能輸入英文與數字
         ]);
 
+        // 使用 User Model
         $user = new User();
+
+        // 確認 電子郵件是否已存在
+        // $exists = User::where('email', $request->email)->first();
+        // if($exists) {
+        //     return response()->json(['msg' => '不合格'], 200);
+        // };
+
         // 接收表單的資料 
         $user->email = $request->email;
         $user->password = Hash::make($request->password); // Hash 密碼
-
+        
         // 驗證都通過後儲存到資料庫中
         $user->save();
 
         // 回傳詳細資訊
-        return $user; 
+        return response()->json(['user' => $user], 200); 
+
     }
 
     // 登入使用者並授權 Token
@@ -63,13 +72,15 @@ class UserController extends Controller
 
         // 回傳 Token 與 user 的詳細資訊
         return response()->json(['token' => $token, 'user' => $user]);
+
     }
 
+    // 登出使用者
     public function logout(Request $request) {
         
         // 撤銷 Token
         $request->user()->tokens()->delete();
-
+    
         // 回傳結果
         return response()->json('You have logged out', 201);
     }

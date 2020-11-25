@@ -155,7 +155,10 @@ return [
     |
     */
 
-    'domain' => env('SESSION_DOMAIN', null),
+    
+    'domain' => env('SESSION_DOMAIN', null),  // default setting
+
+    //'domain' => env('http://localhost:3000', null), // new setting
 
     /*
     |--------------------------------------------------------------------------
