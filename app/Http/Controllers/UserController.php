@@ -66,18 +66,18 @@ class UserController extends Controller
         $token = $user->createToken('user-token')->plainTextToken;
 
         // 回傳 Token 與 user 的詳細資訊
-        return response()->json(['token' => $token, 'user' => $user]);
+        return response()->json(['token' => $token, 'user' => $user], 200);
 
     }
 
     // 登出使用者
     public function logout(Request $request) {
         
-        // 撤銷 Token
+        // 撤銷該使用者 Token
         $request->user()->tokens()->delete();
     
         // 回傳結果
-        return response()->json('You have logged out', 201);
+        return response()->json('您已登出', 201);
     }
 
 }
