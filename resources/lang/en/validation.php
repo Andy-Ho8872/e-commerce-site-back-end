@@ -129,7 +129,7 @@ return [
         // 密碼驗證規則
         'password' => [
             'required' => '請填寫密碼欄位',
-            'alpha_num' => '只能填入英文或數字!!!',
+            'alpha_num' => '密碼只能填入英文或數字!!!',
             'min' => [
                 'numeric' => '請最少填入 :min 個英文或數字'
             ]    
