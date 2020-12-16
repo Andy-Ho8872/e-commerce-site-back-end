@@ -11,8 +11,10 @@ class Tag extends Model
     //
     public $incrementing = false;
     protected $keyType = 'string';
-    //
-    public function products() {
+
+    // 標籤在很多產品上
+    public function product() 
+    {
         return $this->hasMany(Product::class);
     }
 }

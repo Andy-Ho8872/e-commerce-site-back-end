@@ -22,11 +22,13 @@ class CreateProductsTable extends Migration
             $table->integer('stock_quantity'); // 存貨數量
             $table->boolean('available')->default(true); // 只支援 0 和 1
             $table->timestamps();
+
+            
             // foreign ley
             // $table->foreignId('tag_id')->constrained('tags'); // 產品標籤
 
-            $table->unsignedBigInteger('tag_id')->nullable();
-            $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
+            // $table->unsignedBigInteger('tag_id')->nullable();
+            // $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
         });
     }
 
@@ -38,5 +40,6 @@ class CreateProductsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('products');
+        
     }
 }

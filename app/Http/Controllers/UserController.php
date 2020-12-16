@@ -20,6 +20,15 @@ class UserController extends Controller
         // 回傳資料庫中的所有使用者資訊
         return $users;
     }
+    // 取得特定使用者
+    public function getCurrentUser($id)
+    {
+        // 依照 Email 取得
+        $users = User::find($id); 
+
+        // 回傳資料庫中的使用者資訊
+        return $users;
+    }
 
 
     // 建立使用者(註冊)
@@ -39,17 +48,20 @@ class UserController extends Controller
         
         // 驗證都通過後儲存到資料庫中
         $user->save();
-
+        
+        // 顯示訊息
+        $msg = '註冊成功!!';
+        
         // 回傳詳細資訊
-        return response()->json(['user' => $user], 201); 
+        return response()->json(['user' => $user, 'message' => $msg], 201); 
     }
 
     // 登入使用者並授權 Token
     public function login(Request $request) {
         // 使用者的輸入驗證
         $request->validate([
-            'email' => 'required',
-            'password' => 'required',
+            'email' => 'required|email|max:255',
+            'password' => 'required|alpha_num|min:6',
         ]);
         
         // 驗證使用者的 Email 是否相符
@@ -58,7 +70,7 @@ class UserController extends Controller
         // 驗證使用者的 HASH 過後的密碼是否相符
         if (! $user || ! Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
-                'email' => ['您尚未取得授權憑證'],
+                'email' => ['帳號或密碼錯誤'],
             ]);
         };
         
@@ -67,7 +79,6 @@ class UserController extends Controller
 
         // 回傳 Token 與 user 的詳細資訊
         return response()->json(['token' => $token, 'user' => $user], 200);
-
     }
 
     // 登出使用者
@@ -79,5 +90,4 @@ class UserController extends Controller
         // 回傳結果
         return response()->json('您已登出', 201);
     }
-
 }

@@ -19,10 +19,14 @@ class Product extends Model
         'available',
         'tag_id'
     ];
-    // 定義資料關聯性
-    public function tags() {
-        return $this->belongsToMany(Tag::class);
+
+    // 定義資料關聯性 (產品屬於某一類的標籤)
+    public function tag() 
+    {
+        return $this->belongsTo(Tag::class);
     }
+
+
     // 定義資料屬性 (選擇性)
     protected $casts = [
         'available' => 'boolean',

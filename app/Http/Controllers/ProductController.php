@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 
 use Illuminate\Http\Request;
-// 使用 Product Model
+// 使用 Model
 use App\Models\Product;
+use App\Models\Tag;
 
 class ProductController extends Controller
 {
@@ -53,11 +54,30 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+    // get sepecific product
     public function show($id)
     {
-        //
-        return Product::findOrFail($id);
+        $product = Product::findOrFail($id);
+        
+        // 取得標籤名稱
+        $tags = Product::find($id)->tag->title; 
+        
+        return response()->json(['product' => $product, 'tags' => $tags]);
     }
+    
+    public function showByTag($id) 
+    {
+        // 取得符合 tag_id 的商品
+        $product = Tag::find($id)->product;
+
+        // 取得標籤名稱
+        $tags = Product::find($id)->tag->title;
+
+        return response()->json(['tags' => $tags, 'product' => $product ]);
+    }
+
+
 
     /**
      * Update the specified resource in storage.
