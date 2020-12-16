@@ -31,5 +31,6 @@ class Product extends Model
     protected $casts = [
         'available' => 'boolean',
         'unit_price' => 'decimal:2',
+        // 'tag_id' => 'array'
     ];
 }

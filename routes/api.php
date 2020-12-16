@@ -31,6 +31,8 @@ Route::middleware('auth:sanctum')->get('/auth/user', function (Request $request)
 //Route::resource('products', ProductController::class);
 
 // 127.0.0.1:8000/api/auth/user
+
+// 使用者
 // 註冊使用者
 Route::post('/auth/register', [UserController::class, 'register'])->name('user.register');
 // 登入使用者
@@ -39,18 +41,19 @@ Route::post('/auth/login', [UserController::class, 'login'])->name('user.login')
 Route::get('/auth/logout', [UserController::class, 'logout'])->middleware('auth:sanctum'); 
 // 取得已登入使用者
 Route::get('/auth/user/{id}', [UserController::class, 'getCurrentUser']);
-
+// 所有使用者
 Route::get('/auth/user', [UserController::class, 'index']);
 
 
 // 商品
-Route::get('/products', [ProductController::class, 'index']); // 所有商品
-Route::get('/products/{id}', [ProductController::class, 'show']); // 單一商品
-
+// 所有商品
+Route::get('/products', [ProductController::class, 'index']);
+// 單一商品 
+Route::get('/products/{id}', [ProductController::class, 'show']); 
 // 依標籤選擇
 Route::get('/products/tag/{id}', [ProductController::class, 'showByTag']);
-
-
+// 搜尋商品
+Route::get('/products/search/{title}', [ProductController::class, 'search']); 
 
 
 // 購物車

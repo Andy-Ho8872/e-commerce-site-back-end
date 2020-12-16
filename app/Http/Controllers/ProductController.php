@@ -2,31 +2,35 @@
 
 namespace App\Http\Controllers;
 
-
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 // 使用 Model
 use App\Models\Product;
 use App\Models\Tag;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
-    {
-        // get all products
-        return Product::all();
+    {   
+        // $product = Product::pluck('title'); // 只取得單一欄位的資訊
+        // $product = Product::limit(5)->get(); // 只取得 x 筆資料
+        
+        // $product = Product::all()->count(); // 計算總共多少筆資料
+        // $product = Product::all()->max('unit_price'); // 計算該欄位的值
+
+        // $product = Product::where('id', 5)->exists(); // 判斷是否存在 回傳布林值
+        
+        // $product = Product::select('id','title')->get(); // 選取特定(可以複數) column 的資訊
+        // $product = Product::select('title')->addSelect('unit_price')->get(); // 增加選取的量
+
+        // 取得所有產品
+        $product = Product::all();
+        
+        
+        return response()->json(['product' => $product]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
         // use Product Model
@@ -48,44 +52,39 @@ class ProductController extends Controller
         return redirect('/');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-
-    // get sepecific product
     public function show($id)
     {
         $product = Product::findOrFail($id);
         
         // 取得標籤名稱
-        $tags = Product::find($id)->tag->title; 
+        // $tags = Product::findOrFail($id)->tag->title; 
+        $product->tag->title; 
         
-        return response()->json(['product' => $product, 'tags' => $tags]);
+        return response()->json(['product' => $product]);
     }
     
+
     public function showByTag($id) 
     {
         // 取得符合 tag_id 的商品
-        $product = Tag::find($id)->product;
+        $product = Tag::find($id)->products;
 
         // 取得標籤名稱
-        $tags = Product::find($id)->tag->title;
+        $tags = Tag::find($id);
 
         return response()->json(['tags' => $tags, 'product' => $product ]);
     }
 
 
+    public function search($title) 
+    {
+        // 搜尋商品
+        $product = Product::where('title', 'LIKE', '%'.$title.'%')->get();
+        
+        return response()->json(['product' => $product]);
+    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, $id)
     {
         //
@@ -94,12 +93,7 @@ class ProductController extends Controller
         return $product;
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function destroy($id)
     {
         //
