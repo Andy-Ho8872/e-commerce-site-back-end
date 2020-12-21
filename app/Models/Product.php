@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory;
-    // 支援一次性大量寫入
+    
     protected $fillable = [ 
         'title',
         'description',
@@ -20,17 +20,22 @@ class Product extends Model
         'tag_id'
     ];
 
-    // 定義資料關聯性 (產品屬於某一類的標籤)
-    public function tag() 
+
+
+    // 產品的標籤
+    public function tags() 
     {
-        return $this->belongsTo(Tag::class);
+        return $this->belongsToMany(Tag::class);
     }
+
+    
+
 
 
     // 定義資料屬性 (選擇性)
     protected $casts = [
         'available' => 'boolean',
         'unit_price' => 'decimal:2',
-        // 'tag_id' => 'array'
+        'tag_id' => 'array'
     ];
 }

@@ -23,7 +23,9 @@ class CreateProductsTable extends Migration
             $table->boolean('available')->default(true); // 只支援 0 和 1
             $table->timestamps();
 
-            
+            // new
+            // $table->json('tag_id');
+
             // foreign ley
             // $table->foreignId('tag_id')->constrained('tags'); // 產品標籤
 

@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent;
 use Illuminate\Support\Facades\DB;
-// 使用 Model
+// 使用到的 Model
 use App\Models\Product;
 use App\Models\Tag;
 
@@ -12,23 +13,15 @@ class ProductController extends Controller
 {
     public function index()
     {   
-        // $product = Product::pluck('title'); // 只取得單一欄位的資訊
-        // $product = Product::limit(5)->get(); // 只取得 x 筆資料
-        
-        // $product = Product::all()->count(); // 計算總共多少筆資料
-        // $product = Product::all()->max('unit_price'); // 計算該欄位的值
+        // 取得所有產品 (預載入查詢指定的關聯) 
+        $products = Product::with('tags')->get();
 
-        // $product = Product::where('id', 5)->exists(); // 判斷是否存在 回傳布林值
-        
-        // $product = Product::select('id','title')->get(); // 選取特定(可以複數) column 的資訊
-        // $product = Product::select('title')->addSelect('unit_price')->get(); // 增加選取的量
-
-        // 取得所有產品
-        $product = Product::all();
-        
-        
-        return response()->json(['product' => $product]);
+        // 回傳結果
+        return response()->json(['products' => $products]);
     }
+
+
+
 
 
     public function store(Request $request)
@@ -52,51 +45,49 @@ class ProductController extends Controller
         return redirect('/');
     }
 
+
+
+
+
     public function show($id)
     {
+        // 取得該產品資訊
         $product = Product::findOrFail($id);
-        
-        // 取得標籤名稱
-        // $tags = Product::findOrFail($id)->tag->title; 
-        $product->tag->title; 
-        
+        // 取得該產品的所有標籤(有可能是複數個) 
+        $product->tags; 
+
         return response()->json(['product' => $product]);
     }
     
 
+
+
+
     public function showByTag($id) 
     {
         // 取得符合 tag_id 的商品
-        $product = Tag::find($id)->products;
+        $products = Tag::find($id)->products;
 
         // 取得標籤名稱
         $tags = Tag::find($id);
 
-        return response()->json(['tags' => $tags, 'product' => $product ]);
+        // $products->tags;
+        
+        return response()->json(['tags' => $tags, 'products' => $products ]);
     }
+
+
+
 
 
     public function search($title) 
     {
         // 搜尋商品
-        $product = Product::where('title', 'LIKE', '%'.$title.'%')->get();
+        $products = Product::where('title', 'LIKE', "%{$title}%")->get();
         
-        return response()->json(['product' => $product]);
+        // $products->products;
+        
+        return response()->json(['products' => $products]);
     }
 
-
-    public function update(Request $request, $id)
-    {
-        //
-        $product = Product::find($id);
-        $product->update($request->all());
-        return $product;
-    }
-
-    
-    public function destroy($id)
-    {
-        //
-        return Product::destroy($id);
-    }
 }
