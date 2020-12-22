@@ -53,6 +53,7 @@ class ProductController extends Controller
     {
         // 取得該產品資訊
         $product = Product::findOrFail($id);
+
         // 取得該產品的所有標籤(有可能是複數個) 
         $product->tags; 
 
@@ -66,13 +67,11 @@ class ProductController extends Controller
     public function showByTag($id) 
     {
         // 取得符合 tag_id 的商品
-        $products = Tag::find($id)->products;
+        $products = Tag::findOrFail($id)->products;
 
         // 取得標籤名稱
-        $tags = Tag::find($id);
+        $tags = Tag::findOrFail($id);
 
-        // $products->tags;
-        
         return response()->json(['tags' => $tags, 'products' => $products ]);
     }
 
@@ -83,9 +82,7 @@ class ProductController extends Controller
     public function search($title) 
     {
         // 搜尋商品
-        $products = Product::where('title', 'LIKE', "%{$title}%")->get();
-        
-        // $products->products;
+        $products = Product::where('title', 'LIKE', "%{$title}%")->with('tags')->get();
         
         return response()->json(['products' => $products]);
     }
