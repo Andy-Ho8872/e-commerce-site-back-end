@@ -20,6 +20,11 @@ class Product extends Model
         'tag_id'
     ];
 
+    // 定義資料屬性 (選擇性)
+    protected $casts = [
+        'available' => 'boolean',
+        'unit_price' => 'decimal:2',
+    ];
 
 
     // 產品的標籤
@@ -28,14 +33,4 @@ class Product extends Model
         return $this->belongsToMany(Tag::class);
     }
 
-    
-
-
-
-    // 定義資料屬性 (選擇性)
-    protected $casts = [
-        'available' => 'boolean',
-        'unit_price' => 'decimal:2',
-        'tag_id' => 'array'
-    ];
 }

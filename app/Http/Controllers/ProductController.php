@@ -14,7 +14,9 @@ class ProductController extends Controller
     public function index()
     {   
         // 取得所有產品 (預載入查詢指定的關聯) 
-        $products = Product::with('tags')->get();
+        $products = Product::with('tags')
+        // ->select('id')
+        ->get();
 
         // 回傳結果
         return response()->json(['products' => $products]);
@@ -23,10 +25,9 @@ class ProductController extends Controller
 
 
 
-
+    // 上架產品
     public function store(Request $request)
     {
-        // use Product Model
         $product = new Product();
 
         //get data from form
@@ -66,13 +67,15 @@ class ProductController extends Controller
 
     public function showByTag($id) 
     {
-        // 取得符合 tag_id 的商品
-        $products = Tag::findOrFail($id)->products;
-
         // 取得標籤名稱
         $tags = Tag::findOrFail($id);
 
-        return response()->json(['tags' => $tags, 'products' => $products ]);
+        // 取得符合 tag_id 的商品
+        $products = Tag::findOrFail($id)->products;
+
+        // $tags->products; // new
+
+        return response()->json(['tags' => $tags, 'products' => $products]);
     }
 
 

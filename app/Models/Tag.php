@@ -13,20 +13,9 @@ class Tag extends Model
     protected $keyType = 'string';
 
 
-    
     // 標籤在很多產品上
     public function products() 
     {
         return $this->belongsToMany(Product::class);
-    }
-
-
-
-    
-    // public function products() 
-    // {
-    //     return $this->hasMany(Product::class);
-    // }
-
-    
+    } 
 }

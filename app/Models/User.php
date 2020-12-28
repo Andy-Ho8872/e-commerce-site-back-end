@@ -20,7 +20,6 @@ class User extends Authenticatable
      */
 
     protected $fillable = [
-        // 'name',
         // 以下欄位可以支援大量寫入。
         'email',
         'password',
@@ -46,8 +45,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-
-    public function order() {
+    // 一位使用者可以有多筆訂單
+    public function orders() {
         return $this->hasMany(Order::class);
     }
 

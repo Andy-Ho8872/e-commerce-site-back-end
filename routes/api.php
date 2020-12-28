@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Hash;
@@ -58,9 +59,17 @@ Route::get('/products/search/{title}', [ProductController::class, 'search']);
  
 
 
-// 購物車
-// /auth/user/{id}/cart
-Route::get('/auth/user/{id}/cart', [UserController::class, 'getCurrentUser'])->middleware('auth:sanctum');
+// 購物車 
+    // 特定使用者的購物車
+Route::get('/auth/user/{id}/cart', [CartController::class, 'show']);
+    // 商品加入購物車
+Route::post('/auth/user/{id}/cart/{product_id}/create', [CartController::class, 'store']);
+    // 更新購物車
+Route::post('/auth/user/{id}/cart/{product_id}/update', [CartController::class, 'update']);
+    // 移除購物車
+Route::delete('/auth/user/{id}/cart/{product_id}/delete', [CartController::class, 'destroy']);
+    // 清空購物車
+Route::delete('/auth/user/{id}/cart/deleteAll', [CartController::class, 'destroyAll']);
 
 
 

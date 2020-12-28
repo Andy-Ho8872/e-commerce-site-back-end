@@ -20,6 +20,7 @@ class UserController extends Controller
         // 回傳資料庫中的所有使用者資訊
         return $users;
     }
+    
     // 取得特定使用者
     public function getCurrentUser($id)
     {

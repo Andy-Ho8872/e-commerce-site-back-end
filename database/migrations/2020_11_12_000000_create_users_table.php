@@ -21,11 +21,13 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+
+            
             // foreign key
             // $table->foreignId('product_id')->constrained('products'); // 產品 id
 
-            $table->unsignedBigInteger('product_id')->nullable();
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            // $table->unsignedBigInteger('product_id')->nullable();
+            // $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });
     }
 
