@@ -12,7 +12,7 @@ use App\Models\Order;
 
 class CartController extends Controller
 {
-    // 取得該使用者(id)的購物車
+    // 取得該使用者(id)的購物車 也許可以使用 group by
     public function show($user_id) 
     {
         $orders = Order::join('products', 'orders.product_id', '=', 'products.id')
@@ -29,6 +29,8 @@ class CartController extends Controller
         )
         ->where('user_id', $user_id) // 該使用者 id
         ->get();
+
+        // $orders = User::find($user_id)->orders;
 
         return response()->json(['orders' => $orders]);
     }
@@ -52,7 +54,7 @@ class CartController extends Controller
         $order->product_id = $product->id;
 
         // 購買數量
-        $order->product_quantity = $request->product_quantity;
+        $order->product_quantity = 1;
 
         // 確認使用者購買的物品是否和上一單一樣 ?
         
@@ -80,7 +82,7 @@ class CartController extends Controller
         ]);
         
         // 回傳訊息
-        $msg = "您更新了購物車的內容，請查看";
+        $msg = "您更改了商品數量，請查看";
 
         // 更新後的內容
         $order = Order::where('user_id', $user_id)
@@ -90,12 +92,52 @@ class CartController extends Controller
         return response()->json(['order' => $order , 'msg' => $msg], 201);
     }
 
+    public function increseByOne(Request $request, $user_id, $product_id)
+    {
+        $order = Order::where('user_id', $user_id)
+        ->where('product_id', $product_id);
+
+        // 測試
+        // $increment = 12; 
+
+        $order->update([
+            'product_quantity' => $request->product_quantity + 1
+        ]);
+
+        // 回傳訊息
+        $msg = "您更改了商品數量，請查看";
+
+        $order = Order::where('user_id', $user_id)
+        ->where('product_id', $product_id)
+        ->get();
+
+        return response()->json(['order' => $order, 'msg' => $msg], 201);
+    }
+
+    public function decreseByOne(Request $request, $user_id, $product_id)
+    {
+        $order = Order::where('user_id', $user_id)
+        ->where('product_id', $product_id);
+
+        $order->update([
+            'product_quantity' => $request->product_quantity - 1
+        ]);
+
+        // 回傳訊息
+        $msg = "您更改了商品數量，請查看";
+
+        return response()->json(['order' => $order, 'msg' => $msg], 201);
+    }
+
 
     // 移除購物車的內容(單項)
     public function destroy($user_id, $product_id)
     {
         $order = Order::where('user_id', $user_id)
         ->where('product_id', $product_id);
+
+        // 測試
+        // $order = Order::find($id);
 
         // 清除單項商品
         $order->delete();
