@@ -45,6 +45,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    // 更新單項商品
+    public function order() {
+        return $this->hasOne(Order::class);
+    }
+
     // 一位使用者可以有多筆訂單
     public function orders() {
         return $this->hasMany(Order::class);

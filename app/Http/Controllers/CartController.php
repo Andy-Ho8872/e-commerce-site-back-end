@@ -47,23 +47,24 @@ class CartController extends Controller
         // 特定產品
         $product = Product::findOrFail($product_id);
 
-        // 購買者 id
-        $order->user_id = $user->id;
+        // 使用者想加入的商品
+        $order = Order::where('user_id', $user_id)
+        ->where('product_id', $product_id);
 
-        // 產品 id
-        $order->product_id = $product->id;
-
-        // 購買數量
-        $order->product_quantity = 1;
-
-        // 確認使用者購買的物品是否和上一單一樣 ?
-        
-
-        // 儲存至資料庫
-        $order->save();
-
-        // 回傳訊息
-        $msg = "您新增了商品至購物車";
+        // 如果沒有重複則寫入 (後端二次驗證)
+        if(! $order->exists()) {
+            // 確認使用者購買的物品是否和上一單一樣 ? (已經由前端達成)
+            $order->create([
+                'user_id' => $user->id,
+                'product_id' => $product->id,
+                'product_quantity' => 1 // 預設 1 個
+            ]);
+            // 回傳訊息
+            $msg = "您新增了商品至購物車";
+        } 
+        else {
+            $msg = "新增的商品已重複";
+        }
 
         return response()->json(['order' => $order, 'msg' => $msg], 201);
     }
@@ -92,39 +93,36 @@ class CartController extends Controller
         return response()->json(['order' => $order , 'msg' => $msg], 201);
     }
 
-    public function increseByOne(Request $request, $user_id, $product_id)
+
+    public function increseByOne($user_id, $product_id)
     {
         $order = Order::where('user_id', $user_id)
         ->where('product_id', $product_id);
 
-        // 測試
-        // $increment = 12; 
+        // $order = User::find($user_id)->order;
 
-        $order->update([
-            'product_quantity' => $request->product_quantity + 1
-        ]);
+        $order->increment('product_quantity', 1); 
 
         // 回傳訊息
         $msg = "您更改了商品數量，請查看";
 
-        $order = Order::where('user_id', $user_id)
-        ->where('product_id', $product_id)
-        ->get();
+        $order = User::find($user_id)->order;
 
         return response()->json(['order' => $order, 'msg' => $msg], 201);
     }
 
-    public function decreseByOne(Request $request, $user_id, $product_id)
+
+    public function decreseByOne($user_id, $product_id)
     {
         $order = Order::where('user_id', $user_id)
         ->where('product_id', $product_id);
 
-        $order->update([
-            'product_quantity' => $request->product_quantity - 1
-        ]);
+        $order->decrement('product_quantity', 1);
 
         // 回傳訊息
         $msg = "您更改了商品數量，請查看";
+
+        $order = User::find($user_id)->order;
 
         return response()->json(['order' => $order, 'msg' => $msg], 201);
     }
@@ -136,8 +134,7 @@ class CartController extends Controller
         $order = Order::where('user_id', $user_id)
         ->where('product_id', $product_id);
 
-        // 測試
-        // $order = Order::find($id);
+        // $order = User::find($user_id)->order;
 
         // 清除單項商品
         $order->delete();
@@ -145,8 +142,9 @@ class CartController extends Controller
         // 回傳訊息
         $msg = "您移除了一項商品，請查看";
 
-        return response()->json(['msg' => $msg], 201);
+        return response()->json(['order' => $order, 'msg' => $msg], 201);
     }
+
 
     // 清空購物車
     public function destroyAll($user_id)

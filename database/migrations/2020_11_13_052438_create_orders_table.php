@@ -15,7 +15,7 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->integer('product_quantity'); // 產品訂購數
+            $table->integer('product_quantity')->default(1); // 產品訂購數
             // $table->integer('total_price'); // 產品總價
             // $table->integer('unit_price'); // 產品單價 new
             

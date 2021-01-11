@@ -68,8 +68,7 @@ Route::prefix('auth/user')->group(function () {
     Route::post('/{id}/cart/{product_id}/increseByOne', [CartController::class, 'increseByOne']);
     Route::post('/{id}/cart/{product_id}/decreseByOne', [CartController::class, 'decreseByOne']);
         // 移除購物車
-    // Route::delete('/{id}/cart/{product_id}/delete', [CartController::class, 'destroy']);
-    Route::delete('/{userId}/cart/{id}/delete', [CartController::class, 'destroy']); // 測試
+    Route::delete('/{id}/cart/{product_id}/delete', [CartController::class, 'destroy']);
         // 清空購物車
     Route::delete('/{id}/cart/deleteAll', [CartController::class, 'destroyAll']);
 });
