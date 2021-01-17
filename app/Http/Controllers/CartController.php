@@ -53,17 +53,29 @@ class CartController extends Controller
 
         // 如果沒有重複則寫入 (後端二次驗證)
         if(! $order->exists()) {
-            // 確認使用者購買的物品是否和上一單一樣 ? (已經由前端達成)
-            $order->create([
-                'user_id' => $user->id,
-                'product_id' => $product->id,
-                'product_quantity' => 1 // 預設 1 個
-            ]);
+            // 如果有入商品數量
+            if ($request->product_quantity) { 
+                $order->create([
+                    'user_id' => $user->id,
+                    'product_id' => $product->id,
+                    'product_quantity' => $request->product_quantity
+                ]);
+            }
+            // 沒輸入商品數量
+            else {
+                $order->create([
+                    'user_id' => $user->id,
+                    'product_id' => $product->id,
+                    'product_quantity' => 1 // 預設 1 個
+                ]);
+            }
             // 回傳訊息
             $msg = "您新增了商品至購物車";
         } 
+        // 若有重複 數量 + 1
         else {
-            $msg = "新增的商品已重複";
+            $order->increment('product_quantity', 1);
+            $msg = "新增的商品已重複，數量 + 1";
         }
 
         return response()->json(['order' => $order, 'msg' => $msg], 201);
