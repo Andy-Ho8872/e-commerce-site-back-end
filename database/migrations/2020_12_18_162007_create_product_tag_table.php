@@ -13,13 +13,11 @@ class CreateProductTagTable extends Migration
      */
     public function up()
     {
+        // 第三方表格 (儲存產品與標籤的關聯)
         Schema::create('product_tag', function (Blueprint $table) {
             $table->id();
             $table->integer('product_id')->nullable();
             $table->integer('tag_id')->nullable();
-            
-            // $table->unsignedBigInteger('product_id')->nullable();
-            // $table->unsignedBigInteger('tag_id')->nullable();
             $table->timestamps();
         });
     }

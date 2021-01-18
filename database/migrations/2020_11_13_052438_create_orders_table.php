@@ -15,18 +15,15 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->integer('product_quantity')->default(1); // 產品訂購數
-            // $table->integer('total_price'); // 產品總價
-            // $table->integer('unit_price'); // 產品單價 new
-            
-            // foreign keys
-            // $table->foreignId('product_id')->constrained('products'); // 產品 id
-            // $table->foreignId('user_id')->constrained('users'); // 訂購者 id
-            $table->unsignedBigInteger('product_id')->nullable();
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-
+            $table->integer('product_quantity')->default(1); // 產品訂購數 預設 1 個
+            // Foreign Keys
+                // 產品 id
+            $table->foreignId('product_id')->nullable()->constrained('products')
+            ->onUpdate('cascade')->onDelete('cascade');
+                // 訂購者 id
+            $table->foreignId('user_id')->nullable()->constrained('users') 
+            ->onUpdate('cascade')->onDelete('cascade');
+            // TimeStamps
             $table->timestamps();
         });
     }
