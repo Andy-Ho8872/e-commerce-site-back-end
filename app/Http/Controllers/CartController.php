@@ -12,30 +12,29 @@ use App\Models\Order;
 
 class CartController extends Controller
 {
-    // 取得該使用者(id)的購物車 也許可以使用 group by
+// 查詢
+    // 取得該使用者(id)的購物車 
     public function show($user_id) 
     {
         $orders = Order::join('products', 'orders.product_id', '=', 'products.id')
-        ->select('orders.id', // 訂單 id
+        ->select(
+            'orders.id', // 訂單 id
             'user_id',
             'product_id', 
-            'product_quantity', 
+            'product_quantity', // 購買數量
             'title', 
             'unit_price', 
             'imgUrl', 
-            'discount_rate',
+            'discount_rate', // 折扣率
             // 總價 (取整數)
             Order::raw('floor(unit_price * product_quantity * discount_rate) AS Total')   
         )
-        ->where('user_id', $user_id) // 該使用者 id
-        ->get();
-
-        // $orders = User::find($user_id)->orders;
+        ->where('user_id', $user_id)->get();
 
         return response()->json(['orders' => $orders]);
     }
 
-
+// 新增
     // 新增商品至購物車
     public function store(Request $request, $user_id, $product_id) 
     {
@@ -51,9 +50,9 @@ class CartController extends Controller
         $order = Order::where('user_id', $user_id)
         ->where('product_id', $product_id);
 
-        // 如果沒有重複則寫入 (後端二次驗證)
+        // 如果沒有重複則寫入 (第一次加入該商品)    
         if(! $order->exists()) {
-            // 如果有入商品數量
+            // 如果有輸入商品數量
             if ($request->product_quantity) { 
                 $order->create([
                     'user_id' => $user->id,
@@ -72,20 +71,27 @@ class CartController extends Controller
             // 回傳訊息
             $msg = "您新增了商品至購物車";
         } 
-        // 若有重複 數量 + 1
+        // 若有重複
         else {
-            $order->increment('product_quantity', 1);
-            $msg = "新增的商品已重複，數量 + 1";
+            // 如果有輸入商品數量
+            if($request->product_quantity) {
+                $order->increment('product_quantity', $request->product_quantity);
+                $msg = "新增的商品已重複，數量增加";
+            }
+            // 沒輸入商品數量
+            else {
+                $order->increment('product_quantity', 1);
+                $msg = "商品數量 + 1 ";
+            }
         }
-
         return response()->json(['order' => $order, 'msg' => $msg], 201);
     }
 
-
-    // 更新購物車的內容 (僅限相同使用者的相同商品)
+// 修改
+    // 修改購物車內商品數量
     public function update(Request $request, $user_id, $product_id)
     {
-        // 選擇 相同使用者、相同商品的資訊
+        // 選擇 相同使用者、相同商品的資料
         $order = Order::where('user_id', $user_id)
         ->where('product_id', $product_id);
 
@@ -97,33 +103,26 @@ class CartController extends Controller
         // 回傳訊息
         $msg = "您更改了商品數量，請查看";
 
-        // 更新後的內容
-        $order = Order::where('user_id', $user_id)
-        ->where('product_id', $product_id)
-        ->get();
-        
         return response()->json(['order' => $order , 'msg' => $msg], 201);
     }
 
-
+    // 數量 + 1
     public function increseByOne($user_id, $product_id)
     {
         $order = Order::where('user_id', $user_id)
         ->where('product_id', $product_id);
 
-        // $order = User::find($user_id)->order;
-
         $order->increment('product_quantity', 1); 
 
         // 回傳訊息
-        $msg = "您更改了商品數量，請查看";
+        $msg = "您更改了商品數量 + 1，請查看";
 
         $order = User::find($user_id)->order;
 
         return response()->json(['order' => $order, 'msg' => $msg], 201);
     }
 
-
+    //  數量 - 1
     public function decreseByOne($user_id, $product_id)
     {
         $order = Order::where('user_id', $user_id)
@@ -132,7 +131,7 @@ class CartController extends Controller
         $order->decrement('product_quantity', 1);
 
         // 回傳訊息
-        $msg = "您更改了商品數量，請查看";
+        $msg = "您更改了商品數量 - 1，請查看";
 
         $order = User::find($user_id)->order;
 
@@ -140,13 +139,12 @@ class CartController extends Controller
     }
 
 
-    // 移除購物車的內容(單項)
+// 刪除
+    // 移除購物車內的商品 (單筆)
     public function destroy($user_id, $product_id)
     {
         $order = Order::where('user_id', $user_id)
         ->where('product_id', $product_id);
-
-        // $order = User::find($user_id)->order;
 
         // 清除單項商品
         $order->delete();
@@ -156,7 +154,6 @@ class CartController extends Controller
 
         return response()->json(['order' => $order, 'msg' => $msg], 201);
     }
-
 
     // 清空購物車
     public function destroyAll($user_id)
