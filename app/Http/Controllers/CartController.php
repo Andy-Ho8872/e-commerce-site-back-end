@@ -36,7 +36,7 @@ class CartController extends Controller
 
 // 新增
     // 新增商品至購物車
-    public function store(Request $request, $user_id, $product_id) 
+    public function create(Request $request, $user_id, $product_id) 
     {
         $order = new Order();
 

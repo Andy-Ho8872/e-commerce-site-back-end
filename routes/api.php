@@ -48,13 +48,14 @@ Route::prefix('auth/user')->middleware('auth:sanctum')->group(function () {
     // 使用者的購物車
     Route::get('/{id}/cart', [CartController::class, 'show']);
     // 商品加入購物車
-    Route::post('/{id}/cart/{product_id}/create', [CartController::class, 'store']);
+    Route::get('/{id}/cart/{product_id}/create', [CartController::class, 'create']);
+    Route::post('/{id}/cart/{product_id}/create', [CartController::class, 'create']);
     // 更新購物車
     Route::post('/{id}/cart/{product_id}/update', [CartController::class, 'update']);
         // 數量 + 1 
-    Route::post('/{id}/cart/{product_id}/increseByOne', [CartController::class, 'increseByOne']);
+    Route::get('/{id}/cart/{product_id}/increseByOne', [CartController::class, 'increseByOne']);
         // 數量 - 1 
-    Route::post('/{id}/cart/{product_id}/decreseByOne', [CartController::class, 'decreseByOne']);
+    Route::get('/{id}/cart/{product_id}/decreseByOne', [CartController::class, 'decreseByOne']);
     // 移除購物車
     Route::delete('/{id}/cart/{product_id}/delete', [CartController::class, 'destroy']);
     // 清空購物車
