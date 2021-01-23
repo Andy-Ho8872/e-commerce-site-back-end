@@ -18,7 +18,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // 127.0.0.1:8000/api/auth/user
 
 // 使用者
-Route::prefix('auth/user')->group(function () {
+Route::prefix('user')->group(function () {
     // 註冊使用者
     Route::post('/register', [UserController::class, 'register']);
     // 登入使用者
@@ -28,7 +28,7 @@ Route::prefix('auth/user')->group(function () {
     // 取得已登入使用者
     Route::get('/{id}', [UserController::class, 'getCurrentUser']);
     // 所有使用者
-    Route::get('/', [UserController::class, 'index'])->middleware('auth:sanctum');
+    Route::get('/', [UserController::class, 'index']);
 });
 
 // 商品
@@ -43,21 +43,22 @@ Route::prefix('products')->group(function () {
     Route::get('/search/{title}', [ProductController::class, 'search']); 
 });
 
+
 // 購物車 (要有 Token 才能進行此處操作)
-Route::prefix('auth/user')->middleware('auth:sanctum')->group(function () {
+Route::prefix('auth/user/cart')->middleware('auth:sanctum')->group(function () {
     // 使用者的購物車
-    Route::get('/{id}/cart', [CartController::class, 'show']);
+    Route::get('/', [CartController::class, 'show']);
     // 商品加入購物車
-    Route::get('/{id}/cart/{product_id}/create', [CartController::class, 'create']);
-    Route::post('/{id}/cart/{product_id}/create', [CartController::class, 'create']);
+    Route::get('/{product_id}/create', [CartController::class, 'create']);
+    Route::post('/{product_id}/create', [CartController::class, 'create']);
     // 更新購物車
-    Route::post('/{id}/cart/{product_id}/update', [CartController::class, 'update']);
+    Route::post('/{product_id}/update', [CartController::class, 'update']);
         // 數量 + 1 
-    Route::get('/{id}/cart/{product_id}/increseByOne', [CartController::class, 'increseByOne']);
+    Route::get('/{product_id}/increseByOne', [CartController::class, 'increseByOne']);
         // 數量 - 1 
-    Route::get('/{id}/cart/{product_id}/decreseByOne', [CartController::class, 'decreseByOne']);
+    Route::get('/{product_id}/decreseByOne', [CartController::class, 'decreseByOne']);
     // 移除購物車
-    Route::delete('/{id}/cart/{product_id}/delete', [CartController::class, 'destroy']);
+    Route::delete('/{product_id}/delete', [CartController::class, 'destroy']);
     // 清空購物車
-    Route::delete('/{id}/cart/deleteAll', [CartController::class, 'destroyAll']);
+    Route::delete('/deleteAll', [CartController::class, 'destroyAll']);
 });

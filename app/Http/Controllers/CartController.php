@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth; 
 
 // Models 
 use App\Models\User;
@@ -14,8 +15,12 @@ class CartController extends Controller
 {
 // 查詢
     // 取得該使用者(id)的購物車 
-    public function show($user_id) 
+    public function show() 
     {
+        // 使用者必須先登入
+        $user_id = Auth::user()->id;
+
+        // 該使用者的訂單
         $orders = Order::join('products', 'orders.product_id', '=', 'products.id')
         ->select(
             'orders.id', // 訂單 id
@@ -31,17 +36,15 @@ class CartController extends Controller
         )
         ->where('user_id', $user_id)->get();
 
-        return response()->json(['orders' => $orders]);
+        return response()->json(['orders' => $orders, 'user_id' => $user_id]);
     }
 
 // 新增
     // 新增商品至購物車
-    public function create(Request $request, $user_id, $product_id) 
+    public function create(Request $request, $product_id) 
     {
-        $order = new Order();
-
         // 找到特定使用者
-        $user = User::findOrFail($user_id);
+        $user_id = Auth::user()->id;
 
         // 特定產品
         $product = Product::findOrFail($product_id);
@@ -55,7 +58,7 @@ class CartController extends Controller
             // 如果有輸入商品數量
             if ($request->product_quantity) { 
                 $order->create([
-                    'user_id' => $user->id,
+                    'user_id' => $user_id,
                     'product_id' => $product->id,
                     'product_quantity' => $request->product_quantity
                 ]);
@@ -63,7 +66,7 @@ class CartController extends Controller
             // 沒輸入商品數量
             else {
                 $order->create([
-                    'user_id' => $user->id,
+                    'user_id' => $user_id,
                     'product_id' => $product->id,
                     'product_quantity' => 1 // 預設 1 個
                 ]);
@@ -84,13 +87,15 @@ class CartController extends Controller
                 $msg = "商品數量 + 1 ";
             }
         }
-        return response()->json(['order' => $order, 'msg' => $msg], 201);
+        return response()->json(['order' => $order, 'msg' => $msg, 'user' => $user_id], 201);
     }
 
 // 修改
     // 修改購物車內商品數量
     public function update(Request $request, $user_id, $product_id)
     {
+        $user_id = Auth::user()->id;
+
         // 選擇 相同使用者、相同商品的資料
         $order = Order::where('user_id', $user_id)
         ->where('product_id', $product_id);
@@ -107,8 +112,10 @@ class CartController extends Controller
     }
 
     // 數量 + 1
-    public function increseByOne($user_id, $product_id)
+    public function increseByOne($product_id)
     {
+        $user_id = Auth::user()->id;
+
         $order = Order::where('user_id', $user_id)
         ->where('product_id', $product_id);
 
@@ -123,8 +130,10 @@ class CartController extends Controller
     }
 
     //  數量 - 1
-    public function decreseByOne($user_id, $product_id)
+    public function decreseByOne($product_id)
     {
+        $user_id = Auth::user()->id;
+
         $order = Order::where('user_id', $user_id)
         ->where('product_id', $product_id);
 
@@ -141,8 +150,10 @@ class CartController extends Controller
 
 // 刪除
     // 移除購物車內的商品 (單筆)
-    public function destroy($user_id, $product_id)
+    public function destroy($product_id)
     {
+        $user_id = Auth::user()->id;
+
         $order = Order::where('user_id', $user_id)
         ->where('product_id', $product_id);
 
@@ -156,8 +167,10 @@ class CartController extends Controller
     }
 
     // 清空購物車
-    public function destroyAll($user_id)
+    public function destroyAll()
     {
+        $user_id = Auth::user()->id;
+
         Order::where('user_id', $user_id)->delete();
 
         // 回傳訊息
