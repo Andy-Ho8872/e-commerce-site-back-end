@@ -92,7 +92,7 @@ class CartController extends Controller
 
 // 修改
     // 修改購物車內商品數量
-    public function update(Request $request, $user_id, $product_id)
+    public function update(Request $request, $product_id)
     {
         $user_id = Auth::user()->id;
 
