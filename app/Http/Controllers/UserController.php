@@ -7,7 +7,8 @@ use Illuminate\Validation\ValidationException; // 顯示錯誤訊息
 // 使用 Model
 use App\Models\User; 
 // 使用 Request 來驗證
-use App\Http\Requests\RegisterAndLogin; 
+use App\Http\Requests\RegisterRequest; 
+use App\Http\Requests\LoginRequest; 
 
 //use Illuminate\Support\Facades\App;
 
@@ -35,7 +36,7 @@ class UserController extends Controller
 
 
     // 建立使用者(註冊)
-    public function register(RegisterAndLogin $request) {
+    public function register(RegisterRequest $request) {
         // 使用 User Model
         $user = new User();
 
@@ -53,7 +54,7 @@ class UserController extends Controller
     }
 
     // 登入使用者並授權 Token
-    public function login(RegisterAndLogin $request) {
+    public function login(LoginRequest $request) {
         
         // 取得 email 相符的使用者 (第一筆)
         $user = User::where('email', $request->email)->first(); 
