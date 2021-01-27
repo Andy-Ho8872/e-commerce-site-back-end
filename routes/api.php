@@ -43,7 +43,7 @@ Route::prefix('products')->group(function () {
     Route::get('/search/{title}', [ProductController::class, 'search']); 
 });
 
-
+// ->middleware('auth:sanctum')
 // 購物車 (要有 Token 才能進行此處操作)
 Route::prefix('auth/user/cart')->middleware('auth:sanctum')->group(function () {
     // 使用者的購物車

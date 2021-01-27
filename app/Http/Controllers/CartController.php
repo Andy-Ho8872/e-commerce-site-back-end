@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\Order;
+// 驗證規則
+use App\Http\Requests\CartRequest;
 
 
 class CartController extends Controller
@@ -36,12 +38,12 @@ class CartController extends Controller
         )
         ->where('user_id', $user_id)->get();
 
-        return response()->json(['orders' => $orders, 'user_id' => $user_id]);
+        return response()->json(['orders' => $orders, 'user_id' => $user_id], 200);
     }
 
 // 新增
     // 新增商品至購物車
-    public function create(Request $request, $product_id) 
+    public function create(CartRequest $request, $product_id) 
     {
         // 找到特定使用者
         $user_id = Auth::user()->id;
@@ -53,11 +55,11 @@ class CartController extends Controller
         $order = Order::where('user_id', $user_id)
         ->where('product_id', $product_id);
 
-        // 如果沒有重複則寫入 (第一次加入該商品)    
+        // 如果購物車內沒有該商品則寫入   
         if(! $order->exists()) {
-            // 如果有輸入商品數量
+            // 有輸入商品數量
             if ($request->product_quantity) { 
-                $order->create([
+                $order->create([ // $order = new Order
                     'user_id' => $user_id,
                     'product_id' => $product->id,
                     'product_quantity' => $request->product_quantity
@@ -74,16 +76,16 @@ class CartController extends Controller
             // 回傳訊息
             $msg = "您新增了商品至購物車";
         } 
-        // 若有重複
+        // 如果購物車內已經存在該商品
         else {
-            // 如果有輸入商品數量
+            // 有輸入商品數量
             if($request->product_quantity) {
                 $order->increment('product_quantity', $request->product_quantity);
                 $msg = "新增的商品已重複，數量增加";
             }
             // 沒輸入商品數量
             else {
-                $order->increment('product_quantity', 1);
+                $order->increment('product_quantity', 1); // 重複點擊(未指定數量) 則增加 1
                 $msg = "商品數量 + 1 ";
             }
         }
@@ -92,7 +94,7 @@ class CartController extends Controller
 
 // 修改
     // 修改購物車內商品數量
-    public function update(Request $request, $product_id)
+    public function update(CartRequest $request, $product_id)
     {
         $user_id = Auth::user()->id;
 
@@ -176,6 +178,6 @@ class CartController extends Controller
         // 回傳訊息
         $msg = "已經清空您的購物車";
 
-        return response()->json(['msg' => $msg]);
+        return response()->json(['msg' => $msg], 201);
     }
 }

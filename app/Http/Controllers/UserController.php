@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Hash; // 密碼加密功能
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException; // 顯示錯誤訊息
-use App\Models\User; // 使用 User Model
-//use App\Http\Requests\RegisterAndLogin; // 使用 Request 來驗證
+// 使用 Model
+use App\Models\User; 
+// 使用 Request 來驗證
+use App\Http\Requests\RegisterAndLogin; 
 
 //use Illuminate\Support\Facades\App;
 
@@ -33,40 +35,28 @@ class UserController extends Controller
 
 
     // 建立使用者(註冊)
-    public function register(Request $request) {
-        // 驗證使用者的帳號密碼是否已經被註冊 or 符合規則
-        $request->validate([
-            'email' => 'required|email|unique:users|max:255', // 電子郵件不重複
-            'password' => 'required|alpha_num|min:6' // 只能輸入英文與數字
-        ]);
-        
+    public function register(RegisterAndLogin $request) {
         // 使用 User Model
         $user = new User();
 
-        // 接收表單的資料 
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password); // Hash 密碼
-        
-        // 驗證都通過後儲存到資料庫中
-        $user->save();
+        // 接收表單的資料，驗證都通過後儲存到資料庫中
+        $user->create([
+            'email' => $request->email,
+            'password' => Hash::make($request->password)
+        ]);
         
         // 顯示訊息
-        $msg = '註冊成功!!';
+        $msg = "使用者 $request->email 註冊成功";
         
         // 回傳詳細資訊
         return response()->json(['user' => $user, 'message' => $msg], 201); 
     }
 
     // 登入使用者並授權 Token
-    public function login(Request $request) {
-        // 使用者的輸入驗證
-        $request->validate([
-            'email' => 'required|email|max:255',
-            'password' => 'required|alpha_num|min:6',
-        ]);
+    public function login(RegisterAndLogin $request) {
         
-        // 驗證使用者的 Email 是否相符
-        $user = User::where('email', $request->email)->first(); // 取得 email 相符的使用者 (第一筆)
+        // 取得 email 相符的使用者 (第一筆)
+        $user = User::where('email', $request->email)->first(); 
 
         // 驗證使用者的 HASH 過後的密碼是否相符
         if (! $user || ! Hash::check($request->password, $user->password)) {
