@@ -137,14 +137,18 @@ class CartController extends Controller
         $user_id = Auth::user()->id;
 
         $order = Order::where('user_id', $user_id)
-        ->where('product_id', $product_id);
+        ->where('product_id', $product_id)->first(); // 要使用 first() 才能對該物件的 property 進行操作
 
-        $order->decrement('product_quantity', 1);
+        // $order = User::find($user_id)->order;  //測試
 
-        // 回傳訊息
-        $msg = "您更改了商品數量 - 1，請查看";
-
-        $order = User::find($user_id)->order;
+        // 數量一定要大於1
+        if($order->product_quantity > 1 ) {
+            $order->decrement('product_quantity', 1);
+            $msg = "您更改了商品數量 - 1，請查看";
+        }
+        else {
+            $msg = "商品數量並未更動";
+        }
 
         return response()->json(['order' => $order, 'msg' => $msg], 201);
     }
