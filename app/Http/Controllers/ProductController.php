@@ -19,7 +19,7 @@ class ProductController extends Controller
         ->get();
 
         // 回傳結果
-        return response()->json(['products' => $products]);
+        return response()->json(['products' => $products], 200);
     }
 
 
@@ -58,7 +58,7 @@ class ProductController extends Controller
         // 取得該產品的所有標籤(有可能是複數個) 
         $product->tags; 
 
-        return response()->json(['product' => $product]);
+        return response()->json(['product' => $product], 200);
     }
     
 
@@ -75,7 +75,7 @@ class ProductController extends Controller
 
         // $tags->products; // new
 
-        return response()->json(['tags' => $tags, 'products' => $products]);
+        return response()->json(['tags' => $tags, 'products' => $products], 200);
     }
 
 
@@ -84,10 +84,14 @@ class ProductController extends Controller
 
     public function search($title) 
     {
+        // Request $request
+        
         // 搜尋商品
         $products = Product::where('title', 'LIKE', "%{$title}%")->with('tags')->get();
         
-        return response()->json(['products' => $products]);
-    }
+        $msg = "關於{$title}的搜尋結果";
 
+        return response()->json(['products' => $products, 'msg' => $msg], 200);
+        
+    }
 }
