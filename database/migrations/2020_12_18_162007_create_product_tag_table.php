@@ -18,6 +18,7 @@ class CreateProductTagTable extends Migration
             $table->id();
             $table->integer('product_id')->nullable();
             $table->integer('tag_id')->nullable();
+            // $table->primary(['product_id', 'tag_id']);
             $table->timestamps();
         });
     }
