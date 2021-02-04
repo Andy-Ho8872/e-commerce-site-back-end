@@ -35,6 +35,10 @@ Route::prefix('user')->group(function () {
 Route::prefix('products')->group(function () {
     // 所有商品
     Route::get('/', [ProductController::class, 'index']);
+    // 圖片輪播商品 (10 個)
+    Route::get('/carousel', [ProductController::class, 'carousel']);
+    // 商品換頁 (Pagination)
+    Route::get('/page', [ProductController::class, 'paginate']);
     // 單一商品 
     Route::get('/{id}', [ProductController::class, 'show']); 
     // 依標籤選擇

@@ -11,45 +11,59 @@ use App\Models\Tag;
 
 class ProductController extends Controller
 {
+    // 所有的產品
     public function index()
     {   
         // 取得所有產品 (預載入查詢指定的關聯) 
-        $products = Product::with('tags')
-        // ->select('id')
-        ->get();
+        $products = Product::with('tags')->get();
 
         // 回傳結果
         return response()->json(['products' => $products], 200);
     }
 
-
-
-
-    // 上架產品
-    public function store(Request $request)
+    // 圖片輪播的商品 (10 個)
+    public function carousel()
     {
-        $product = new Product();
+        $products = Product::take(10)->get();
 
-        //get data from form
-        $product->title = request('title'); // 寫法 1
-        $product->description = $request->description; // 寫法 2
-        $product->unit_price = $request->unit_price;
-        $product->imgUrl = $request->imgUrl;
-        $product->stock_quantity = $request->stock_quantity;
-        $product->available = $request->available;
-        $product->tag_id = $request->tag_id;
+        return response()->json(['products' => $products], 200);
+    }
 
-        // save the data
-        $product->save();
+    // 商品換頁 (pagination) 
+    public function paginate()
+    {
+        // 目前為 一頁有 5 個商品
+        $products = Product::with('tags')->paginate(5);
 
-        // redirect to home page
-        return redirect('/');
+        return response()->json(['products' => $products], 200);
     }
 
 
+    // 上架產品 (暫時不用)
+    // public function store(Request $request)
+    // {
+    //     $product = new Product();
+
+    //     //get data from form
+    //     $product->title = request('title'); // 寫法 1
+    //     $product->description = $request->description; // 寫法 2
+    //     $product->unit_price = $request->unit_price;
+    //     $product->imgUrl = $request->imgUrl;
+    //     $product->stock_quantity = $request->stock_quantity;
+    //     $product->available = $request->available;
+    //     $product->tag_id = $request->tag_id;
+
+    //     // save the data
+    //     $product->save();
+
+    //     // redirect to home page
+    //     return redirect('/');
+    // }
 
 
 
+
+    // 顯示單一商品
     public function show($id)
     {
         // $product = Product::with('tags')->findOrFail($id); // 簡略寫法
@@ -64,9 +78,7 @@ class ProductController extends Controller
     }
     
 
-
-
-
+    // 藉由商品標籤顯示
     public function showByTag($id) 
     {
         // 取得標籤名稱
@@ -79,19 +91,13 @@ class ProductController extends Controller
     }
 
 
-
-
-
+    // 搜尋商品
     public function search($title) 
     {
-        // Request $request
-        
-        // 搜尋商品
         $products = Product::where('title', 'LIKE', "%{$title}%")->with('tags')->get();
         
         $msg = "關於{$title}的搜尋結果";
 
         return response()->json(['msg' => $msg, 'products' => $products], 200);
-        
     }
 }
