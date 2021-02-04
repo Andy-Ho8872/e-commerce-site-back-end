@@ -38,7 +38,7 @@ Route::prefix('products')->group(function () {
     // 圖片輪播商品 (10 個)
     Route::get('/carousel', [ProductController::class, 'carousel']);
     // 商品換頁 (Pagination)
-    Route::get('/page', [ProductController::class, 'paginate']);
+    Route::get('/pagination', [ProductController::class, 'paginate']);
     // 單一商品 
     Route::get('/{id}', [ProductController::class, 'show']); 
     // 依標籤選擇
@@ -47,7 +47,6 @@ Route::prefix('products')->group(function () {
     Route::get('/search/{title}', [ProductController::class, 'search']); 
 });
 
-// ->middleware('auth:sanctum')
 // 購物車 (要有 Token 才能進行此處操作)
 Route::prefix('auth/user/cart')->middleware('auth:sanctum')->group(function () {
     // 使用者的購物車
