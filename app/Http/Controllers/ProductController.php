@@ -52,6 +52,8 @@ class ProductController extends Controller
 
     public function show($id)
     {
+        // $product = Product::with('tags')->findOrFail($id); // 簡略寫法
+
         // 取得該產品資訊
         $product = Product::findOrFail($id);
 
@@ -72,8 +74,6 @@ class ProductController extends Controller
 
         // 取得符合 tag_id 的商品
         $products = Tag::findOrFail($id)->products;
-
-        // $tags->products; // new
 
         return response()->json(['tags' => $tags, 'products' => $products], 200);
     }
