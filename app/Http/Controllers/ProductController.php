@@ -91,7 +91,7 @@ class ProductController extends Controller
         
         $msg = "關於{$title}的搜尋結果";
 
-        return response()->json(['products' => $products, 'msg' => $msg], 200);
+        return response()->json(['msg' => $msg, 'products' => $products], 200);
         
     }
 }
