@@ -32,8 +32,8 @@ class ProductController extends Controller
     // 商品換頁 (pagination) 
     public function paginate()
     {
-        // 目前為 一頁有 5 個商品
-        $products = Product::with('tags')->paginate(5);
+        // 目前為 一頁有 10 個商品
+        $products = Product::with('tags')->paginate(10);
 
         return response()->json(['products' => $products], 200);
     }
