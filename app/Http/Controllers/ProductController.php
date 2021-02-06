@@ -14,10 +14,18 @@ class ProductController extends Controller
     // 所有的產品
     public function index()
     {   
-        // 取得所有產品 (預載入查詢指定的關聯) 
+        // (預載入查詢指定的關聯) 
         $products = Product::with('tags')->get();
 
         // 回傳結果
+        return response()->json(['products' => $products], 200);
+    }
+
+    // 取得首頁的產品  
+    public function indexPageProducts()
+    {   
+        $products = Product::with('tags')->take(5)->get();
+
         return response()->json(['products' => $products], 200);
     }
 
@@ -66,8 +74,6 @@ class ProductController extends Controller
     // 顯示單一商品
     public function show($id)
     {
-        // $product = Product::with('tags')->findOrFail($id); // 簡略寫法
-
         // 取得該產品資訊
         $product = Product::findOrFail($id);
 
