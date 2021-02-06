@@ -26,9 +26,9 @@ Route::prefix('user')->group(function () {
     // 登出使用者
     Route::get('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum'); 
     // 取得已登入使用者
-    Route::get('/{id}', [UserController::class, 'getCurrentUser']);
+    // Route::get('/{id}', [UserController::class, 'getCurrentUser']);
     // 所有使用者
-    Route::get('/', [UserController::class, 'index']);
+    // Route::get('/', [UserController::class, 'index']);
 });
 
 // 商品
