@@ -37,11 +37,9 @@ class UserController extends Controller
 
     // 建立使用者(註冊)
     public function register(RegisterRequest $request) {
-        // 使用 User Model
-        $user = new User();
-
+        
         // 接收表單的資料，驗證都通過後儲存到資料庫中
-        $user->create([
+        $user = User::create([
             'email' => $request->email,
             'password' => Hash::make($request->password)
         ]);
