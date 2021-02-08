@@ -19,7 +19,7 @@ class CreateProductsTable extends Migration
             $table->text('description'); // 產品資訊
             $table->decimal('unit_price'); // 單價
             $table->text('imgUrl'); // 產品圖片網址
-            $table->integer('stock_quantity'); // 存貨數量
+            $table->integer('stock_quantity')->default(100); // 存貨數量
             $table->boolean('available')->default(true); // 只支援 0 和 1
             $table->decimal('discount_rate')->default(1); // 產品折價  初始為 1.00(原價)
             $table->timestamps();
