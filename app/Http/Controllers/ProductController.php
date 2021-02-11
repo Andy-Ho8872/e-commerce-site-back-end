@@ -47,26 +47,26 @@ class ProductController extends Controller
     }
 
 
-    // 上架產品 (暫時不用)
-    // public function store(Request $request)
-    // {
-    //     $product = new Product();
+    // 上架產品 (後台)
+    public function store(Request $request)
+    {
+        $product = Product::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'unit_price' => $request->unit_price,
+            'imgUrl' => $request->imgUrl,
+            'stock_quantity' => $request->stock_quantity,
+            'available' => $request->available,
+            'discount_rate' => $request->discount_rate,
+        ]);
 
-    //     //get data from form
-    //     $product->title = request('title'); // 寫法 1
-    //     $product->description = $request->description; // 寫法 2
-    //     $product->unit_price = $request->unit_price;
-    //     $product->imgUrl = $request->imgUrl;
-    //     $product->stock_quantity = $request->stock_quantity;
-    //     $product->available = $request->available;
-    //     $product->tag_id = $request->tag_id;
+        // 產品標籤關聯
+        $product->tags()->sync($request->tags, false);
 
-    //     // save the data
-    //     $product->save();
 
-    //     // redirect to home page
-    //     return redirect('/');
-    // }
+        // redirect to home page
+        return redirect('/');
+    }
 
 
 
