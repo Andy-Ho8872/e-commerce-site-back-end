@@ -47,7 +47,8 @@ class ProductController extends Controller
     }
 
 
-    // 上架產品 (後台)
+// 後台部分 --------------------------------------------------------Start
+    // 上架產品
     public function store(Request $request)
     {
         $product = Product::create([
@@ -63,12 +64,16 @@ class ProductController extends Controller
         // 產品標籤關聯
         $product->tags()->sync($request->tags, false);
 
-
         // redirect to home page
         return redirect('/');
     }
+    public function getTags()
+    {
+        $tags = Tag::all();
 
-
+        return view('products.create', ['tags' => $tags]);
+    }
+// 後台部分 --------------------------------------------------------End
 
 
     // 顯示單一商品
