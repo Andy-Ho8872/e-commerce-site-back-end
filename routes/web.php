@@ -22,7 +22,11 @@ Route::get('/products/create', function () {
     return view('products.create');
 });
 
+Route::get('products/checkout', [ProductController::class, 'products']);
+Route::get('products/show/{id}', [ProductController::class, 'showById']);
+Route::patch('products/show/{id}', [ProductController::class, 'edit']);
+
+
+
 Route::get('/products/create', [ProductController::class, 'getTags']);
-
-
 Route::post('/products/create', [ProductController::class, 'store']);

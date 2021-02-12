@@ -73,6 +73,39 @@ class ProductController extends Controller
 
         return view('products.create', ['tags' => $tags]);
     }
+    public function products() 
+    {
+        $products = Product::all();
+
+        return view('products.checkout' , ['products' => $products]);
+    }
+    public function showById($id) 
+    {
+        $product = Product::findOrFail($id);
+        $tags = Tag::all();
+
+        return view('products.show' , ['product' => $product, 'tags' => $tags]);
+    }
+    // 更新產品資料
+    public function edit(Request $request, $id) 
+    {
+        $product = Product::findOrFail($id);
+
+        $product->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'unit_price' => $request->unit_price,
+            'imgUrl' => $request->imgUrl,
+            'stock_quantity' => $request->stock_quantity,
+            'available' => $request->available,
+            'discount_rate' => $request->discount_rate,
+        ]);
+
+        // 產品標籤關聯
+        $product->tags()->sync($request->tags);
+
+        return redirect('/products/checkout');
+    }
 // 後台部分 --------------------------------------------------------End
 
 
