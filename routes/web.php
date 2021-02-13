@@ -21,8 +21,9 @@ Route::get('/', function () {
 Route::get('/products/create', function () {
     return view('products.create');
 });
-
-Route::get('products/checkout', [ProductController::class, 'products']);
+// 所有產品頁面
+Route::get('products/showAll', [ProductController::class, 'products']);
+// 單一產品頁面
 Route::get('products/show/{id}', [ProductController::class, 'showById']);
 Route::patch('products/show/{id}', [ProductController::class, 'edit']);
 

@@ -10,7 +10,10 @@ module.exports = {
         extend: {}
     },
     variants: {
-        extend: {}
+        extend: {
+            backgroundColor: ['odd'],
+            backgroundColor: ['even'],
+        }
     },
     plugins: []
 };

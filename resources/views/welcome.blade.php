@@ -7,7 +7,7 @@
             點我進行產品上架
         </button>
     </a>
-    <a href="/products/checkout">
+    <a href="/products/showAll">
         <button class="border-2 rounded-full font-bold text-white p-4 m-6 transition-300-ease-in-out bg-red-500 hover:bg-red-700">
             點我觀看所有產品
         </button>
