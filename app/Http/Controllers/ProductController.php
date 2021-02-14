@@ -112,12 +112,12 @@ class ProductController extends Controller
     {
         $products = Product::all();
 
-        return view('products.checkout', ['products' => $products]);
+        return view('products.showAll', ['products' => $products]);
     }
     public function showById($id)
     {
         $product = Product::findOrFail($id);
-        $tags = Tag::all();
+        $tags = $product->tags;
 
         return view('products.show', ['product' => $product, 'tags' => $tags]);
     }
@@ -139,7 +139,15 @@ class ProductController extends Controller
         // 產品標籤關聯
         $product->tags()->sync($request->tags);
 
-        return redirect('/products/checkout');
+        return redirect('/products/showAll');
+    }
+    public function editPage($id) 
+    {
+        $product = Product::findOrFail($id);
+
+        $tags = Tag::all();
+
+        return view('products.edit', ['product' => $product, 'tags' => $tags]);
     }
 // 後台部分 -----------------------------------------------------------------------------------End
 }

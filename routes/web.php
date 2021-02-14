@@ -25,7 +25,9 @@ Route::get('/products/create', function () {
 Route::get('products/showAll', [ProductController::class, 'products']);
 // 單一產品頁面
 Route::get('products/show/{id}', [ProductController::class, 'showById']);
-Route::patch('products/show/{id}', [ProductController::class, 'edit']);
+    // 編輯頁面
+Route::get('products/edit/{id}', [ProductController::class, 'editPage']);
+Route::patch('products/edit/{id}', [ProductController::class, 'edit']);
 
 
 

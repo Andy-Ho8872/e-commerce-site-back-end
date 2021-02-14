@@ -1,31 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
-<h1 class="text-center bold text-2xl pt-4">產品資訊</h1>
-<!-- <div class="text-center">
-    <a href="/">
-        <button class="border-2 rounded-full font-bold text-white p-4 m-6 transition-300-ease-in-out bg-purple-500 hover:bg-purple-700">
-            回到首頁
-        </button>
+<h1 class="text-center font-bold text-4xl py-4">產品資訊</h1>
+<!-- 返回按鈕 -->
+<div class="text-center m-8">
+    <a href="/" class="border-2 rounded-full font-bold text-white p-4 px-8 m-6 transition-300-ease-in-out bg-blue-500 hover:bg-blue-700">
+        返回首頁
     </a>
 </div>
-
-
-<div class="bg-gray-200">
-
-    <div class="flex flex-wrap items-center justify-center p-6">
-        @foreach($products as $product)
-        <a href="/products/show/{{ $product->id }}">
-            <div class="bg-white flex items-center justify-center rounded-lg m-3 p-3 w-52 h-20">
-                {{ $product->id }} - {{ $product->title }}
-            </div>
-        </a>
-        @endforeach
-    </div>
-</div> -->
-
-<div class="bg-gray-100 rounded-sm">
-    <table class="table-auto bg-white w-8/12 mx-auto border-collapse rounded-sm">
+<!-- 表格內容 -->
+<div class="shadow-lg bg-gray-100 mb-12 rounded-3xl overflow-auto xl:w-8/12 mx-auto">
+    <table class="table-auto bg-white mx-auto border-collapse">
         <thead class="bg-pink-500 text-white">
             <tr>
                 <th class="w-1/12 p-4">編號</th>
@@ -48,12 +33,16 @@
                 <td class="w-3/12 p-4">{{ $product->unit_price }}</td>
                 <!-- 操作按鈕 -->
                 <td>
-                    <button class="rounded-full bg-green-500 hover:bg-green-600 px-4 py-2 text-white outline-none m-2">
-                        查看
-                    </button>
-                    <button class="rounded-full bg-red-400 hover:bg-red-600 px-4 py-2 text-white outline-none m-2">
-                        編輯
-                    </button>
+                    <a href="/products/show/{{ $product->id }}">
+                        <button class="rounded-full bg-green-500 hover:bg-green-600 px-4 py-2 text-white outline-none m-2">
+                            查看
+                        </button>
+                    </a>
+                    <a href="/products/edit/{{ $product->id }}">
+                        <button class="rounded-full bg-red-400 hover:bg-red-600 px-4 py-2 text-white outline-none m-2">
+                            編輯
+                        </button>
+                    </a>
                 </td>
             </tr>
             @endforeach
