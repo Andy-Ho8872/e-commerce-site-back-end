@@ -63,7 +63,7 @@
             <fieldset class="mb-4">
                 <label class="labelText pb-4">產品標籤</label>
                 @foreach($tags as $tag)
-                <span class="mx-2 p-3 bg-blue-600 text-white rounded-full">{{ $tag->title }}</span>
+                <span class="mx-2 p-3 bg-pink-500 text-white font-bold tracking-widest rounded-full">{{ $tag->title }}</span>
                 @endforeach
             </fieldset>
             <!-- 操作按鈕 -->
