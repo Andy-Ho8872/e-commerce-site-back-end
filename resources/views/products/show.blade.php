@@ -68,10 +68,10 @@
             </fieldset>
             <!-- 操作按鈕 -->
             <div class="text-center mt-8">
-                <a href="/products/showAll" class="border-2 rounded-full font-bold text-white p-4 px-8 m-6 transition-300-ease-in-out bg-green-500 hover:bg-green-700">
+                <a href="{{ route('products.index') }}" class="border-2 rounded-full font-bold text-white p-4 px-8 m-6 transition-300-ease-in-out bg-green-500 hover:bg-green-700">
                     返回
                 </a>
-                <a href="/products/edit/{{ $product->id }}" class="border-2 rounded-full font-bold text-white p-4 m-6 transition-300-ease-in-out bg-red-500 hover:bg-red-700">
+                <a href="{{ route('products.edit', $product->id) }}" class="border-2 rounded-full font-bold text-white p-4 m-6 transition-300-ease-in-out bg-red-500 hover:bg-red-700">
                     變更內容
                 </a>
             </div>

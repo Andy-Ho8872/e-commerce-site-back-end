@@ -4,7 +4,7 @@
 <h1 class="text-center font-bold text-4xl py-4">產品資訊</h1>
 <!-- 返回按鈕 -->
 <div class="text-center m-8">
-    <a href="/" class="border-2 rounded-full font-bold text-white p-4 px-8 m-6 transition-300-ease-in-out bg-blue-500 hover:bg-blue-700">
+    <a href="{{ route('home') }}" class="border-2 rounded-full font-bold text-white p-4 px-8 m-6 transition-300-ease-in-out bg-blue-500 hover:bg-blue-700">
         返回首頁
     </a>
 </div>

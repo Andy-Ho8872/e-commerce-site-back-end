@@ -14,22 +14,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// 後台首頁
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
-Route::get('/products/create', function () {
-    return view('products.create');
-});
+// 上架頁面
+Route::get('/products/create', [ProductController::class, 'getTags'])->name('products.create');
+Route::post('/products/create', [ProductController::class, 'store']);
+
 // 所有產品頁面
-Route::get('products/showAll', [ProductController::class, 'products']);
+Route::get('products/showAll', [ProductController::class, 'products'])->name('products.index');
 // 單一產品頁面
-Route::get('products/show/{id}', [ProductController::class, 'showById']);
+Route::get('products/show/{id}', [ProductController::class, 'showById'])->name('products.show');
     // 編輯頁面
-Route::get('products/edit/{id}', [ProductController::class, 'editPage']);
+Route::get('products/edit/{id}', [ProductController::class, 'editPage'])->name('products.edit');
 Route::patch('products/edit/{id}', [ProductController::class, 'edit']);
 
 
 
-Route::get('/products/create', [ProductController::class, 'getTags']);
-Route::post('/products/create', [ProductController::class, 'store']);
+
