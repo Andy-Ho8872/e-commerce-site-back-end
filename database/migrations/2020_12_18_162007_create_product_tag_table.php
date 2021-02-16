@@ -19,9 +19,9 @@ class CreateProductTagTable extends Migration
             $table->integer('product_id')->nullable();
             $table->integer('tag_id')->nullable();
             // $table->primary(['product_id', 'tag_id']);
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrentOnUpdate();
-            // $table->timestamps();
+            // $table->timestamp('created_at')->useCurrent();
+            // $table->timestamp('updated_at')->useCurrentOnUpdate();
+            $table->timestamps();
         });
     }
 
