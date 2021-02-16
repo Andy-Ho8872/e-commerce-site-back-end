@@ -66,7 +66,8 @@
                 <label class="labelText">產品標籤</label>
                 @foreach($tags as $tag)
                 <label class="mx-3 px-3 py-1 bg-white rounded-2xl font-semibold">
-                    <input name="tags[]" type="checkbox" value="{{ $tag->id }}" class="mb-5">
+                <!-- 預設打勾的選項 (若 tag->id 有包含在內 ) -->
+                    <input name="tags[]" type="checkbox" value="{{ $tag->id }}" class="mb-5" @if($product->tags->contains($tag->id)) checked @endif>
                     {{ $tag->title }}
                 </label>
                 @endforeach
