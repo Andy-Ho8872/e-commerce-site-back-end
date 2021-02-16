@@ -17,14 +17,14 @@ class Product extends Model
         'imgUrl',
         'stock_quantity',
         'available',
-        'tag_id'
+        'discount_rate'
     ];
 
     // 定義資料屬性 (選擇性)
-    protected $casts = [
-        'available' => 'boolean',
-        'unit_price' => 'decimal:2',
-    ];
+    // protected $casts = [
+    //     'available' => 'boolean',
+    //     'unit_price' => 'decimal:2',
+    // ];
 
 
     // 產品的標籤

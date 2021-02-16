@@ -20,9 +20,11 @@ class CreateProductsTable extends Migration
             $table->decimal('unit_price'); // 單價
             $table->text('imgUrl'); // 產品圖片網址
             $table->integer('stock_quantity')->default(100); // 存貨數量
+            $table->decimal('discount_rate', 3, 2)->default('1.00'); // 產品折價  初始為 1.00(原價)  範圍: 0 ~ 1 
             $table->boolean('available')->default(true); // 只支援 0 和 1
-            $table->decimal('discount_rate')->default(1); // 產品折價  初始為 1.00(原價)
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrentOnUpdate();
+            // $table->timestamps(); // 此格式在使用 MySQL 中使用 now() 方法的時候可能會有 BUG。
         });
     }
 
@@ -34,6 +36,5 @@ class CreateProductsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('products');
-        
     }
 }

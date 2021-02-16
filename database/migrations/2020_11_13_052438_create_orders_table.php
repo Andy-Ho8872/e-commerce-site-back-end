@@ -23,8 +23,9 @@ class CreateOrdersTable extends Migration
                 // 訂購者 id
             $table->foreignId('user_id')->nullable()->constrained('users') 
             ->onUpdate('cascade')->onDelete('cascade');
-            // TimeStamps
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrentOnUpdate();
+            // $table->timestamps();
         });
     }
 

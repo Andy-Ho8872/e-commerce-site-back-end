@@ -23,7 +23,6 @@ class User extends Authenticatable
         // 以下欄位可以支援大量寫入。
         'email',
         'password',
-        'product_id'
     ];
 
     /**
