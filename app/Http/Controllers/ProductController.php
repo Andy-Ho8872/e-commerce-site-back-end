@@ -100,7 +100,7 @@ class ProductController extends Controller
         $product->tags()->sync($request->tags, false);
 
         // redirect to home page
-        return redirect('/');
+        return redirect()->name('home');
     }
     public function getTags()
     {
@@ -139,7 +139,8 @@ class ProductController extends Controller
         // 產品標籤關聯
         $product->tags()->sync($request->tags);
 
-        return redirect('/products/showAll');
+        // 重新導向至該產品
+        return redirect()->route('products.show', ['id' => $id]);
     }
     public function editPage($id) 
     {

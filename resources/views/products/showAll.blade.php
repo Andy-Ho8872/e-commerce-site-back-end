@@ -33,12 +33,12 @@
                 <td class="w-3/12 p-4">{{ $product->unit_price }}</td>
                 <!-- 操作按鈕 -->
                 <td>
-                    <a href="/products/show/{{ $product->id }}">
+                    <a href="{{ route('products.show', $product->id) }}">
                         <button class="rounded-full bg-green-500 hover:bg-green-600 px-4 py-2 text-white outline-none m-2">
                             查看
                         </button>
                     </a>
-                    <a href="/products/edit/{{ $product->id }}">
+                    <a href="{{ route('products.edit', $product->id) }}">
                         <button class="rounded-full bg-red-400 hover:bg-red-600 px-4 py-2 text-white outline-none m-2">
                             編輯
                         </button>
