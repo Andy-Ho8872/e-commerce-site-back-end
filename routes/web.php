@@ -19,18 +19,15 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-// 上架頁面
-Route::get('/products/create', [ProductController::class, 'getTags'])->name('products.create');
-Route::post('/products/create', [ProductController::class, 'store']);
-
-// 所有產品頁面
-Route::get('products/showAll', [ProductController::class, 'products'])->name('products.index');
-// 單一產品頁面
-Route::get('products/show/{id}', [ProductController::class, 'showById'])->name('products.show');
+Route::prefix('products')->group(function () {
+    // 上架頁面
+    Route::get('/create', [ProductController::class, 'getTags'])->name('products.create');
+    Route::post('/create', [ProductController::class, 'store']);
+    // 所有產品頁面
+    Route::get('/showAll', [ProductController::class, 'products'])->name('products.index');
+    // 單一產品頁面
+    Route::get('/show/{id}', [ProductController::class, 'showById'])->name('products.show');
     // 編輯頁面
-Route::get('products/edit/{id}', [ProductController::class, 'editPage'])->name('products.edit');
-Route::patch('products/edit/{id}', [ProductController::class, 'edit']);
-
-
-
-
+    Route::get('/edit/{id}', [ProductController::class, 'editPage'])->name('products.edit');
+    Route::patch('/edit/{id}', [ProductController::class, 'edit']);
+});
