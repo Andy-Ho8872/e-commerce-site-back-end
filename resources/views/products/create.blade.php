@@ -14,7 +14,6 @@
             </label>
             <input class="input-shadow text-grey-darker input-focus-blue" name="title" type="text" placeholder="優質手機">
         </div>
-
         <!-- 敘述 -->
         <div class="mb-4">
             <label class="labelText" for="description">
@@ -22,7 +21,6 @@
             </label>
             <textarea class="input-shadow text-grey-darker mb-3 input-focus-blue" name="description" type="text" placeholder="Lorem...."></textarea>
         </div>
-
         <!-- 圖片 -->
         <div class="mb-4">
             <label class="labelText" for="imgUrl">
@@ -30,7 +28,6 @@
             </label>
             <input class="input-shadow text-grey-darker mb-3 input-focus-blue" name="imgUrl" type="text" placeholder="http://.....">
         </div>
-
         <!-- 單價 -->
         <div class="mb-4">
             <label class="labelText" for="unit_price">
@@ -38,7 +35,6 @@
             </label>
             <input class="input-shadow text-grey-darker mb-3 input-focus-blue" name="unit_price" type="number" placeholder="4899">
         </div>
-
         <!-- 數量 -->
         <div class="mb-4">
             <label class="labelText" for="stock_quantity">
@@ -46,7 +42,6 @@
             </label>
             <input class="input-shadow text-grey-darker mb-3 input-focus-blue" name="stock_quantity" type="number" placeholder="100">
         </div>
-
         <!-- 折價率 -->
         <div class="mb-4">
             <label class="labelText" for="discount_rate input-focus-blue">
@@ -54,7 +49,6 @@
             </label>
             <input class="input-shadow text-grey-darker mb-3 input-focus-blue" name="discount_rate" type="number" step="0.01" placeholder="1.00">
         </div>
-
         <!-- 是否有現貨 -->
         <div class="mb-4">
             <label class="labelText" for="available">
@@ -65,18 +59,16 @@
                 <option value="0">否</option>
             </select>
         </div>
-
         <!-- 標籤選擇 -->
         <fieldset class="mb-4">
-            <label class="labelText">產品標籤</label>
-            @foreach($tags as $tag)
-            <div>
-                <input name="tags[]" type="checkbox" value="{{ $tag->id }}">
-                <label for="{{ $tag->title }}">{{ $tag->title }}</label>
-            </div>
-            @endforeach
-        </fieldset>
-
+                <label class="labelText">產品標籤</label>
+                @foreach($tags as $tag)
+                <label class="mx-3 px-3 py-1 bg-white rounded-2xl font-semibold">
+                    <input name="tags[]" type="checkbox" value="{{ $tag->id }}" class="mb-5">
+                    {{ $tag->title }}
+                </label>
+                @endforeach
+            </fieldset>
         <!-- 上架按鈕 -->
         <button type="submit" class="border-2 rounded-full font-bold text-white p-4 m-6 transition-300-ease-in-out bg-red-500 hover:bg-red-700">
             上架
