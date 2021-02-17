@@ -139,8 +139,11 @@ class ProductController extends Controller
         // 產品標籤關聯
         $product->tags()->sync($request->tags);
 
+        // 提示訊息
+        $message = "已經成功變更，請查閱。";
+
         // 重新導向至該產品
-        return redirect()->route('products.show', ['id' => $id]);
+        return redirect()->route('products.show', ['id' => $id])->with('message', $message);
     }
     public function editPage($id) 
     {
