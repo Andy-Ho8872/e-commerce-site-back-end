@@ -14,9 +14,10 @@
         <thead class="bg-pink-500 text-white">
             <tr>
                 <th class="w-1/12 p-4">編號</th>
-                <th class="w-3/12 p-4">名稱</th>
-                <th class="w-3/12 p-4">敘述</th>
-                <th class="w-3/12 p-4">單價</th>
+                <th class="w-2/12 p-4">名稱</th>
+                <th class="w-1/12 p-4">圖片</th>
+                <th class="w-4/12 p-4">敘述</th>
+                <th class="w-2/12 p-4">單價</th>
                 <th class="w-3/12 p-4">操作</th>
             </tr>
         </thead>
@@ -26,11 +27,15 @@
                 <!-- 產品編號 -->
                 <td class="w-1/12 p-4">{{ $product->id }}</td>
                 <!-- 產品名稱 -->
-                <td class="w-3/12 p-4">{{ $product->title }}</td>
+                <td class="w-2/12 p-4">{{ $product->title }}</td>
+                <!-- 產品圖片 -->
+                <td class="w-1/12 p-4">
+                    <img src="{{ $product->imgUrl }}" alt="{{ $product->title }}" width="100" height="100">
+                </td>
                 <!-- 產品敘述 -->
-                <td class="w-3/12 p-4">{{ Str::limit($product->description, 80, $end='...') }}</td>
+                <td class="w-4/12 p-4">{{ Str::limit($product->description, 80, $end='...') }}</td>
                 <!-- 產品單價 -->
-                <td class="w-3/12 p-4">{{ $product->unit_price }}</td>
+                <td class="w-2/12 p-4">{{ $product->unit_price }}</td>
                 <!-- 操作按鈕 -->
                 <td>
                     <a href="{{ route('products.show', $product->id) }}">
