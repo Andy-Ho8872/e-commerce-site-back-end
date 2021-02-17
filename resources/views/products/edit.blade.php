@@ -2,10 +2,10 @@
 
 @section('content')
 <div class="xl:w-8/12 mx-auto">
-    <form class="py-4" method="POST">
-        <h1 class="text-center text-2xl font-sans font-bold tracking-widest">商品資訊-編號-{{ $product->id }}</h1>
+    <form class="py-4" action="{{ route('products.update', $product->id) }}" method="POST">
         @csrf
-        @method('PATCH')
+        @method("PATCH")
+        <h1 class="text-center text-2xl font-sans font-bold tracking-widest">商品資訊-編號-{{ $product->id }}</h1>
         <div class="bg-red-200 shadow-lg rounded-3xl px-8 py-8 flex flex-col mx-auto">
             <!-- 名稱 -->
             <div class="mb-4">

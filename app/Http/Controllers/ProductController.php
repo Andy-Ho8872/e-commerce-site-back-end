@@ -100,7 +100,7 @@ class ProductController extends Controller
         $product->tags()->sync($request->tags, false);
 
         // redirect to home page
-        return redirect()->name('home');
+        return redirect()->route('home');
     }
     public function getTags()
     {
