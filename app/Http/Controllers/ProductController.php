@@ -99,8 +99,11 @@ class ProductController extends Controller
         // 產品標籤關聯
         $product->tags()->sync($request->tags, false);
 
-        // redirect to home page
-        return redirect()->route('home');
+        // 提示訊息
+        $message = "商品上架成功";
+
+        // 重新導向
+        return redirect()->route('products.index')->with('message', $message);
     }
     public function getTags()
     {

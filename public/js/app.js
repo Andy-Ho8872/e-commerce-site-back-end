@@ -19341,7 +19341,20 @@ module.exports = function(module) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); // 清除提示訊息
+
+
+var flashMessage = document.querySelector('.flash_message');
+
+function clearFlashMessage() {
+  setTimeout(function () {
+    flashMessage.style.visibility = 'hidden';
+  }, 3000);
+}
+
+flashMessage.addEventListener('submit', function () {
+  clearFlashMessage();
+});
 
 /***/ }),
 

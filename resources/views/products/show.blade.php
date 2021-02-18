@@ -88,16 +88,3 @@
     </form>
 </div>
 @endsection
-
-
-@section('script')
-<script>
-// 清除提示訊息
-    function clearFlashMessage() {
-        const message = document.querySelector('.flash_message');
-        setTimeout(() => {
-            message.style.display = 'none'
-        }, 3000)
-    }
-</script>
-@endsection

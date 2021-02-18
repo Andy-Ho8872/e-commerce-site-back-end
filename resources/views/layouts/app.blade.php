@@ -7,9 +7,9 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <!-- ... --->
-<body onload="clearFlashMessage()">
+<body>
     @yield('content')
 </body>
 
 <!-- js -->
-@yield('script')
+<script src="{{ asset('js/app.js') }}" type="text/javascript"></script>
