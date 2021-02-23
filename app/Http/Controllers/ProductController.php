@@ -11,7 +11,7 @@ use App\Models\Tag;
 
 class ProductController extends Controller
 {
-// API 的部分 -----------------------------------------------------------------------------------Start
+    // API 的部分 -----------------------------------------------------------------------------------Start
     // 所有的產品
     public function index()
     {
@@ -68,21 +68,28 @@ class ProductController extends Controller
         return response()->json(['tags' => $tags, 'products' => $products], 200);
     }
     // 搜尋商品
-    public function search($title)
+    public function search(Request $request, $search)
     {
-        $products = Product::where('title', 'LIKE', "%{$title}%")->with('tags')->get();
+        $search = $request->search;
 
-        $msg = "關於{$title}的搜尋結果";
+        $products = Product::with('tags')
+            ->where('title', 'LIKE', "%{$search}%")
+            ->orwhereHas('tags', function ($query) use ($search) {
+                $query->where('title', 'LIKE', "%{$search}%");
+            })
+            ->get();
+
+        $msg = "關於{$search}的搜尋結果";
 
         return response()->json(['msg' => $msg, 'products' => $products], 200);
     }
-// API 的部分 -----------------------------------------------------------------------------------End
+    // API 的部分 -----------------------------------------------------------------------------------End
 
 
 
 
 
-// 後台部分 -----------------------------------------------------------------------------------Start
+    // 後台部分 -----------------------------------------------------------------------------------Start
     // 上架產品
     public function store(Request $request)
     {
@@ -148,7 +155,7 @@ class ProductController extends Controller
         // 重新導向至該產品
         return redirect()->route('products.show', ['id' => $id])->with('message', $message);
     }
-    public function editPage($id) 
+    public function editPage($id)
     {
         $product = Product::findOrFail($id);
 
@@ -156,5 +163,5 @@ class ProductController extends Controller
 
         return view('products.edit', ['product' => $product, 'tags' => $tags]);
     }
-// 後台部分 -----------------------------------------------------------------------------------End
+    // 後台部分 -----------------------------------------------------------------------------------End
 }

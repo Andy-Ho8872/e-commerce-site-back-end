@@ -46,7 +46,7 @@ Route::prefix('products')->group(function () {
     // 依標籤選擇
     Route::get('/tag/{id}', [ProductController::class, 'showByTag']);
     // 搜尋商品
-    Route::get('/search/{title}', [ProductController::class, 'search']); 
+    Route::get('/search/{search}', [ProductController::class, 'search']); 
 });
 
 // 購物車 (要有 Token 才能進行此處操作)
