@@ -17,7 +17,8 @@ class Product extends Model
         'imgUrl',
         'stock_quantity',
         'available',
-        'discount_rate'
+        'discount_rate',
+        'rating'
     ];
 
     // 定義資料屬性 (選擇性)

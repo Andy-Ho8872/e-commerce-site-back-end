@@ -12,15 +12,15 @@
                 <label class="labelText" for="title">
                     商品名稱
                 </label>
-                <input class="input-shadow text-grey-darker input-focus-blue" name="title" type="text" value="{{ $product->title }}">
+                <input class="input-shadow text-grey-darker input-focus-blue" name="title" type="text" value="{{ $product->title }}" required>
             </div>
             <!-- 敘述 -->
             <div class="mb-4">
                 <label class="labelText" for="description">
                     商品敘述
                 </label>
-                <textarea rows="5" class="input-shadow text-grey-darker mb-3 input-focus-blue" name="description" type="text">
-                {{ $product->description }}
+                <textarea rows="5" class="input-shadow text-grey-darker mb-3 input-focus-blue" name="description" type="text" required>
+                    {{ $product->description }}
                 </textarea>
             </div>
             <!-- 圖片 -->
@@ -28,28 +28,35 @@
                 <label class="labelText" for="imgUrl">
                     商品圖片網址
                 </label>
-                <input class="input-shadow text-grey-darker mb-3 input-focus-blue" name="imgUrl" type="text" value="{{ $product->imgUrl }}">
+                <input class="input-shadow text-grey-darker mb-3 input-focus-blue" name="imgUrl" type="text" value="{{ $product->imgUrl }}" required>
             </div>
             <!-- 單價 -->
             <div class="mb-4">
                 <label class="labelText" for="unit_price">
                     商品單價
                 </label>
-                <input class="input-shadow text-grey-darker mb-3 input-focus-blue" name="unit_price" type="number" value="{{ $product->unit_price }}">
+                <input class="input-shadow text-grey-darker mb-3 input-focus-blue" name="unit_price" type="number" value="{{ $product->unit_price }}" required>
             </div>
             <!-- 數量 -->
             <div class="mb-4">
                 <label class="labelText" for="stock_quantity">
                     存貨數量
                 </label>
-                <input class="input-shadow text-grey-darker mb-3 input-focus-blue" name="stock_quantity" type="number" value="{{ $product->stock_quantity }}">
+                <input class="input-shadow text-grey-darker mb-3 input-focus-blue" name="stock_quantity" type="number" value="{{ $product->stock_quantity }}" required>
             </div>
             <!-- 折價率 -->
             <div class="mb-4">
                 <label class="labelText" for="discount_rate input-focus-blue">
-                    商品折價率
+                    商品折價率(預設/最多 1)
                 </label>
-                <input class="input-shadow text-grey-darker mb-3 input-focus-blue" name="discount_rate" type="number" step="0.01" value="{{ $product->discount_rate }}">
+                <input class="input-shadow text-grey-darker mb-3 input-focus-blue" name="discount_rate" type="number" step="0.01" value="{{ $product->discount_rate }}" max="1">
+            </div>
+            <!-- 星級評價 -->
+            <div class="mb-4">
+                <label class="labelText" for="discount_rate input-focus-blue">
+                    星級評價(預設/最多 5 )
+                </label>
+                <input class="input-shadow text-grey-darker mb-3 input-focus-blue" name="rating" type="number" step="0.01" placeholder="5.00" value="{{ $product->rating }}" max="5">
             </div>
             <!-- 是否有現貨 -->
             <div class="mb-4">

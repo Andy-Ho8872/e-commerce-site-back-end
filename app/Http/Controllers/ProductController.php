@@ -101,6 +101,7 @@ class ProductController extends Controller
             'stock_quantity' => $request->stock_quantity,
             'available' => $request->available,
             'discount_rate' => $request->discount_rate,
+            'rating' => $request->rating
         ]);
 
         // 產品標籤關聯
@@ -144,6 +145,7 @@ class ProductController extends Controller
             'stock_quantity' => $request->stock_quantity,
             'available' => $request->available,
             'discount_rate' => $request->discount_rate,
+            'rating' => $request->rating
         ]);
 
         // 產品標籤關聯

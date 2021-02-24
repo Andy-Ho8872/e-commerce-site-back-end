@@ -45,9 +45,16 @@
             <!-- 折價率 -->
             <div class="mb-4">
                 <label class="labelText" for="discount_rate input-focus-blue">
-                    商品折價率
+                    商品折價率(最多 1)
                 </label>
                 <input class="input-shadow text-grey-darker mb-3 input-focus-blue" name="discount_rate" type="number" step="0.01" value="{{ $product->discount_rate }}" readonly>
+            </div>
+            <!-- 星級評價 -->
+            <div class="mb-4">
+                <label class="labelText" for="discount_rate input-focus-blue">
+                    星級評價(最多 5 )
+                </label>
+                <input class="input-shadow text-grey-darker mb-3 input-focus-blue" name="rating" type="number" step="0.01" value="{{ $product->rating }}" readonly>
             </div>
             <!-- 是否有現貨 -->
             <div class="mb-4">
