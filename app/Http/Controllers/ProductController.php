@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreAndEditRequest;
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent;
-use Illuminate\Support\Facades\DB;
+
 // 使用到的 Model
 use App\Models\Product;
 use App\Models\Tag;
@@ -91,7 +91,7 @@ class ProductController extends Controller
 
     // 後台部分 -----------------------------------------------------------------------------------Start
     // 上架產品
-    public function store(Request $request)
+    public function store(StoreAndEditRequest $request)
     {
         $product = Product::create([
             'title' => $request->title,
@@ -133,7 +133,7 @@ class ProductController extends Controller
         return view('products.show', ['product' => $product, 'tags' => $tags]);
     }
     // 更新產品資料
-    public function edit(Request $request, $id)
+    public function edit(StoreAndEditRequest $request, $id)
     {
         $product = Product::findOrFail($id);
 
