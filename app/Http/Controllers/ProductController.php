@@ -32,8 +32,11 @@ class ProductController extends Controller
     // 圖片輪播的商品 (10 個)
     public function carousel()
     {
-        $products = Product::with('tags')->take(10)->get();
+        // 隨機撈取資料
+        // $products = Product::with('tags')->get()->random(10);
 
+        $products = Product::with('tags')->take(10)->get();
+        
         return response()->json(['products' => $products], 200);
     }
 
