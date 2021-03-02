@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreAndEditRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 // 使用到的 Model
 use App\Models\Product;
@@ -24,19 +25,31 @@ class ProductController extends Controller
     // 取得首頁的產品  
     public function indexPageProducts()
     {
-        $products = Product::with('tags')->take(5)->get();
+        // $products = Product::with('tags')->take(5)->get();
 
+        // return response()->json(['products' => $products], 200);
+
+        // 快取測試
+        $products = Cache::remember('index', 60 * 10 , function() {
+            return Product::with('tags')->take(5)->get();
+        });
         return response()->json(['products' => $products], 200);
     }
 
     // 圖片輪播的商品 (10 個)
     public function carousel()
     {
+        // $products = Product::with('tags')->take(10)->get();
+
         // 隨機撈取資料
         // $products = Product::with('tags')->get()->random(10);
-
-        $products = Product::with('tags')->take(10)->get();
         
+        // return response()->json(['products' => $products], 200);
+
+        // 快取測試
+        $products = Cache::remember('carousel', 60 * 10 , function() {
+            return Product::with('tags')->take(10)->get();
+        });
         return response()->json(['products' => $products], 200);
     }
 
@@ -52,23 +65,17 @@ class ProductController extends Controller
     public function show($id)
     {
         // 取得該產品資訊
-        $product = Product::findOrFail($id);
-
-        // 取得該產品的所有標籤(有可能是複數個) 
-        $product->tags;
+        $product = Product::with('tags')->findOrFail($id);
 
         return response()->json(['product' => $product], 200);
     }
-    // 藉由商品標籤顯示
+    // 藉由商品標籤顯示 ()
     public function showByTag($id)
     {
         // 取得標籤名稱
-        $tags = Tag::findOrFail($id);
+        $tag = Tag::with('products')->findOrFail($id);
 
-        // 取得符合 tag_id 的商品
-        $products = Tag::findOrFail($id)->products;
-
-        return response()->json(['tags' => $tags, 'products' => $products], 200);
+        return response()->json(['tag' => $tag], 200);
     }
     // 搜尋商品
     public function search(Request $request, $search)

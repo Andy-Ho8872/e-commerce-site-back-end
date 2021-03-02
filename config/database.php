@@ -132,6 +132,8 @@ return [
             'password' => env('REDIS_PASSWORD', null),
             'port' => env('REDIS_PORT', '6379'),
             'database' => env('REDIS_DB', '0'),
+            // new
+            // 'url' => 'tcp://127.0.0.1:6379?database=0',
         ],
 
         'cache' => [
@@ -140,6 +142,9 @@ return [
             'password' => env('REDIS_PASSWORD', null),
             'port' => env('REDIS_PORT', '6379'),
             'database' => env('REDIS_CACHE_DB', '1'),
+            // new
+            // 'scheme' => 'tls',
+            // 'url' => 'tls://user:password@127.0.0.1:6380?database=1',
         ],
 
     ],
