@@ -1,16 +1,17 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash; // 密碼加密功能
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException; // 顯示錯誤訊息
+
 // 使用 Model
 use App\Models\User; 
+
 // 使用 Request 來驗證
 use App\Http\Requests\RegisterRequest; 
-use App\Http\Requests\LoginRequest; 
-
-//use Illuminate\Support\Facades\App;
+use App\Http\Requests\LoginRequest;
 
 class UserController extends Controller
 {
@@ -25,13 +26,14 @@ class UserController extends Controller
     }
     
     // 取得特定使用者
-    public function getCurrentUser($id)
+    public function getCurrentUser()
     {
-        // 依照 Email 取得
-        $users = User::find($id); 
+        $user_id = Auth::user()->id;
+
+        $user = User::findOrFail($user_id); 
 
         // 回傳資料庫中的使用者資訊
-        return $users;
+        return response()->json(['user' => $user], 200);
     }
 
 
