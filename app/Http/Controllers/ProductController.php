@@ -25,7 +25,7 @@ class ProductController extends Controller
     // 取得首頁的產品  
     public function indexPageProducts()
     {
-        $products = Cache::remember('index', 60 * 10 , function() {
+        $products = Cache::remember('index', 60 * 3, function () {
             return Product::with('tags')->take(5)->get();
         });
         return response()->json(['products' => $products], 200);
@@ -34,7 +34,7 @@ class ProductController extends Controller
     // 圖片輪播的商品 (10 個)
     public function carousel()
     {
-        $products = Cache::remember('carousel', 60 * 10 , function() {
+        $products = Cache::remember('carousel', 60 * 3, function () {
             return Product::with('tags')->take(10)->get();
         });
         return response()->json(['products' => $products], 200);
@@ -44,37 +44,42 @@ class ProductController extends Controller
     public function paginate()
     {
         // 目前為 一頁有 10 個商品
-        $products = Product::with('tags')->paginate(10);
+        $currentPage = request()->get('page', 1);
+
+        $products = Cache::remember("pagination-${currentPage}", 60 * 2, function () {
+            return Product::with('tags')->paginate(10);
+        });
 
         return response()->json(['products' => $products], 200);
     }
     // 顯示單一商品
     public function show($id)
     {
-        // 取得該產品資訊
-        $product = Product::with('tags')->findOrFail($id);
+        $product = Cache::remember("product-${id}", 60 * 2, function () use ($id) {
+            return Product::with('tags')->findOrFail($id);
+        });
 
         return response()->json(['product' => $product], 200);
     }
-    // 藉由商品標籤顯示 ()
+    // 藉由商品標籤顯示
     public function showByTag($id)
     {
-        // 取得標籤名稱
-        $tag = Tag::with('products')->findOrFail($id);
+        $tag = Cache::remember("tag-${id}", 60 * 2, function () use ($id) {
+            return Tag::with('products')->findOrFail($id);
+        });
 
         return response()->json(['tag' => $tag], 200);
     }
     // 搜尋商品
-    public function search(Request $request, $search)
+    public function search($search)
     {
-        $search = $request->search;
-
-        $products = Product::with('tags')
-            ->where('title', 'LIKE', "%{$search}%")
-            ->orwhereHas('tags', function ($query) use ($search) {
-                $query->where('title', 'LIKE', "%{$search}%");
-            })
-            ->get();
+        $products = Cache::remember("searchingFor-${search}", 60 * 2, function () use ($search) {
+            return Product::with('tags')
+                ->where('title', 'LIKE', "%{$search}%")
+                ->orwhereHas('tags', function ($query) use ($search) {
+                    $query->where('title', 'LIKE', "%{$search}%");
+                })->get();
+        });
 
         $msg = "關於{$search}的搜尋結果";
 
