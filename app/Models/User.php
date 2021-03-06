@@ -44,9 +44,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    // 更新單項商品
-    public function order() {
-        return $this->hasOne(Order::class);
+    // 使用者可以有多個購物車商品
+    public function carts() {
+        return $this->hasMany(Cart::class);
     }
 
     // 一位使用者可以有多筆訂單
