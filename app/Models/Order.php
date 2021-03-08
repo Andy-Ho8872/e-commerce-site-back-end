@@ -14,6 +14,13 @@ class Order extends Model
         // 'user_id',
         // 'product_id',
         // 'product_quantity'
+        
+    // new values
+        'user_id',
+        'payment_id',
+        // 'status_id',
+        'delivery_id',
+        'address'
     ];
 
 
