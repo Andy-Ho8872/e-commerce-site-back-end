@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
-
+use App\Http\Controllers\OrderController;
 
 //'auth:api'  (default)
 
@@ -58,4 +58,10 @@ Route::prefix('auth/user/cart')->middleware('auth:sanctum')->group(function () {
     Route::delete('/{product_id}/delete', [CartController::class, 'destroy']);
     // 清空購物車
     Route::delete('/deleteAll', [CartController::class, 'destroyAll']);
+});
+
+// 建立訂單
+Route::prefix('auth/user/order')->middleware('auth:sanctum')->group(function () {
+    Route::get('/get', [OrderController::class, 'getOrder']);
+    Route::post('/create', [OrderController::class, 'createOrder']);
 });
