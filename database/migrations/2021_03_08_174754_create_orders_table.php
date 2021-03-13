@@ -24,9 +24,6 @@ class CreateOrdersTable extends Migration
         // 貨物狀態 (預設出貨中)
             $table->foreignId('status_id')->nullable()->default(1)->constrained('status') 
             ->onUpdate('cascade')->onDelete('cascade');
-        // 運送方式
-            $table->foreignId('delivery_id')->nullable()->constrained('delivery') 
-            ->onUpdate('cascade')->onDelete('cascade');
         // 運送地址
             $table->string('address');
         // 商品 id
