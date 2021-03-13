@@ -12,10 +12,9 @@ class Order extends Model
     protected $fillable = [
         'user_id',
         'payment_id',
-        // 'status_id',
-        'delivery_id',
         'address',
-        'product_id', // array ?
+        'product_id',
+        'product_quantity',
     ];
 
 

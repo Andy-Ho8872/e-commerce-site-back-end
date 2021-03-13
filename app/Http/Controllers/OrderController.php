@@ -27,50 +27,59 @@ class OrderController extends Controller
     // 建立訂單
     public function createOrder(Request $request)
     {
-        $cart = Cart::where('user_id', $this->user_id);
+        // 使用者購物車內的商品
+        $carts = Cart::where('user_id', $this->user_id)->get();
 
-        $order = Order::create([
-            'user_id' => $this->user_id,
-            'payment_id' => $request->payment,
-            // 'status_id' => $request->status,  預設 1
-            'delivery_id' => $request->delivery,
-            'address' => $request->address,
-            // new
-            'product_id' => $cart->product_id,
-            'product_quantity' => $cart->product_quantity
-        ]);
+        if ($carts) {
+            foreach ($carts as $cart) {
+                Order::create([
+                    'user_id' => $this->user_id,
+                    'payment_id' => $request->payment,
+                    // 'status_id' => $request->status,  預設 1
+                    'address' => $request->address,
+                    // new
+                    'product_id' => $cart->product_id,
+                    'product_quantity' => $cart->product_quantity
+                ]);
+            }
 
-        $msg = "訂單建立成功";
+            $msg = "訂單建立成功";
 
-        return response()->json(['order' => $order, 'msg' => $msg]);
+            // 訂單建立後刪除購物車內的商品
+            Cart::where('user_id', $this->user_id)->delete();
+        } else {
+            $msg = "購物車內尚無商品，訂單建立失敗";
+        }
+
+        return response()->json(['msg' => $msg]);
     }
     // 撈取訂單
-    public function getOrder() 
+    public function getOrder()
     {
-        // $orders = Order::join('carts', 'orders.user_id', 'carts.user_id')
-        // ->join('products', 'products.id', 'carts.product_id')
-        // ->select(
-        //     'orders.id',
-        //     'orders.user_id',
-        //     'payment_id',
-        //     'status_id',
-        //     'delivery_id',
-        //     'address',
-        //     'product_id',
-        //     'product_quantity',
-        //     'unit_price',
-        //     'discount_rate',
-        //     Order::raw('floor(unit_price * discount_rate) * product_quantity AS Total')
-        //     // 總價...
-        // )
-        // ->where('orders.user_id', $this->user_id)
-        // ->get();
+        $orders = Order::join('products', 'products.id', 'orders.product_id')
+        ->select(
+            'orders.id',
+            'orders.user_id',
+            'payment_id',
+            'status_id',
+            'address',
+            'orders.product_id',
+            'orders.product_quantity',
+            'unit_price',
+            'discount_rate',
+            Order::raw('floor(unit_price * discount_rate) * product_quantity AS Total')
+            // 總價...
+        )
+        ->where('orders.user_id', $this->user_id)
+        ->get();
 
+        return response()->json(['orders' => $orders]);
+
+        // $orders = User::findOrFail($this->user_id)->orders;
         // return response()->json(['orders' => $orders]);
     }
     // 前端表單資料
-    public function getFormData() 
+    public function getFormData()
     {
-
     }
 }
