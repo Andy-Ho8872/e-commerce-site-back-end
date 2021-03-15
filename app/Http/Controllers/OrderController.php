@@ -19,7 +19,7 @@ class OrderController extends Controller
     {
         $this->middleware(function ($request, $next) {
             // 取得已經登入的使用者
-            $this->user_id = Auth::user()->id;
+            $this->user_id = Auth::id();
 
             return $next($request);
         });

@@ -21,7 +21,7 @@ class CartController extends Controller
     {
         $this->middleware(function ($request, $next) {
             // 取得已經登入的使用者
-            $this->user_id = Auth::user()->id;
+            $this->user_id = Auth::id();
             // 欲加入的商品 id
             $this->product_id = $request->route('product_id');
             // 該使用者的購物車
