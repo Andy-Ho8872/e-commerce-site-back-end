@@ -26,14 +26,7 @@ class CreateOrdersTable extends Migration
             ->onUpdate('cascade')->onDelete('cascade');
         // 運送地址
             $table->string('address');
-        // 商品 id
-            $table->foreignId('product_id')->nullable()->constrained('products') 
-            ->onUpdate('cascade')->onDelete('cascade');
-        // 商品數量
-            $table->integer('product_quantity');
-
-            
-        // TimeStamps
+        // 時間戳記
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrentOnUpdate();
             // $table->timestamps();

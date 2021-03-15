@@ -13,8 +13,6 @@ class Order extends Model
         'user_id',
         'payment_id',
         'address',
-        'product_id',
-        'product_quantity',
     ];
 
 
@@ -22,5 +20,11 @@ class Order extends Model
     public function user() 
     {
         return $this->belongsTo(User::class);
+    }
+
+    // 一筆訂單中可以有很多的商品
+    public function items() 
+    {
+        return $this->hasMany(OrderProduct::class);
     }
 }
