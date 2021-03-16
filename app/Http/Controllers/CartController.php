@@ -46,7 +46,7 @@ class CartController extends Controller
                 'imgUrl',
                 'discount_rate', // 折扣率
                 // 總價 (取整數)
-                Cart::raw('floor(unit_price * discount_rate) * product_quantity AS Total')
+                Cart::raw('floor(unit_price * discount_rate) * product_quantity AS total')
             )
             ->where('user_id', $this->user_id)->get();
 
