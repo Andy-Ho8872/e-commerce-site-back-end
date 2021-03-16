@@ -49,7 +49,6 @@ class OrderController extends Controller
             }
             // 回傳訊息
             $msg = "訂單建立成功";
-
             // 訂單建立後刪除購物車內的商品
             $this->carts->delete();
         } else {
@@ -61,28 +60,6 @@ class OrderController extends Controller
     // 撈取訂單
     public function getOrder()
     {
-        // $orders = Order::join('products', 'products.id', 'orders.product_id')
-        // ->select(
-        //     'orders.id',
-        //     'orders.user_id',
-        //     'payment_id',
-        //     'status_id',
-        //     'address',
-        //     'orders.product_id',
-        //     'orders.product_quantity',
-        //     'unit_price',
-        //     'discount_rate',
-        //     Order::raw('floor(unit_price * discount_rate) * product_quantity AS Total')
-        //     // 總價...
-        // )
-        // ->where('orders.user_id', $this->user_id)
-        // ->get();
-
-        // return response()->json(['orders' => $orders]);
-
-        
-        // $orders = User::findOrFail($this->user_id)->orders;
-
         $orders = Order::with(['items'])->where('user_id', $this->user_id)->get();
 
         return response()->json(['orders' => $orders]);
@@ -90,5 +67,6 @@ class OrderController extends Controller
     // 前端表單資料
     public function getFormData()
     {
+
     }
 }
