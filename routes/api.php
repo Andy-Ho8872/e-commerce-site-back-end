@@ -60,8 +60,12 @@ Route::prefix('auth/user/cart')->middleware('auth:sanctum')->group(function () {
     Route::delete('/deleteAll', [CartController::class, 'destroyAll']);
 });
 
-// 建立訂單
+// 訂單
 Route::prefix('auth/user/order')->middleware('auth:sanctum')->group(function () {
+    // 查詢
     Route::get('/get', [OrderController::class, 'getOrder']);
+    // 新增訂單
     Route::post('/create', [OrderController::class, 'createOrder']);
+    // 刪除訂單
+    Route::delete('/{order_id}/delete', [OrderController::class, 'deleteOrder']);
 });

@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Auth;
 // Models
 use App\Models\Cart;
 use App\Models\Order;
-use App\Models\User;
 use App\Models\OrderProduct;
 
 // Requests
@@ -28,7 +27,8 @@ class OrderController extends Controller
             return $next($request);
         });
     }
-    // 建立訂單
+
+// 建立訂單
     public function createOrder(Request $request)
     {
         // 確認購物車內是否有商品
@@ -57,16 +57,36 @@ class OrderController extends Controller
 
         return response()->json(['msg' => $msg]);
     }
-    // 撈取訂單
+
+// 撈取訂單
     public function getOrder()
     {
         $orders = Order::with(['items'])->where('user_id', $this->user_id)->get();
 
         return response()->json(['orders' => $orders]);
     }
-    // 前端表單資料
+
+// 刪除訂單
+    public function deleteOrder($id)
+    {
+        $order = Order::where('user_id', $this->user_id)->where('id', $id);
+
+        // 確認該筆訂單是否存在
+        if ($order->exists()) {
+            // 刪除該筆訂單
+            $order->delete();
+            // 提示訊息
+            $msg = "您刪除了一筆訂單，訂單編號為${id}";
+        } else {
+            $msg = "該筆訂單不存在，操作失敗。";
+        }
+
+        return response()->json(['msg' => $msg]);
+    }
+
+// 前端表單資料
     public function getFormData()
     {
-
+        
     }
 }
