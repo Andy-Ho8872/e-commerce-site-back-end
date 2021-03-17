@@ -25,7 +25,7 @@ class Order extends Model
     // 一筆訂單中可以有很多的商品
     public function items()
     {
-        return $this->belongsToMany(Product::class, 'order_products')
+        return $this->belongsToMany(Product::class, 'order_product')
         ->select(
             'title',
             'unit_price',
