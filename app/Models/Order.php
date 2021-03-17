@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 class Order extends Model
 {
@@ -26,18 +25,25 @@ class Order extends Model
     // 一筆訂單中可以有很多的商品
     public function items()
     {
-        return $this->hasMany(OrderProduct::class)->join('products', 'order_products.product_id', 'products.id')->select(
-            // ----------------------------order_products table
-            'order_id',
-            'product_id',
-            'product_quantity',
-            // ----------------------------products table
+        return $this->belongsToMany(Product::class, 'order_products')
+        ->select(
             'title',
             'unit_price',
-            'imgUrl',
             'discount_rate',
-            // 總價
-            OrderProduct::raw('floor(unit_price * discount_rate) * product_quantity AS total')
-        );
+            Order::raw('floor(unit_price * discount_rate) * product_quantity AS pivot_total')
+        )
+        ->withPivot(['product_quantity']);
     }
 }
+
+// 原生 SQL 語法------------------------------------------------------------------------------------
+// SELECT `title`, `unit_price`, `discount_rate`, 
+// floor(unit_price * discount_rate) * product_quantity AS total, 
+// `order_products`.`order_id` as `pivot_order_id`, 
+// `order_products`.`product_id` as `pivot_product_id`, 
+// `order_products`.`product_quantity` as `pivot_product_quantity` 
+
+// FROM `products` INNER JOIN `order_products` 
+// ON `products`.`id` = `order_products`.`product_id` 
+// WHERE `order_products`.`order_id` in (SELECT `id` FROM `orders` WHERE `user_id` = `user_id`)
+// 原生 SQL 語法------------------------------------------------------------------------------------
