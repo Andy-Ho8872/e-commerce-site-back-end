@@ -16,11 +16,10 @@ class CreateProductTagTable extends Migration
         // 第三方表格 (儲存產品與標籤的關聯)
         Schema::create('product_tag', function (Blueprint $table) {
             $table->id();
-            $table->integer('product_id')->nullable();
-            $table->integer('tag_id')->nullable();
-            // $table->primary(['product_id', 'tag_id']);
-            // $table->timestamp('created_at')->useCurrent();
-            // $table->timestamp('updated_at')->useCurrentOnUpdate();
+            $table->foreignId('product_id')->nullable()->constrained('products')
+            ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('tag_id')->nullable()->constrained('tags')
+            ->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }
