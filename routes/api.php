@@ -17,10 +17,12 @@ Route::prefix('user')->group(function () {
     Route::post('/register', [UserController::class, 'register']);
     // 登入使用者
     Route::post('/login', [UserController::class, 'login']);
+});
+Route::prefix('auth/user')->middleware('auth:sanctum')->group(function () {
     // 登出使用者
-    Route::get('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
+    Route::get('/logout', [UserController::class, 'logout']);
     // 取得已登入使用者
-    Route::get('/getUser', [UserController::class, 'getCurrentUser'])->middleware('auth:sanctum');
+    Route::get('/getUser', [UserController::class, 'getCurrentUser']);
 });
 
 // 商品
@@ -62,8 +64,8 @@ Route::prefix('auth/user/cart')->middleware('auth:sanctum')->group(function () {
 
 // 訂單
 Route::prefix('auth/user/order')->middleware('auth:sanctum')->group(function () {
-    // 查詢
-    Route::get('/get', [OrderController::class, 'getOrder']);
+    // 使用者的訂單
+    Route::get('/', [OrderController::class, 'getOrder']);
     // 新增訂單
     Route::post('/create', [OrderController::class, 'createOrder']);
     // 刪除訂單
