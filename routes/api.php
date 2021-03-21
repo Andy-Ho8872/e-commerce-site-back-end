@@ -64,8 +64,10 @@ Route::prefix('auth/user/cart')->middleware('auth:sanctum')->group(function () {
 
 // 訂單
 Route::prefix('auth/user/order')->middleware('auth:sanctum')->group(function () {
-    // 使用者的訂單
-    Route::get('/', [OrderController::class, 'getOrder']);
+    // 使用者的所有訂單
+    Route::get('/', [OrderController::class, 'getAllOrders']);
+    // 使用者的單筆訂單
+    Route::get('/{order_id}', [OrderController::class, 'getSingleOrder']);
     // 新增訂單
     Route::post('/create', [OrderController::class, 'createOrder']);
     // 刪除訂單

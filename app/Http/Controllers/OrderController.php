@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    private $user_id, $carts;
+    private $user_id, $carts, $user_orders;
 
     public function __construct()
     {
@@ -24,6 +24,11 @@ class OrderController extends Controller
             $this->user_id = Auth::id();
             // 使用者的購物車
             $this->carts = Cart::where('user_id', $this->user_id);
+            // 使用者的訂單
+            $this->user_orders = Order::with(['items'])
+                // 該筆訂單所購買的商品個數
+                ->withCount('items')
+                ->where('user_id', $this->user_id);
 
             return $next($request);
         });
@@ -60,29 +65,33 @@ class OrderController extends Controller
     }
 
 // 撈取訂單
-    public function getOrder()
+    public function getAllOrders()
     {
-        $orders = Order::with(['items'])
-            // 該筆訂單所購買的商品個數
-            ->withCount('items')
-            ->where('user_id', $this->user_id)->get()
-            // 取得 Model 中所定義的 attribute
-            ->append('sumSubtotal');
+        $orders = $this->user_orders->get()
+        ->append('sumSubtotal');
 
         return response()->json(['orders' => $orders]);
     }
 
-// 刪除訂單
-    public function deleteOrder($id)
+    public function getSingleOrder($order_id)
     {
-        $order = Order::where('user_id', $this->user_id)->where('id', $id);
+        $order = $this->user_orders->where('id', $order_id)->get()
+        ->append('sumSubtotal');
+
+        return response()->json(['order' => $order]);
+    }
+
+// 刪除訂單
+    public function deleteOrder($order_id)
+    {
+        $order = Order::where('user_id', $this->user_id)->where('id', $order_id);
 
         // 確認該筆訂單是否存在
         if ($order->exists()) {
             // 刪除該筆訂單
             $order->delete();
             // 提示訊息
-            $msg = "您刪除了一筆訂單，訂單編號為${id}";
+            $msg = "您刪除了一筆訂單，訂單編號為${order_id}";
         } else {
             $msg = "該筆訂單不存在，操作失敗。";
         }
