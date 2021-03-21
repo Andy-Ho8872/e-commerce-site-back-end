@@ -29,24 +29,25 @@ class Order extends Model
             'title',
             'unit_price',
             'discount_rate',
-            // 將 subtotal 放到 pivot 欄位下
-            Order::raw('floor(unit_price * discount_rate) * product_quantity AS pivot_subtotal')
+            'imgUrl',
+            Order::raw('floor(unit_price * discount_rate) * product_quantity AS subtotal')
         )->withPivot('product_quantity');
     }
 
     // 計算訂單總金額
     public function getSumSubTotalAttribute()
     {
-        $orderItems = $this->items;
+        // 寫法 一
+        return $this->items()->get()->sum('subtotal');
 
-        $sum = 0;
-
-        foreach ($orderItems as $item) {
-            // 取整數
-            $sum += floor($item->unit_price * $item->pivot->product_quantity * $item->discount_rate);
-        }
-
-        return $sum;
+        // 寫法 二
+        // $orderItems = $this->items->get();
+        // $sum = 0;
+        // foreach ($orderItems as $item) {
+        //     // 取整數
+        //     $sum += floor($item->unit_price * $item->pivot->product_quantity * $item->discount_rate);
+        // }
+        // return $sum;
     }
 }
 
