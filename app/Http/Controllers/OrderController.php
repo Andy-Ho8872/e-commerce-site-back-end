@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderProduct;
+use App\Models\User;
 
 // Requests
 use Illuminate\Http\Request;
@@ -61,7 +62,12 @@ class OrderController extends Controller
 // 撈取訂單
     public function getOrder()
     {
-        $orders = Order::with(['items'])->where('user_id', $this->user_id)->get();
+        $orders = Order::with(['items'])
+            // 該筆訂單所購買的商品個數
+            ->withCount('items')
+            ->where('user_id', $this->user_id)->get()
+            // 取得 Model 中所定義的 attribute
+            ->append('sumSubtotal');
 
         return response()->json(['orders' => $orders]);
     }

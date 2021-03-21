@@ -15,7 +15,6 @@ class Order extends Model
         'address',
     ];
 
-
     // 屬於使用者的訂單
     public function user()
     {
@@ -30,9 +29,24 @@ class Order extends Model
             'title',
             'unit_price',
             'discount_rate',
-            Order::raw('floor(unit_price * discount_rate) * product_quantity AS pivot_total')
-        )
-        ->withPivot(['product_quantity']);
+            // 將 subtotal 放到 pivot 欄位下
+            Order::raw('floor(unit_price * discount_rate) * product_quantity AS pivot_subtotal')
+        )->withPivot('product_quantity');
+    }
+
+    // 計算訂單總金額
+    public function getSumSubTotalAttribute()
+    {
+        $orderItems = $this->items;
+
+        $sum = 0;
+
+        foreach ($orderItems as $item) {
+            // 取整數
+            $sum += floor($item->unit_price * $item->pivot->product_quantity * $item->discount_rate);
+        }
+
+        return $sum;
     }
 }
 
