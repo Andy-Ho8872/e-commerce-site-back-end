@@ -31,7 +31,7 @@ class Order extends Model
             'discount_rate',
             'imgUrl',
             Order::raw('floor(unit_price * discount_rate) * product_quantity AS subtotal')
-        )->withPivot('product_quantity');
+        )->withPivot('product_quantity')->orderBy('pivot_product_id');
     }
 
     // 計算訂單總金額

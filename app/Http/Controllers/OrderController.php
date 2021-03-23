@@ -65,6 +65,7 @@ class OrderController extends Controller
     }
 
 // 撈取訂單
+    // 所有訂單
     public function getAllOrders()
     {
         $orders = $this->user_orders->get()
@@ -72,10 +73,10 @@ class OrderController extends Controller
 
         return response()->json(['orders' => $orders]);
     }
-
+    // 單筆訂單
     public function getSingleOrder($order_id)
     {
-        $order = $this->user_orders->where('id', $order_id)->get()
+        $order = $this->user_orders->findOrFail($order_id)
         ->append('sumSubtotal');
 
         return response()->json(['order' => $order]);
