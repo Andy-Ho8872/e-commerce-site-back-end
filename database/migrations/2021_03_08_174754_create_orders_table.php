@@ -18,8 +18,8 @@ class CreateOrdersTable extends Migration
         // 使用者
             $table->foreignId('user_id')->nullable()->constrained('users') 
             ->onUpdate('cascade')->onDelete('cascade');
-        // 付款方式
-            $table->foreignId('payment_id')->nullable()->constrained('payments') 
+        // 付款方式 (預設現金付款)
+            $table->foreignId('payment_id')->nullable()->default(1)->constrained('payments') 
             ->onUpdate('cascade')->onDelete('cascade');
         // 貨物狀態 (預設出貨中)
             $table->foreignId('status_id')->nullable()->default(1)->constrained('status') 
