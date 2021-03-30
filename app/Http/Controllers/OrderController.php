@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+// Facades
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 // Models
 use App\Models\Cart;
@@ -42,7 +44,7 @@ class OrderController extends Controller
             // 建立訂單
             $order = Order::create([
                 'user_id' => $this->user_id,
-                'payment_id' => $request->payment,
+                'payment_id' => $request->payment_id,
                 'address' => $request->address,
             ]);
             // 將資料寫入到 order_products 表格裡面做紀錄
@@ -103,6 +105,8 @@ class OrderController extends Controller
 // 前端表單資料
     public function getFormData()
     {
-        
+       $payments = DB::table('payments')->get();
+
+       return response()->json(['payments' => $payments]);
     }
 }

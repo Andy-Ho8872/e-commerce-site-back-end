@@ -64,6 +64,8 @@ Route::prefix('auth/user/cart')->middleware('auth:sanctum')->group(function () {
 
 // 訂單
 Route::prefix('auth/user/order')->middleware('auth:sanctum')->group(function () {
+    // 給前端的表單資訊
+    Route::get('/getFormData', [OrderController::class, 'getFormData']);
     // 使用者的所有訂單
     Route::get('/', [OrderController::class, 'getAllOrders']);
     // 使用者的單筆訂單
