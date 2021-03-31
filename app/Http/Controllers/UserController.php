@@ -28,9 +28,9 @@ class UserController extends Controller
     // 取得特定使用者
     public function getCurrentUser()
     {
-        $user_id = Auth::user()->id;
+        $user_id = Auth::id();
 
-        $user = User::findOrFail($user_id); 
+        $user = User::with('orders')->findOrFail($user_id); 
 
         // 回傳資料庫中的使用者資訊
         return response()->json(['user' => $user], 200);
