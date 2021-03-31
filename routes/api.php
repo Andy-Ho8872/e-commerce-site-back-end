@@ -11,7 +11,7 @@ use App\Http\Controllers\OrderController;
 //'auth:api'  (default)
 
 // 商品
-Route::prefix('products')->group(function () {
+Route::prefix('v1/products')->group(function () {
     // 所有商品
     Route::get('/', [ProductController::class, 'index']);
     // 首頁的產品 (5個)
@@ -29,7 +29,7 @@ Route::prefix('products')->group(function () {
 });
 
 // 使用者
-Route::prefix('user')->group(function () {
+Route::prefix('v1/user')->group(function () {
     // 註冊使用者
     Route::post('/register', [UserController::class, 'register']);
     // 登入使用者
@@ -37,7 +37,7 @@ Route::prefix('user')->group(function () {
 });
 
 // ------------------------------以下操作必須包含 Token------------------------------ //
-Route::prefix('auth/user')->middleware('auth:sanctum')->group(function () {
+Route::prefix('v1/auth/user')->middleware('auth:sanctum')->group(function () {
     // ------------------------------使用者------------------------------ //
         // 登出
     Route::get('/logout', [UserController::class, 'logout']);
