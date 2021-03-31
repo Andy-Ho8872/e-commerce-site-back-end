@@ -10,21 +10,6 @@ use App\Http\Controllers\OrderController;
 
 //'auth:api'  (default)
 
-
-// 使用者
-Route::prefix('user')->group(function () {
-    // 註冊使用者
-    Route::post('/register', [UserController::class, 'register']);
-    // 登入使用者
-    Route::post('/login', [UserController::class, 'login']);
-});
-Route::prefix('auth/user')->middleware('auth:sanctum')->group(function () {
-    // 登出使用者
-    Route::get('/logout', [UserController::class, 'logout']);
-    // 取得已登入使用者
-    Route::get('/getUser', [UserController::class, 'getCurrentUser']);
-});
-
 // 商品
 Route::prefix('products')->group(function () {
     // 所有商品
@@ -43,35 +28,60 @@ Route::prefix('products')->group(function () {
     Route::get('/search/{search}', [ProductController::class, 'search']);
 });
 
-// 購物車 (要有 Token 才能進行此處操作)
-Route::prefix('auth/user/cart')->middleware('auth:sanctum')->group(function () {
-    // 使用者的購物車
-    Route::get('/', [CartController::class, 'show']);
-    // 商品加入購物車
-    Route::get('/{product_id}/create', [CartController::class, 'create']);
-    Route::post('/{product_id}/create', [CartController::class, 'create']);
-    // 更新購物車
-    Route::post('/{product_id}/update', [CartController::class, 'update']);
-    // 數量 + 1 
-    Route::get('/{product_id}/increseByOne', [CartController::class, 'increseByOne']);
-    // 數量 - 1 
-    Route::get('/{product_id}/decreseByOne', [CartController::class, 'decreseByOne']);
-    // 移除購物車
-    Route::delete('/{product_id}/delete', [CartController::class, 'destroy']);
-    // 清空購物車
-    Route::delete('/deleteAll', [CartController::class, 'destroyAll']);
+// 使用者
+Route::prefix('user')->group(function () {
+    // 註冊使用者
+    Route::post('/register', [UserController::class, 'register']);
+    // 登入使用者
+    Route::post('/login', [UserController::class, 'login']);
 });
 
-// 訂單
-Route::prefix('auth/user/order')->middleware('auth:sanctum')->group(function () {
-    // 給前端的表單資訊
-    Route::get('/getFormData', [OrderController::class, 'getFormData']);
-    // 使用者的所有訂單
-    Route::get('/', [OrderController::class, 'getAllOrders']);
-    // 使用者的單筆訂單
-    Route::get('/{order_id}', [OrderController::class, 'getSingleOrder']);
-    // 新增訂單
-    Route::post('/create', [OrderController::class, 'createOrder']);
-    // 刪除訂單
-    Route::delete('/{order_id}/delete', [OrderController::class, 'deleteOrder']);
+// ------------------------------以下操作必須包含 Token------------------------------ //
+Route::prefix('auth/user')->middleware('auth:sanctum')->group(function () {
+    // ------------------------------使用者------------------------------ //
+        // 登出
+    Route::get('/logout', [UserController::class, 'logout']);
+        // 取得登入的使用者
+    Route::get('/getUser', [UserController::class, 'getCurrentUser']);
+    // ------------------------------使用者------------------------------ //
+    
+    // ------------------------------購物車------------------------------ //
+    // 讀取
+        // 使用者的購物車
+    Route::get('/cart', [CartController::class, 'show']);
+    // 新增
+        // 加入購物車
+    Route::get('/cart/{product_id}/create', [CartController::class, 'create']);
+        // 加入購物車(包含數量)
+    Route::post('/cart/{product_id}/create', [CartController::class, 'create']);
+    // 修改
+        // 變更數量
+    Route::post('/cart/{product_id}/update', [CartController::class, 'update']);
+        // 數量 + 1 
+    Route::get('/cart/{product_id}/increseByOne', [CartController::class, 'increseByOne']);
+        // 數量 - 1 
+    Route::get('/cart/{product_id}/decreseByOne', [CartController::class, 'decreseByOne']);
+    // 刪除
+        // 移除購物車內的商品(單項)
+    Route::delete('/cart/{product_id}/delete', [CartController::class, 'destroy']);
+        // 清空購物車
+    Route::delete('/cart/deleteAll', [CartController::class, 'destroyAll']);
+    // ------------------------------購物車------------------------------ //
+    
+    
+    // ------------------------------訂 單------------------------------ //
+    // 讀取
+        // 給前端的表單資訊
+    Route::get('/order/getFormData', [OrderController::class, 'getFormData']);
+        // 使用者的所有訂單
+    Route::get('/order/', [OrderController::class, 'getAllOrders']);
+        // 使用者的單筆訂單
+    Route::get('/order/{order_id}', [OrderController::class, 'getSingleOrder']);
+    // 新增
+        // 新增訂單
+    Route::post('/order/create', [OrderController::class, 'createOrder']);
+    // 刪除
+        // 刪除訂單
+    Route::delete('/order/{order_id}/delete', [OrderController::class, 'deleteOrder']);
+    // ------------------------------訂 單------------------------------ //
 });
