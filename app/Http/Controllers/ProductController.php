@@ -35,7 +35,7 @@ class ProductController extends Controller
     public function carousel()
     {
         $products = Cache::remember('carousel', 60 * 3, function () {
-            return Product::with('tags')->take(10)->get();
+            return Product::with('tags')->orderBy('rating', 'desc')->take(10)->get();
         });
         return response()->json(['products' => $products], 200);
     }
