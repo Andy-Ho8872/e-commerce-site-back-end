@@ -13,6 +13,7 @@ use App\Models\OrderProduct;
 use App\Models\User;
 
 // Requests
+use App\Http\Requests\MakeOrderRequest;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -37,7 +38,7 @@ class OrderController extends Controller
     }
 
 // 建立訂單
-    public function createOrder(Request $request)
+    public function createOrder(MakeOrderRequest $request)
     {
         // 確認購物車內是否有商品
         if ($this->carts->exists()) {
