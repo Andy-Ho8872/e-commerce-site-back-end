@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 // Models 
 use App\Models\Product;
 use App\Models\Cart;
-use App\Models\User;
+
 
 // 驗證規則
 use App\Http\Requests\CartRequest;
@@ -63,37 +63,18 @@ class CartController extends Controller
 
         // 如果購物車內沒有該商品則寫入   
         if (!$cart->exists()) {
-            // 有輸入商品數量
-            if ($request->product_quantity) {
-                Cart::create([
-                    'user_id' => $this->user_id,
-                    'product_id' => $this->product_id,
-                    'product_quantity' => $request->product_quantity
-                ]);
-            }
-            // 沒輸入商品數量
-            else {
-                Cart::create([
-                    'user_id' => $this->user_id,
-                    'product_id' => $this->product_id,
-                    'product_quantity' => 1 // 預設 1 個
-                ]);
-            }
+            Cart::create([
+                'user_id' => $this->user_id,
+                'product_id' => $this->product_id,
+                'product_quantity' => $request->input('product_quantity', 1) // 未輸入數量的話 預設值 1
+            ]);
             // 回傳訊息
             $msg = "您新增了商品至購物車";
         }
         // 如果購物車內已經存在該商品
         else {
-            // 有輸入商品數量
-            if ($request->product_quantity) {
-                $cart->increment('product_quantity', $request->product_quantity);
-                $msg = "新增的商品已重複，數量增加";
-            }
-            // 沒輸入商品數量
-            else {
-                $cart->increment('product_quantity', 1); // 重複點擊(未指定數量) 則增加 1
-                $msg = "商品數量 + 1 ";
-            }
+            $cart->increment('product_quantity', $request->input('product_quantity', 1)); 
+            $msg = "新增的商品已重複，數量增加";
         }
 
         $item = Product::select('id', 'title', 'unit_price')->findOrFail($this->product_id);
@@ -104,13 +85,17 @@ class CartController extends Controller
     // 修改購物車內商品數量
     public function update(CartRequest $request)
     {
-        $this->itemInCart->update([
-            'product_quantity' => $request->product_quantity
-        ]);
-
-        // 回傳訊息
-        $msg = "您更改了商品數量，請查看";
-
+        if ($request->has('product_quantity')) {
+            $this->itemInCart->update([
+                'product_quantity' => $request->input('product_quantity')
+            ]);
+            // 回傳訊息
+            $msg = "您更改了商品數量，請查看";
+        }
+        else {
+            $msg = "您未輸入數量，請輸入數量更改";
+        }
+    
         return response()->json(['msg' => $msg], 201);
     }
     // 數量 + 1
