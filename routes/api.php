@@ -74,7 +74,7 @@ Route::prefix('v1/auth/user')->middleware('auth:sanctum')->group(function () {
         // 給前端的表單資訊
     Route::get('/order/getFormData', [OrderController::class, 'getFormData']);
         // 使用者的所有訂單
-    Route::get('/order/', [OrderController::class, 'getAllOrders']);
+    Route::get('/order', [OrderController::class, 'getAllOrders']);
         // 使用者的單筆訂單
     Route::get('/order/{order_id}', [OrderController::class, 'getSingleOrder']);
     // 新增
