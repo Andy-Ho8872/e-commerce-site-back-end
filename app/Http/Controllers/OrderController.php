@@ -74,11 +74,7 @@ class OrderController extends Controller
         $orders = $this->user_orders->get()
             ->append('sumSubtotal');
 
-        //* 付款與訂單欄位
-        $payments = DB::table('payments')->get();
-        $status = DB::table("status")->get();
-
-        return response()->json(['orders' => $orders, 'payments' => $payments, 'status' => $status]);
+        return response()->json(['orders' => $orders]);
     }
     //? 單筆訂單
     public function getSingleOrder($order_id)
@@ -112,7 +108,8 @@ class OrderController extends Controller
     public function getFormData()
     {
         $payments = DB::table('payments')->get();
+        $status = DB::table("status")->get();
 
-        return response()->json(['payments' => $payments], 200);
+        return response()->json(['payments' => $payments, 'status' => $status], 200);
     }
 }
