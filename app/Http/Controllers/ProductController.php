@@ -17,7 +17,9 @@ class ProductController extends Controller
     public function index()
     {
         // (預載入查詢指定的關聯) 
-        $products = Product::with('tags')->get();
+        $products = Product::query()
+            ->with('tags')
+            ->get();
 
         // 回傳結果
         return response()->json(['products' => $products], 200);
@@ -26,7 +28,10 @@ class ProductController extends Controller
     public function indexPageProducts()
     {
         $products = Cache::remember('index', 60 * 3, function () {
-            return Product::with('tags')->take(5)->get();
+            return Product::query()
+                ->with('tags')
+                ->take(5)
+                ->get();
         });
         return response()->json(['products' => $products], 200);
     }
@@ -35,7 +40,11 @@ class ProductController extends Controller
     public function carousel()
     {
         $products = Cache::remember('carousel', 60 * 3, function () {
-            return Product::with('tags')->orderBy('rating', 'desc')->take(10)->get();
+            return Product::query()
+                ->with('tags')
+                ->orderBy('rating', 'desc')
+                ->take(10)
+                ->get();
         });
         return response()->json(['products' => $products], 200);
     }
@@ -47,7 +56,9 @@ class ProductController extends Controller
         $currentPage = request()->get('page', 1);
 
         $products = Cache::remember("pagination-${currentPage}", 60 * 2, function () {
-            return Product::with('tags')->paginate(10);
+            return Product::query()
+                ->with('tags')
+                ->paginate(10);
         });
 
         return response()->json(['products' => $products], 200);
@@ -56,7 +67,9 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = Cache::remember("product-${id}", 60 * 2, function () use ($id) {
-            return Product::with('tags')->findOrFail($id);
+            return Product::query()
+                ->with('tags')
+                ->findOrFail($id);
         });
 
         return response()->json(['product' => $product], 200);
@@ -65,7 +78,9 @@ class ProductController extends Controller
     public function showByTag($id)
     {
         $tag = Cache::remember("tag-${id}", 60 * 2, function () use ($id) {
-            return Tag::with('products')->findOrFail($id);
+            return Tag::query()
+                ->with('products')
+                ->findOrFail($id);
         });
 
         return response()->json(['tag' => $tag], 200);
@@ -74,7 +89,8 @@ class ProductController extends Controller
     public function search($search)
     {
         $products = Cache::remember("searchingFor-${search}", 60 * 2, function () use ($search) {
-            return Product::with('tags')
+            return Product::query()
+                ->with('tags')
                 ->where('title', 'LIKE', "%{$search}%")
                 ->orwhereHas('tags', function ($query) use ($search) {
                     $query->where('title', 'LIKE', "%{$search}%");
