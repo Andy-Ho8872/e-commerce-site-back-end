@@ -30,7 +30,9 @@ class UserController extends Controller
     {
         $user_id = Auth::id();
 
-        $user = User::with('orders')->findOrFail($user_id); 
+        $user = User::query()
+        ->with('orders')
+        ->findOrFail($user_id); 
 
         // 回傳資料庫中的使用者資訊
         return response()->json(['user' => $user], 200);
@@ -57,7 +59,9 @@ class UserController extends Controller
     public function login(LoginRequest $request) {
         
         // 取得 email 相符的使用者 (第一筆)
-        $user = User::where('email', $request->email)->first(); 
+        $user = User::query()
+        ->where('email', $request->email)
+        ->first(); 
 
         // 驗證使用者的 HASH 過後的密碼是否相符
         if (! $user || ! Hash::check($request->password, $user->password)) {
