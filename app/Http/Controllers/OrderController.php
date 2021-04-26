@@ -105,7 +105,7 @@ class OrderController extends Controller
     }
 
 //* 前端表單資料
-    public function getFormData()
+    public function getTableColumns()
     {
         $payments = DB::table('payments')->get();
         $status = DB::table("status")->get();
