@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OrderController;
 
 //'auth:api'  (default)
@@ -84,4 +85,11 @@ Route::prefix('v1/auth/user')->middleware('auth:sanctum')->group(function () {
         // 刪除訂單
     Route::delete('/order/{order_id}/delete', [OrderController::class, 'deleteOrder']);
     // ------------------------------訂 單------------------------------ //
+    
+    // ------------------------------通 知------------------------------ //
+    Route::get('/notification', [NotificationController::class, 'getHasReadNotification']);
+    Route::get('/notification/unread', [NotificationController::class, 'getUnReadNotification']);
+    Route::post('/notification/markAsRead', [NotificationController::class, 'markNotification']);
+    Route::get('/notification/markAllAsRead', [NotificationController::class, 'markAllNotification']);
+    Route::delete('/notification/deleteAll', [NotificationController::class, 'deleteAllNotification']);
 });
