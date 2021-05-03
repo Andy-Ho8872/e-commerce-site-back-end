@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-// Facades
+//* Facades
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -10,9 +10,14 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderProduct;
+use App\Models\User;
 
 //* Requests
 use App\Http\Requests\MakeOrderRequest;
+
+//* Notification
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\OrderCreated;
 
 class OrderController extends Controller
 {
@@ -24,6 +29,7 @@ class OrderController extends Controller
         $this->middleware(function ($request, $next) {
             //* 取得已經登入的使用者
             $this->user_id = Auth::id();
+            $this->user = User::find($this->user_id);
             //* 使用者的購物車
             $this->carts = Cart::where('user_id', $this->user_id);
             //* 使用者的訂單
@@ -36,6 +42,17 @@ class OrderController extends Controller
         });
     }
 
+//* 推送通知
+    public function notifyWhenOrderCreated($order)
+    {
+        $user = User::find($this->user_id);
+        $details = [
+            'order_id' => $order->id,
+            'payment_id' => $order->payment_id,
+        ];
+        Notification::send($user, new OrderCreated($details));
+    }
+    
 //* 建立訂單
     public function createOrder(MakeOrderRequest $request)
     {
@@ -58,12 +75,13 @@ class OrderController extends Controller
             // 回傳訊息
             $msg = "訂單建立成功";
             //* 訂單建立後刪除購物車內的商品
-            $this->carts->delete();
+            $this->carts->delete();   
+            //* 推送通知
+            $this->notifyWhenOrderCreated($order);
         } else {
             $msg = "購物車內沒有商品，訂單建立失敗。";
             return response()->json(['msg' => $msg], 400);
         }
-
         return response()->json(['msg' => $msg], 201);
     }
 
@@ -88,7 +106,9 @@ class OrderController extends Controller
 //* 刪除訂單
     public function deleteOrder($order_id)
     {
-        $order = Order::where('user_id', $this->user_id)->where('id', $order_id);
+        $order = Order::query()
+        ->where('user_id', $this->user_id)
+        ->where('id', $order_id);
 
         //* 確認該筆訂單是否存在
         if ($order->exists()) {
