@@ -28,13 +28,13 @@ class NotificationController extends Controller
     }
 
     //* 獲取通知
-    public function getHasReadNotification()
+    public function getAllNotifications()
     {
         $notifications = $this->user->notifications;
 
         return response()->json(['notifications' => $notifications]);
     }
-    public function getUnReadNotification()
+    public function getUnReadNotifications()
     {
         $unReadNotifications = $this->user->unreadNotifications;
 
@@ -55,7 +55,7 @@ class NotificationController extends Controller
         return response()->json(['msg' => $msg], 200);
     }
         //* 所有通知
-    public function markAllNotification()
+    public function markAllNotifications()
     {
         $this->user->unreadNotifications->markAsRead();
         $msg = "已經將所有通知標示為已讀";
@@ -64,7 +64,7 @@ class NotificationController extends Controller
     }
 
     //* 刪除所有通知
-    public function deleteAllNotification()
+    public function deleteAllNotifications()
     {
         $this->user->notifications()->delete();
         $msg = "已經清除所有通知";
