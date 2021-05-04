@@ -101,5 +101,5 @@ Route::prefix('v1/auth/user')->middleware('auth:sanctum')->group(function () {
     Route::get('/notifications/markAllAsRead', [NotificationController::class, 'markAllNotifications']);
     //* 刪除
         //? 所有通知
-    Route::delete('/notifications/deleteAll', [NotificationController::class, 'deleteAllNotification']);
+    Route::delete('/notifications/deleteAll', [NotificationController::class, 'deleteAllNotifications']);
 });
