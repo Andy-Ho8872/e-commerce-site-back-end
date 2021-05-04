@@ -46,6 +46,7 @@ Route::prefix('v1/auth/user')->middleware('auth:sanctum')->group(function () {
     Route::get('/getUser', [UserController::class, 'getCurrentUser']);
     // ------------------------------使用者------------------------------ //
     
+
     // ------------------------------購物車------------------------------ //
     //* 讀取
         //? 使用者的購物車
@@ -85,6 +86,7 @@ Route::prefix('v1/auth/user')->middleware('auth:sanctum')->group(function () {
         //? 刪除訂單
     Route::delete('/order/{order_id}/delete', [OrderController::class, 'deleteOrder']);
     // ------------------------------訂 單------------------------------ //
+    
     
     // ------------------------------通 知------------------------------ //
     //* 讀取
