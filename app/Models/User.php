@@ -6,12 +6,13 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens; // 使用 API Token
+use Laravel\Sanctum\HasApiTokens; //* 使用 API Token
 
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
-    use HasApiTokens; // 使用 API Token
+    use HasApiTokens; //* 使用 API Token
+    use Traits\SerializeDate; //* 修正時間格式
 
     /**
      * The attributes that are mass assignable.

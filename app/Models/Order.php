@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     use HasFactory;
+    use Traits\SerializeDate; //* 修正時間格式
 
     protected $fillable = [
         'user_id',
