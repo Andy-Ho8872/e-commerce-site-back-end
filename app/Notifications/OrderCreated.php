@@ -69,7 +69,7 @@ class OrderCreated extends Notification
         return [
             'order_id' => $this->details['order_id'],
             'payment_id' => $this->details['payment_id'],
-            'created_at' => Carbon::now('Asia/Taipei')
+            'created_at' => Carbon::now('Asia/Taipei')->format('Y-m-d H:i:s') //* 修正時間格式
         ];
     }
 }
