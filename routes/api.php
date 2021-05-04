@@ -91,15 +91,15 @@ Route::prefix('v1/auth/user')->middleware('auth:sanctum')->group(function () {
     // ------------------------------通 知------------------------------ //
     //* 讀取
         //? 所有通知
-    Route::get('/notification', [NotificationController::class, 'getAllNotifications']);
+    Route::get('/notifications', [NotificationController::class, 'getAllNotifications']);
         //? 未讀取的通知
-    Route::get('/notification/unread', [NotificationController::class, 'getUnReadNotifications']);
+    Route::get('/notifications/unread', [NotificationController::class, 'getUnReadNotifications']);
     //* 標示為已讀
         //? 單一通知
-        Route::post('/notification/markAsRead', [NotificationController::class, 'markNotification']);
+    Route::post('/notifications/markAsRead', [NotificationController::class, 'markNotification']);
         //? 所有通知
-    Route::get('/notification/markAllAsRead', [NotificationController::class, 'markAllNotifications']);
+    Route::get('/notifications/markAllAsRead', [NotificationController::class, 'markAllNotifications']);
     //* 刪除
         //? 所有通知
-    Route::delete('/notification/deleteAll', [NotificationController::class, 'deleteAllNotification']);
+    Route::delete('/notifications/deleteAll', [NotificationController::class, 'deleteAllNotification']);
 });
