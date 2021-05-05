@@ -92,7 +92,7 @@ Route::prefix('v1/auth/user')->middleware('auth:sanctum')->group(function () {
     //* 讀取
         //? 所有通知
     Route::get('/notifications', [NotificationController::class, 'getAllNotifications']);
-        //? 未讀取的通知
+        //! 未讀取的通知 (暫時不用)
     Route::get('/notifications/unread', [NotificationController::class, 'getUnReadNotifications']);
     //* 標示為已讀
         //? 單一通知
@@ -102,4 +102,5 @@ Route::prefix('v1/auth/user')->middleware('auth:sanctum')->group(function () {
     //* 刪除
         //? 所有通知
     Route::delete('/notifications/deleteAll', [NotificationController::class, 'deleteAllNotifications']);
+    // ------------------------------通 知------------------------------ //
 });
