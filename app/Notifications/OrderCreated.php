@@ -67,6 +67,7 @@ class OrderCreated extends Notification
     public function toDatabase($notifiable)
     {
         return [
+            'title' => '訂購成功，商品出貨中。',
             'order_id' => $this->details['order_id'],
             'payment_id' => $this->details['payment_id'],
             'created_at' => Carbon::now('Asia/Taipei')->format('Y-m-d H:i:s') //* 修正時間格式
