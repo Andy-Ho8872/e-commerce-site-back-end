@@ -17,29 +17,25 @@ return [
 
     //'paths' => ['api/*'], // default
 
-    // paths 這邊可以設定想要的 後端URL 來進行跨網域存取
+    //* 這邊可以設定想要的 後端URL 來進行跨網域存取
     'paths' => ['api/*', 'sanctum/csrf-cookie'], // new
 
     'allowed_methods' => ['*'],
 
     //'allowed_origins' => ['*'], // default
 
-    // 設定前端的 URL 可以進行跨網域存取
+    //* 設定前端的 URL 可以進行跨網域(CORS)存取
     'allowed_origins' => ['http://localhost:3000'], // new
 
     'allowed_origins_patterns' => [],
 
     'allowed_headers' => ['*'], // default
 
-    //'allowed_headers' => ['Content-Type'], // new
-
     'exposed_headers' => [],
 
     'max_age' => 0,
 
-    // 'Access-Control-Allow-Origin: http://localhost:3000/' // new
     //'supports_credentials' => false, // default 
-
     'supports_credentials' => true, // new
 
 ];
