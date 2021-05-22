@@ -74,17 +74,17 @@ Route::prefix('v1/auth/user')->middleware('auth:sanctum')->group(function () {
     // ------------------------------訂 單------------------------------ //
     //* 讀取
         //? 給前端的表單資訊
-    Route::get('/order/getTableColumns', [OrderController::class, 'getTableColumns']);
+    Route::get('/orders/getTableColumns', [OrderController::class, 'getTableColumns']);
         //? 使用者的所有訂單
-    Route::get('/order', [OrderController::class, 'getAllOrders']);
+    Route::get('/orders', [OrderController::class, 'getAllOrders']);
         //? 使用者的單筆訂單
-    Route::get('/order/{order_id}', [OrderController::class, 'getSingleOrder']);
+    Route::get('/orders/{order_id}', [OrderController::class, 'getSingleOrder']);
     //* 新增
         //? 新增訂單
-    Route::post('/order/create', [OrderController::class, 'createOrder']);
+    Route::post('/orders/create', [OrderController::class, 'createOrder']);
     //* 刪除
         //? 刪除訂單
-    Route::delete('/order/{order_id}/delete', [OrderController::class, 'deleteOrder']);
+    Route::delete('/orders/{order_id}/delete', [OrderController::class, 'deleteOrder']);
     // ------------------------------訂 單------------------------------ //
     
     
