@@ -102,7 +102,7 @@ class CartController extends Controller
         return response()->json(['msg' => $msg], 201);
     }
     //? 數量 + 1
-    public function increseByOne()
+    public function increaseByOne()
     {
         $this->itemInCart->increment('product_quantity', 1);
 
@@ -112,7 +112,7 @@ class CartController extends Controller
         return response()->json(['msg' => $msg], 201);
     }
     //? 數量 - 1
-    public function decreseByOne()
+    public function decreaseByOne()
     {
         $cart = $this->itemInCart->first(); //* 要使用 first() 讀取到該物件的 property
 

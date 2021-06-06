@@ -60,9 +60,9 @@ Route::prefix('v1/auth/user')->middleware('auth:sanctum')->group(function () {
         //? 變更數量
     Route::post('/cart/{product_id}/update', [CartController::class, 'update']);
         //? 數量 + 1 
-    Route::get('/cart/{product_id}/increseByOne', [CartController::class, 'increseByOne']);
+    Route::get('/cart/{product_id}/increaseByOne', [CartController::class, 'increaseByOne']);
         //? 數量 - 1 
-    Route::get('/cart/{product_id}/decreseByOne', [CartController::class, 'decreseByOne']);
+    Route::get('/cart/{product_id}/decreaseByOne', [CartController::class, 'decreaseByOne']);
     //* 刪除
         //? 移除購物車內的商品(單項)
     Route::delete('/cart/{product_id}/delete', [CartController::class, 'destroy']);
