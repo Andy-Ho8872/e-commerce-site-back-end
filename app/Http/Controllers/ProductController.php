@@ -30,7 +30,9 @@ class ProductController extends Controller
         $products = Cache::remember('index', 60 * 3, function () {
             return Product::query()
                 ->with('tags')
-                ->take(5)
+                // 可按照需求填入想取得的資料 e.g 評級最高、最熱賣、上架時間 等等...
+                // ->orderBy(condition, sortMethod)
+                ->take(6)
                 ->get();
         });
         return response()->json(['products' => $products], 200);
@@ -52,13 +54,13 @@ class ProductController extends Controller
     // 商品換頁 (pagination) 
     public function paginate()
     {
-        // 目前為 一頁有 10 個商品
+        // 目前為 一頁有 12 個商品
         $currentPage = request()->get('page', 1);
 
         $products = Cache::remember("pagination-${currentPage}", 60 * 2, function () {
             return Product::query()
                 ->with('tags')
-                ->paginate(10);
+                ->paginate(12);
         });
 
         return response()->json(['products' => $products], 200);
