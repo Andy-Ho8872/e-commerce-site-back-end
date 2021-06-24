@@ -21,10 +21,12 @@ Route::prefix('v1/products')->group(function () {
     Route::get('/carousel', [ProductController::class, 'carousel']);
     //? 商品換頁 (Pagination)
     Route::get('/pagination', [ProductController::class, 'paginate']);
+    //? 取得商品的標籤 
+    Route::get('/tags/getTags', [ProductController::class, 'productTags']);
+    //? 依標籤選擇商品
+    Route::get('/tags/{id}', [ProductController::class, 'showByTag']);
     //? 單一商品 
     Route::get('/{id}', [ProductController::class, 'show']);
-    //? 依標籤選擇
-    Route::get('/tag/{id}', [ProductController::class, 'showByTag']);
     //? 搜尋商品
     Route::get('/search/{search}', [ProductController::class, 'search']);
 });

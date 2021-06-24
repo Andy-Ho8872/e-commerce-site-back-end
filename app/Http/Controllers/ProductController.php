@@ -51,6 +51,14 @@ class ProductController extends Controller
         return response()->json(['products' => $products], 200);
     }
 
+    // 商品標籤
+    public function productTags() 
+    {   
+        $tags = Tag::get();
+
+        return response()->json(['tags' => $tags], 200);
+    }
+
     // 商品換頁 (pagination) 
     public function paginate()
     {
