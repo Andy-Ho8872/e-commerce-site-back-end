@@ -65,13 +65,16 @@ class OrderController extends Controller
                 'address' => $request->address,
             ]);
             //? 將資料寫入到 order_products 表格裡面做紀錄
-            foreach ($this->carts->get() as $cart) {
-                OrderProduct::create([
+            $carts = $this->carts->get();
+            $items = [];  //? 宣告為陣列
+            foreach($carts as $cart) {
+                $items[] = [
                     'order_id' => $order->id,
                     'product_id' => $cart->product_id,
                     'product_quantity' => $cart->product_quantity
-                ]);
+                ];
             }
+            DB::table('order_product')->insert($items);
             // 回傳訊息
             $msg = "訂單建立成功";
             //* 訂單建立後刪除購物車內的商品
