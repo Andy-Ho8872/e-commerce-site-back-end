@@ -109,6 +109,12 @@ class ProductController extends Controller
 
         $msg = "關於{$search}的搜尋結果";
 
+        // 若查無結果
+        if(! count($products)) {
+            $msg = "找不到關於{$search}的搜尋結果";
+            return response()->json(['msg' => $msg]);
+        }
+
         return response()->json(['msg' => $msg, 'products' => $products], 200);
     }
     // API 的部分 -----------------------------------------------------------------------------------End
