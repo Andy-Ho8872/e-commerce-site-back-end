@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,12 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// 後台首頁
 Route::get('/', function () {
     return view('welcome');
-})->name('home');
-
-Route::prefix('products')->group(function () {
+});
+// 後臺主控面板(一般訪客)
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+// 後台主控面板(管理者)
+Route::prefix('products')->middleware(['auth', 'is_admin'])->group(function () {
     // 上架頁面
     Route::get('/create', [ProductController::class, 'getTags'])->name('products.create');
     Route::post('/create', [ProductController::class, 'store'])->name('products.store');
@@ -31,3 +34,5 @@ Route::prefix('products')->group(function () {
     Route::get('/edit/{id}', [ProductController::class, 'editPage'])->name('products.edit');
     Route::patch('/edit/{id}', [ProductController::class, 'edit'])->name('products.update');
 });
+
+require __DIR__.'/auth.php';
