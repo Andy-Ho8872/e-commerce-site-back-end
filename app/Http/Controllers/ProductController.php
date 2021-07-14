@@ -46,6 +46,11 @@ class ProductController extends Controller
                 ->with('tags')
                 ->orderBy('rating', 'desc')
                 ->take(10)
+                ->select('id', 
+                'title',
+                'imgUrl', 
+                'discount_rate',
+                )
                 ->get();
         });
         return response()->json(['products' => $products], 200);
