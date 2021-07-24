@@ -41,9 +41,9 @@ class ProductController extends Controller
     // 圖片輪播的商品 (10 個)
     public function carousel()
     {
-        $products = Cache::remember('carousel', 60 * 3, function () {
+        $flash_sale_products = Cache::remember('flash_sale_products', 60 * 3, function () {
             return Product::query()
-                ->with('tags')
+                // ->with('tags')
                 ->orderBy('rating', 'desc')
                 ->take(10)
                 ->select('id', 
@@ -53,7 +53,19 @@ class ProductController extends Controller
                 )
                 ->get();
         });
-        return response()->json(['products' => $products], 200);
+        $latest_products = Cache::remember('latest_products', 60 * 3, function () {
+            return Product::query()
+                ->orderBy('id', 'desc')
+                ->take(10)
+                ->select('id', 
+                'title',
+                'imgUrl', 
+                'discount_rate',
+                'created_at'
+                )
+                ->get();
+        });
+        return response()->json(['flash_sale_products' => $flash_sale_products, 'latest_products' => $latest_products], 200);
     }
 
     // 商品標籤
