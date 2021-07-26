@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory;
+    use Traits\SerializeDate; //* 修正時間格式
     
     protected $fillable = [ 
         'title',

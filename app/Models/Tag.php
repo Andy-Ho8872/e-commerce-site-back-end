@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Tag extends Model
 {
     use HasFactory;
+    use Traits\SerializeDate; //* 修正時間格式
     //
     public $incrementing = false;
     protected $keyType = 'string';
