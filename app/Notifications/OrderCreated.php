@@ -23,7 +23,6 @@ class OrderCreated extends Notification
     {
         $this->details = $details;
     }
-
     /**
      * Get the notification's delivery channels.
      *
