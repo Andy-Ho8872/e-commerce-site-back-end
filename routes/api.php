@@ -29,6 +29,7 @@ Route::prefix('v1/products')->group(function () {
     Route::get('/{id}', [ProductController::class, 'show']);
     //? 搜尋商品
     Route::get('/search/{search}', [ProductController::class, 'search']);
+    Route::get('/search/{search}/autocomplete', [ProductController::class, 'searchAutoComplete']);
 });
 
 //* 使用者

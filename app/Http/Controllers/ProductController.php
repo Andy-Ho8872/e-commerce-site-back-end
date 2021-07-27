@@ -134,6 +134,32 @@ class ProductController extends Controller
 
         return response()->json(['msg' => $msg, 'products' => $products], 200);
     }
+    public function searchAutoComplete($search)
+    {
+        $products = Cache::remember("searchAutoComplete-${search}", 60 * 2, function () use ($search) {
+            return Product::query()
+                ->where('title', 'LIKE', "%{$search}%")
+                ->orwhereHas('tags', function ($query) use ($search) {
+                    $query->where('title', 'LIKE', "%{$search}%");
+                })
+                ->take(8)
+                ->select('id', 
+                'title',
+                'imgUrl', 
+                )
+                ->get();
+        });
+
+        $msg = "關於{$search}的搜尋結果";
+
+        // 若查無結果
+        if(! count($products)) {
+            $msg = "找不到關於{$search}的搜尋結果";
+            return response()->json(['msg' => $msg]);
+        }
+
+        return response()->json(['msg' => $msg, 'products' => $products], 200);
+    }
     // API 的部分 -----------------------------------------------------------------------------------End
 
 
