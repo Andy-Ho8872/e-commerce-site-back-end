@@ -27,8 +27,11 @@ Route::prefix('v1/products')->group(function () {
     Route::get('/tags/{id}', [ProductController::class, 'showByTag']);
     //? 單一商品 
     Route::get('/{id}', [ProductController::class, 'show']);
-    //? 搜尋商品
-    Route::get('/search/{search}', [ProductController::class, 'search']);
+    // 搜尋商品 //! 此為舊版本(目前不使用)
+    // Route::get('/search/{search}', [ProductController::class, 'search']); 
+    //? 搜尋商品(含分頁) 
+    Route::get('/search/{search}/pagination', [ProductController::class, 'searchWithPagination']);
+    //? 搜尋字串自動補全 
     Route::get('/search/{search}/autocomplete', [ProductController::class, 'searchAutoComplete']);
 });
 

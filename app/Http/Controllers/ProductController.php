@@ -112,16 +112,40 @@ class ProductController extends Controller
 
         return response()->json(['tag' => $tag], 200);
     }
-    // 搜尋商品
-    public function search($search)
+    // 搜尋商品 //! 舊版本(暫時不用)
+    // public function search($search)
+    // {
+    //     $products = Cache::remember("searchingFor-${search}", 60 * 2, function () use ($search) {
+    //         return Product::query()
+    //             ->with('tags')
+    //             ->where('title', 'LIKE', "%{$search}%")
+    //             ->orwhereHas('tags', function ($query) use ($search) {
+    //                 $query->where('title', 'LIKE', "%{$search}%");
+    //             })->get();
+    //     });
+
+    //     $msg = "關於{$search}的搜尋結果";
+
+    //     // 若查無結果
+    //     if(! count($products)) {
+    //         $msg = "找不到關於{$search}的搜尋結果";
+    //         return response()->json(['msg' => $msg]);
+    //     }
+
+    //     return response()->json(['msg' => $msg, 'products' => $products], 200);
+    // }
+    //* 搜尋商品(含分頁)
+    public function searchWithPagination($search)
     {
-        $products = Cache::remember("searchingFor-${search}", 60 * 2, function () use ($search) {
+        $currentPage = request()->get('page', 1);
+
+        $products = Cache::remember("searchingFor-${search}-${currentPage}", 60 * 2, function () use ($search) {
             return Product::query()
                 ->with('tags')
                 ->where('title', 'LIKE', "%{$search}%")
                 ->orwhereHas('tags', function ($query) use ($search) {
                     $query->where('title', 'LIKE', "%{$search}%");
-                })->get();
+                })->paginate(12);
         });
 
         $msg = "關於{$search}的搜尋結果";
