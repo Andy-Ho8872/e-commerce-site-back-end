@@ -59,21 +59,21 @@ Route::prefix('v1/auth/user')->middleware('auth:sanctum')->group(function () {
     Route::get('/cart', [CartController::class, 'show']);
     //* 新增
         //? 加入購物車
-    Route::get('/cart/{product_id}/create', [CartController::class, 'create']);
+    Route::get('/cart/product/{product_id}/create', [CartController::class, 'create']);
         //? 加入購物車(包含數量)
-    Route::post('/cart/{product_id}/create', [CartController::class, 'create']);
+    Route::post('/cart/product/{product_id}/create', [CartController::class, 'create']);
     //* 修改
         //? 變更數量
-    Route::post('/cart/{product_id}/update', [CartController::class, 'update']);
+    Route::post('/cart/product/{product_id}/update', [CartController::class, 'update']);
         //? 數量 + 1 
-    Route::get('/cart/{product_id}/increaseByOne', [CartController::class, 'increaseByOne']);
+    Route::get('/cart/product/{product_id}/increaseByOne', [CartController::class, 'increaseByOne']);
         //? 數量 - 1 
-    Route::get('/cart/{product_id}/decreaseByOne', [CartController::class, 'decreaseByOne']);
+    Route::get('/cart/product/{product_id}/decreaseByOne', [CartController::class, 'decreaseByOne']);
     //* 刪除
         //? 移除購物車內的商品(單項)
-    Route::delete('/cart/{product_id}/delete', [CartController::class, 'destroy']);
+    Route::delete('/cart/product/{product_id}/delete', [CartController::class, 'destroy']);
         //? 清空購物車
-    Route::delete('/cart/deleteAll', [CartController::class, 'destroyAll']);
+    Route::delete('/cart/product/deleteAll', [CartController::class, 'destroyAll']);
     // ------------------------------購物車------------------------------ //
     
     
