@@ -2,192 +2,68 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreAndEditRequest;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
-
-// 使用到的 Model
+//* Models
 use App\Models\Product;
 use App\Models\Tag;
+
+//* Facades 
+use Illuminate\Support\Facades\Cache;
+
+//* Requests 
+use App\Http\Requests\StoreAndEditRequest;
+
+//* Services 
+use App\Services\ProductService;
 
 class ProductController extends Controller
 {
     // API 的部分 -----------------------------------------------------------------------------------Start
-    // 所有的產品
-    public function index()
+    //* 所有的產品
+    public function index(ProductService $service)
     {
-        // (預載入查詢指定的關聯) 
-        $products = Product::query()
-            ->with('tags')
-            ->get();
-
-        // 回傳結果
-        return response()->json(['products' => $products], 200);
+        return $service->getAllProducts();
     }
-    // 取得首頁的產品  
-    public function indexPageProducts()
+    //* 取得首頁的產品  
+    public function indexPageProducts(ProductService $service)
     {
-        $products = Cache::remember('index', 60 * 3, function () {
-            return Product::query()
-                ->with('tags')
-                // 可按照需求填入想取得的資料 e.g 評級最高、最熱賣、上架時間 等等...
-                // ->orderBy(condition, sortMethod)
-                ->take(6)
-                ->get();
-        });
-        return response()->json(['products' => $products], 200);
+        return $service->index();
     }
-
-    // 圖片輪播的商品 (10 個)
-    public function carousel()
+    //* 圖片輪播的商品 (10 個)
+    public function carousel(ProductService $service)
     {
-        $flash_sale_products = Cache::remember('flash_sale_products', 60 * 3, function () {
-            return Product::query()
-                // ->with('tags')
-                ->orderBy('rating', 'desc')
-                ->take(10)
-                ->select('id', 
-                'title',
-                'imgUrl', 
-                'discount_rate',
-                )
-                ->get();
-        });
-        $latest_products = Cache::remember('latest_products', 60 * 3, function () {
-            return Product::query()
-                ->orderBy('id', 'desc')
-                ->take(10)
-                ->select('id', 
-                'title',
-                'imgUrl', 
-                'discount_rate',
-                'created_at'
-                )
-                ->get();
-        });
-        return response()->json(['flash_sale_products' => $flash_sale_products, 'latest_products' => $latest_products], 200);
+        return $service->getCarouselProducts();
     }
-
-    // 商品標籤
-    public function productTags() 
-    {   
-        $tags = Tag::get();
-
-        return response()->json(['tags' => $tags], 200);
-    }
-
-    // 商品換頁 (pagination) 
-    public function paginate()
+    //* 商品標籤
+    public function productTags(ProductService $service)
     {
-        // 目前為 一頁有 12 個商品
-        $currentPage = request()->get('page', 1);
-
-        $products = Cache::remember("pagination-${currentPage}", 60 * 2, function () {
-            return Product::query()
-                ->with('tags')
-                ->paginate(12);
-        });
-
-        return response()->json(['products' => $products], 200);
+        return $service->getProductTags();
     }
-    // 顯示單一商品
-    public function show($id)
+    //* 商品換頁 (pagination) 
+    public function paginate(ProductService $service)
     {
-        $product = Cache::remember("product-${id}", 60 * 2, function () use ($id) {
-            return Product::query()
-                ->with('tags')
-                ->findOrFail($id);
-        });
-
-        return response()->json(['product' => $product], 200);
+        return $service->getPaginatedProducts();
     }
-    // 藉由商品標籤顯示
-    public function showByTag($id)
+    //* 顯示單一商品
+    public function show($id, ProductService $service)
     {
-        $tag = Cache::remember("tag-${id}", 60 * 2, function () use ($id) {
-            return Tag::query()
-                ->with('products')
-                ->findOrFail($id);
-        });
-
-        return response()->json(['tag' => $tag], 200);
+        return $service->getSingleProduct($id);
     }
-    // 搜尋商品 //! 舊版本(暫時不用)
-    // public function search($search)
-    // {
-    //     $products = Cache::remember("searchingFor-${search}", 60 * 2, function () use ($search) {
-    //         return Product::query()
-    //             ->with('tags')
-    //             ->where('title', 'LIKE', "%{$search}%")
-    //             ->orwhereHas('tags', function ($query) use ($search) {
-    //                 $query->where('title', 'LIKE', "%{$search}%");
-    //             })->get();
-    //     });
-
-    //     $msg = "關於{$search}的搜尋結果";
-
-    //     // 若查無結果
-    //     if(! count($products)) {
-    //         $msg = "找不到關於{$search}的搜尋結果";
-    //         return response()->json(['msg' => $msg]);
-    //     }
-
-    //     return response()->json(['msg' => $msg, 'products' => $products], 200);
-    // }
+    //* 藉由商品標籤顯示
+    public function showByTag($id, ProductService $service)
+    {
+        return $service->getProductsByTags($id);
+    }
     //* 搜尋商品(含分頁)
-    public function searchWithPagination($search)
+    public function searchWithPagination($search, ProductService $service)
     {
-        $currentPage = request()->get('page', 1);
-
-        $products = Cache::remember("searchingFor-${search}-${currentPage}", 60 * 2, function () use ($search) {
-            return Product::query()
-                ->with('tags')
-                ->where('title', 'LIKE', "%{$search}%")
-                ->orwhereHas('tags', function ($query) use ($search) {
-                    $query->where('title', 'LIKE', "%{$search}%");
-                })->paginate(12);
-        });
-
-        $msg = "關於{$search}的搜尋結果";
-
-        // 若查無結果
-        if(! count($products)) {
-            $msg = "找不到關於{$search}的搜尋結果";
-            return response()->json(['msg' => $msg]);
-        }
-
-        return response()->json(['msg' => $msg, 'products' => $products], 200);
+        return $service->searchProductsWithPagination($search);
     }
-    public function searchAutoComplete($search)
+    //* 搜尋欄自動補全
+    public function searchAutoComplete($search, ProductService $service)
     {
-        $products = Cache::remember("searchAutoComplete-${search}", 60 * 2, function () use ($search) {
-            return Product::query()
-                ->where('title', 'LIKE', "%{$search}%")
-                ->orwhereHas('tags', function ($query) use ($search) {
-                    $query->where('title', 'LIKE', "%{$search}%");
-                })
-                ->take(8)
-                ->select('id', 
-                'title',
-                'imgUrl', 
-                )
-                ->get();
-        });
-
-        $msg = "關於{$search}的搜尋結果";
-
-        // 若查無結果
-        if(! count($products)) {
-            $msg = "找不到關於{$search}的搜尋結果";
-            return response()->json(['msg' => $msg]);
-        }
-
-        return response()->json(['msg' => $msg, 'products' => $products], 200);
+        return $service->getAutoComplete($search);
     }
     // API 的部分 -----------------------------------------------------------------------------------End
-
-
-
 
 
     // 後台部分 -----------------------------------------------------------------------------------Start
@@ -204,13 +80,10 @@ class ProductController extends Controller
             'discount_rate' => $request->discount_rate,
             'rating' => $request->rating
         ]);
-
         // 產品標籤關聯
         $product->tags()->sync($request->tags, false);
-
         // 提示訊息
         $message = "商品上架成功";
-
         // 重新導向
         return redirect()->route('products.index')->with('message', $message);
     }
@@ -236,8 +109,9 @@ class ProductController extends Controller
     // 更新產品資料
     public function edit(StoreAndEditRequest $request, $id)
     {
+        // 先取得該產品
         $product = Product::findOrFail($id);
-
+        // 更新產品
         $product->update([
             'title' => $request->title,
             'description' => $request->description,
@@ -248,13 +122,10 @@ class ProductController extends Controller
             'discount_rate' => $request->discount_rate,
             'rating' => $request->rating
         ]);
-
         // 產品標籤關聯
         $product->tags()->sync($request->tags);
-
         // 提示訊息
         $message = "已經成功變更，請查閱。";
-
         // 重新導向至該產品
         return redirect()->route('products.show', ['id' => $id])->with('message', $message);
     }
