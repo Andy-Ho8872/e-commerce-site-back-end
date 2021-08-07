@@ -70,16 +70,8 @@ class ProductController extends Controller
     // 上架產品
     public function store(StoreAndEditRequest $request)
     {
-        $product = Product::create([
-            'title' => $request->title,
-            'description' => $request->description,
-            'unit_price' => $request->unit_price,
-            'imgUrl' => $request->imgUrl,
-            'stock_quantity' => $request->stock_quantity,
-            'available' => $request->available,
-            'discount_rate' => $request->discount_rate,
-            'rating' => $request->rating
-        ]);
+        // 新增產品 
+        $product = Product::create($request->validated());
         // 產品標籤關聯
         $product->tags()->sync($request->tags, false);
         // 提示訊息
@@ -112,16 +104,7 @@ class ProductController extends Controller
         // 先取得該產品
         $product = Product::findOrFail($id);
         // 更新產品
-        $product->update([
-            'title' => $request->title,
-            'description' => $request->description,
-            'unit_price' => $request->unit_price,
-            'imgUrl' => $request->imgUrl,
-            'stock_quantity' => $request->stock_quantity,
-            'available' => $request->available,
-            'discount_rate' => $request->discount_rate,
-            'rating' => $request->rating
-        ]);
+        $product->update($request->validated());
         // 產品標籤關聯
         $product->tags()->sync($request->tags);
         // 提示訊息
