@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\TagController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,23 +25,27 @@ Route::get('/dashboard', function () {
 // 後台主控面板(管理者)
 Route::prefix('products')->middleware(['auth', 'is_admin'])->group(function () {
     // 上架頁面
-    Route::get('/create', [ProductController::class, 'getTags'])->name('products.create');
+    Route::get('/create', [ProductController::class, 'create'])->name('products.create');
     Route::post('/store', [ProductController::class, 'store'])->name('products.store');
-    // 所有產品頁面
-    Route::get('/showAll', [ProductController::class, 'products'])->name('products.index');
-    // 單一產品頁面
+    // 顯示產品
+    Route::get('/index', [ProductController::class, 'index'])->name('products.index');
+        //? 因為在 API route 中已經有 show 方法了，為了避免重複命名所以在 web route 中命名為 showById
     Route::get('/{product_id}/show', [ProductController::class, 'showById'])->name('products.show');
     // 編輯頁面
-    Route::get('/{product_id}/edit', [ProductController::class, 'editPage'])->name('products.edit');
-    Route::patch('/{product_id}/update', [ProductController::class, 'edit'])->name('products.update');
+    Route::get('/{product_id}/edit', [ProductController::class, 'edit'])->name('products.edit');
+    Route::patch('/{product_id}/update', [ProductController::class, 'update'])->name('products.update');
 });
 
 Route::prefix('tags')->middleware(['auth', 'is_admin'])->group(function () {
     // 顯示標籤
-    Route::get('/showAll', [ProductController::class, 'example'])->name('tags.index');
+    Route::get('/index', [TagController::class, 'index'])->name('tags.index');
+    Route::get('/{tag_id}/show', [TagController::class, 'show'])->name('tags.show');
     // 新增標籤
-    Route::post('/store', [ProductController::class, 'example'])->name('tags.store');
+    Route::get('/create', [TagController::class, 'create'])->name('tags.create');
+    Route::post('/store', [TagController::class, 'store'])->name('tags.store');
     // 編輯標籤
-    Route::patch('/{tag_id}/edit', [ProductController::class, 'example'])->name('tags.store');
+    Route::get('/{tag_id}/edit', [TagController::class, 'edit'])->name('tags.edit');
+    Route::patch('/{tag_id}/update', [TagController::class, 'update'])->name('tags.update');
 });
+
 require __DIR__.'/auth.php';
