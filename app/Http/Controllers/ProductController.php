@@ -16,7 +16,7 @@ class ProductController extends Controller
 {
     // API 的部分 -----------------------------------------------------------------------------------Start
     //* 所有的產品
-    public function index(ProductService $service)
+    public function test(ProductService $service)
     {
         return $service->getAllProducts();
     }
@@ -76,17 +76,17 @@ class ProductController extends Controller
         // 重新導向
         return redirect()->route('products.index')->with('message', $message);
     }
-    public function getTags()
+    public function create()
     {
         $tags = Tag::all();
 
         return view('products.create', ['tags' => $tags]);
     }
-    public function products()
+    public function index()
     {
         $products = Product::all();
 
-        return view('products.showAll', ['products' => $products]);
+        return view('products.index', ['products' => $products]);
     }
     public function showById($product_id)
     {
@@ -109,7 +109,7 @@ class ProductController extends Controller
         // 重新導向至該產品
         return redirect()->route('products.show', ['product_id' => $product_id])->with('message', $message);
     }
-    public function editPage($product_id)
+    public function edit($product_id)
     {
         $product = Product::findOrFail($product_id);
 
