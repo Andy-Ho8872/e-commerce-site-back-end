@@ -23,6 +23,12 @@
                         <x-nav-link :href="route('products.create')" :active="request()->routeIs('products.create')">
                             {{ __('上架商品') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('tags.index')" :active="request()->routeIs('tags.index')">
+                            {{ __('查看標籤') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('tags.create')" :active="request()->routeIs('tags.create')">
+                            {{ __('新增標籤') }}
+                        </x-nav-link>
                     @endif
                 </div>
             </div>
@@ -79,6 +85,12 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('products.create')" :active="request()->routeIs('products.create')">
                 {{ __('上架商品') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('tags.index')" :active="request()->routeIs('tags.index')">
+                {{ __('查看標籤') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('tags.create')" :active="request()->routeIs('tags.create')">
+                {{ __('新增標籤') }}
             </x-responsive-nav-link>
         </div>
 
