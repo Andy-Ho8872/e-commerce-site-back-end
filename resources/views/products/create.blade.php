@@ -12,7 +12,7 @@
                 <div class="p-6 bg-white border-b border-gray-200">
                     <!-- content -->
                     <div class="mx-auto">
-                        <form class="py-4" action="{{ route('products.store') }}" method="POST">
+                        <form class="py-4" action="{{ route('products.store') }}" method="POST" autocomplete="off">
                             @csrf
                             <div class="bg-green-200 shadow-lg rounded-3xl px-8 py-8 flex flex-col mx-auto">
                                 <!-- 名稱 -->
