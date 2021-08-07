@@ -13,6 +13,9 @@ class Tag extends Model
     public $incrementing = false;
     protected $keyType = 'string';
 
+    protected $fillable = [ 
+        'title',
+    ];
 
     // 標籤在很多產品上
     public function products() 
