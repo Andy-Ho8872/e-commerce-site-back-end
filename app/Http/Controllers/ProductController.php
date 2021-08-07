@@ -91,18 +91,18 @@ class ProductController extends Controller
 
         return view('products.showAll', ['products' => $products]);
     }
-    public function showById($id)
+    public function showById($product_id)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::findOrFail($product_id);
         $tags = $product->tags;
 
         return view('products.show', ['product' => $product, 'tags' => $tags]);
     }
     // 更新產品資料
-    public function edit(StoreAndEditRequest $request, $id)
+    public function edit(StoreAndEditRequest $request, $product_id)
     {
         // 先取得該產品
-        $product = Product::findOrFail($id);
+        $product = Product::findOrFail($product_id);
         // 更新產品
         $product->update($request->validated());
         // 產品標籤關聯
@@ -110,11 +110,11 @@ class ProductController extends Controller
         // 提示訊息
         $message = "已經成功變更，請查閱。";
         // 重新導向至該產品
-        return redirect()->route('products.show', ['id' => $id])->with('message', $message);
+        return redirect()->route('products.show', ['product_id' => $product_id])->with('message', $message);
     }
-    public function editPage($id)
+    public function editPage($product_id)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::findOrFail($product_id);
 
         $tags = Tag::all();
 
