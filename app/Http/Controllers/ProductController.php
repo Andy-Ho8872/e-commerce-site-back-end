@@ -6,11 +6,8 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Tag;
 
-//* Facades 
-use Illuminate\Support\Facades\Cache;
-
 //* Requests 
-use App\Http\Requests\StoreAndEditRequest;
+use App\Http\Requests\ProductRequest;
 
 //* Services 
 use App\Services\ProductService;
@@ -68,7 +65,7 @@ class ProductController extends Controller
 
     // 後台部分 -----------------------------------------------------------------------------------Start
     // 上架產品
-    public function store(StoreAndEditRequest $request)
+    public function store(ProductRequest $request)
     {
         // 新增產品 
         $product = Product::create($request->validated());
@@ -99,7 +96,7 @@ class ProductController extends Controller
         return view('products.show', ['product' => $product, 'tags' => $tags]);
     }
     // 更新產品資料
-    public function edit(StoreAndEditRequest $request, $product_id)
+    public function update(ProductRequest $request, $product_id)
     {
         // 先取得該產品
         $product = Product::findOrFail($product_id);
