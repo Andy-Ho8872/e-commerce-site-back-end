@@ -25,14 +25,22 @@ Route::get('/dashboard', function () {
 Route::prefix('products')->middleware(['auth', 'is_admin'])->group(function () {
     // 上架頁面
     Route::get('/create', [ProductController::class, 'getTags'])->name('products.create');
-    Route::post('/create', [ProductController::class, 'store'])->name('products.store');
+    Route::post('/store', [ProductController::class, 'store'])->name('products.store');
     // 所有產品頁面
     Route::get('/showAll', [ProductController::class, 'products'])->name('products.index');
     // 單一產品頁面
-    Route::get('/show/{id}', [ProductController::class, 'showById'])->name('products.show');
+    Route::get('/{product_id}/show', [ProductController::class, 'showById'])->name('products.show');
     // 編輯頁面
-    Route::get('/edit/{id}', [ProductController::class, 'editPage'])->name('products.edit');
-    Route::patch('/edit/{id}', [ProductController::class, 'edit'])->name('products.update');
+    Route::get('/{product_id}/edit', [ProductController::class, 'editPage'])->name('products.edit');
+    Route::patch('/{product_id}/update', [ProductController::class, 'edit'])->name('products.update');
 });
 
+Route::prefix('tags')->middleware(['auth', 'is_admin'])->group(function () {
+    // 顯示標籤
+    Route::get('/showAll', [ProductController::class, 'example'])->name('tags.index');
+    // 新增標籤
+    Route::post('/store', [ProductController::class, 'example'])->name('tags.store');
+    // 編輯標籤
+    Route::patch('/{tag_id}/edit', [ProductController::class, 'example'])->name('tags.store');
+});
 require __DIR__.'/auth.php';
