@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use Carbon\Carbon;
+
 //* Facades
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -40,10 +42,16 @@ class OrderService
     public function notifyWhenOrderCreated($order)
     {
         $user = User::find($this->user_id);
+        //* 修正時間格式
+        $created_at = Carbon::now('Asia/Taipei')->format('Y-m-d H:i:s');
+        //* 通知細節
         $details = [
-            'order_id' => $order->id,
-            'payment_id' => $order->payment_id,
+            'title' => '商品訂購成功。',
+            'avatar_url' => 'https://i.imgur.com/3JkI2Qo.png', // 圖片 URL
+            'body' => "訂單編號 - $order->id",
+            'created_at' => "訂購時間 - $created_at"
         ];
+        //* 發送通知 
         Notification::send($user, new OrderCreated($details));
     }
 

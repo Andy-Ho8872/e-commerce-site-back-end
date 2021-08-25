@@ -2,7 +2,6 @@
 
 namespace App\Notifications;
 
-use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -66,10 +65,10 @@ class OrderCreated extends Notification
     public function toDatabase($notifiable)
     {
         return [
-            'title' => '訂購成功，商品出貨中。',
-            'order_id' => $this->details['order_id'],
-            'payment_id' => $this->details['payment_id'],
-            'created_at' => Carbon::now('Asia/Taipei')->format('Y-m-d H:i:s') //* 修正時間格式
+            'title' => $this->details['title'],
+            'avatar_url' => $this->details['avatar_url'],
+            'body' => $this->details['body'],
+            'created_at' => $this->details['created_at']
         ];
     }
 }
