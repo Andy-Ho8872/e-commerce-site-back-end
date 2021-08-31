@@ -11,10 +11,11 @@ class LoginRequest extends FormRequest
      *
      * @return bool
      */
-    // public function authorize()
-    // {
-    //     return false;
-    // }
+    public function authorize()
+    {
+        // default false
+        return true;
+    }
 
     /**
      * Get the validation rules that apply to the request.
