@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Cache;
 
 class Kernel extends ConsoleKernel
 {
@@ -25,6 +26,11 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+        //* run  php artisan schedule:work  to use these command
+        //* clear cache every 5 minutes
+        $schedule->call(function () {
+            Cache::flush();
+        })->everyFiveMinutes()->withoutOverlapping()->timezone("Asia/Taipei");
     }
 
     /**
