@@ -80,20 +80,22 @@
                                 <!-- 標籤選擇 -->
                                 <fieldset class="mb-4">
                                     <label class="labelText">產品標籤</label>
-                                    @foreach($tags as $tag)
-                                    <label class="mx-3 px-3 py-1 bg-white rounded-2xl font-semibold">
-                                        <!-- 預設打勾的選項 (若 tag->id 有包含在內 ) -->
-                                        <input name="tags[]" type="checkbox" value="{{ $tag->id }}" class="mb-5" @if($product->tags->contains($tag->id)) checked @endif>
-                                        {{ $tag->title }}
-                                    </label>
-                                    @endforeach
+                                    <div class="flex flex-wrap">
+                                        @foreach($tags as $tag)
+                                        <label class="mr-2 mt-2 p-3 py-1 bg-white rounded-2xl font-semibold">
+                                            <!-- 預設打勾的選項 (若 tag->id 有包含在內 ) -->
+                                            <input name="tags[]" type="checkbox" value="{{ $tag->id }}" @if($product->tags->contains($tag->id)) checked @endif>
+                                            {{ $tag->title }}
+                                        </label>
+                                        @endforeach
+                                    </div>
                                 </fieldset>
                                 <!-- 操作按鈕 -->
                                 <div class="text-center mt-8">
-                                    <a href="{{ route('products.index') }}" class="border-2 rounded-full font-bold text-white p-4 px-8 m-6 transition-300-ease-in-out bg-red-500 hover:bg-red-700">
+                                    <a href="{{ route('products.index') }}" class="border-2 rounded-full font-bold text-white p-4 px-6 mx-2 md:m-6 transition-300-ease-in-out bg-red-500 hover:bg-red-700">
                                         取消
                                     </a>
-                                    <button type="submit" class="border-2 rounded-full font-bold text-white p-4 px-8 m-6 transition-300-ease-in-out bg-green-500 hover:bg-green-700">
+                                    <button type="submit" class="border-2 rounded-full font-bold text-white p-4 px-6 mx-2 md:m-6 transition-300-ease-in-out bg-green-500 hover:bg-green-700">
                                         變更
                                     </button>
                                 </div>

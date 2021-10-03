@@ -25,10 +25,10 @@
                                 </div>
                                 <!-- 操作按鈕 -->
                                 <div class="text-center mt-8">
-                                    <a href="{{ route('tags.index') }}" class="border-2 rounded-full font-bold text-white p-4 px-8 m-6 transition-300-ease-in-out bg-red-500 hover:bg-red-700">
+                                    <a href="{{ route('tags.index') }}" class="border-2 rounded-full font-bold text-white p-4 px-6 mx-2 md:m-6 transition-300-ease-in-out bg-red-500 hover:bg-red-700">
                                         取消
                                     </a>
-                                    <button type="submit" class="border-2 rounded-full font-bold text-white p-4 px-8 m-6 transition-300-ease-in-out bg-green-500 hover:bg-green-700">
+                                    <button type="submit" class="border-2 rounded-full font-bold text-white p-4 px-6 mx-2 md:m-6 transition-300-ease-in-out bg-green-500 hover:bg-green-700">
                                         變更
                                     </button>
                                 </div>

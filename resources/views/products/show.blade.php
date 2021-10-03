@@ -77,10 +77,12 @@
                                 </div>
                                 <!-- 標籤選擇 -->
                                 <fieldset class="mb-4">
-                                    <label class="labelText pb-4">產品標籤</label>
-                                    @foreach($tags as $tag)
-                                    <span class="mx-2 p-3 bg-pink-500 text-white font-bold tracking-widest rounded-full">{{ $tag->title }}</span>
-                                    @endforeach
+                                    <label class="labelText">產品標籤</label>
+                                    <div class="flex flex-wrap">
+                                        @foreach($tags as $tag)
+                                        <span class="mr-2 mt-2 p-3 bg-pink-500 text-white text-sm font-bold tracking-widest rounded-full">{{ $tag->title }}</span>
+                                        @endforeach
+                                    </div>
                                 </fieldset>
                                 <!-- 提示訊息 -->
                                 @if (Session::has('message'))
@@ -93,10 +95,10 @@
                                 @endif
                                 <!-- 操作按鈕 -->
                                 <div class="text-center mt-8">
-                                    <a href="{{ route('products.index') }}" class="border-2 rounded-full font-bold text-white p-4 px-8 m-6 transition-300-ease-in-out bg-green-500 hover:bg-green-700">
+                                    <a href="{{ route('products.index') }}" class="border-2 rounded-full font-bold text-white p-4 px-6 mx-2 md:m-6 transition-300-ease-in-out bg-green-500 hover:bg-green-700">
                                         返回
                                     </a>
-                                    <a href="{{ route('products.edit', $product->id) }}" class="border-2 rounded-full font-bold text-white p-4 px-8 m-6 transition-300-ease-in-out bg-red-500 hover:bg-red-700">
+                                    <a href="{{ route('products.edit', $product->id) }}" class="border-2 rounded-full font-bold text-white p-4 px-6 mx-2 md:m-6 transition-300-ease-in-out bg-red-500 hover:bg-red-700">
                                         編輯
                                     </a>
                                 </div>
