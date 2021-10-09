@@ -28,11 +28,9 @@ class Product extends Model
     //     'unit_price' => 'decimal:2',
     // ];
 
-
     // 產品的標籤
     public function tags() 
     {
         return $this->belongsToMany(Tag::class);
     }
-
 }
