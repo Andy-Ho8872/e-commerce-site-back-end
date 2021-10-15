@@ -20,6 +20,7 @@
                                     <label class="labelText" for="title">
                                         商品名稱
                                     </label>
+                                    <br />
                                     <input class="input-shadow text-grey-darker input-focus-blue" name="title" type="text" placeholder="優質手機" required>
                                 </div>
                                 <!-- 敘述 -->
@@ -27,6 +28,7 @@
                                     <label class="labelText" for="description">
                                         商品敘述
                                     </label>
+                                    <br />
                                     <textarea rows="5" class="input-shadow text-grey-darker mb-3 input-focus-blue" name="description" type="text" placeholder="Lorem...." required></textarea>
                                 </div>
                                 <!-- 圖片 -->
@@ -34,6 +36,7 @@
                                     <label class="labelText" for="imgUrl">
                                         商品圖片網址
                                     </label>
+                                    <br />
                                     <input class="input-shadow text-grey-darker mb-3 input-focus-blue" name="imgUrl" type="text" placeholder="http://....." required>
                                 </div>
                                 <!-- 單價 -->
@@ -41,6 +44,7 @@
                                     <label class="labelText" for="unit_price">
                                         商品單價
                                     </label>
+                                    <br />
                                     <input class="input-shadow text-grey-darker mb-3 input-focus-blue" name="unit_price" type="number" placeholder="4899" required>
                                 </div>
                                 <!-- 數量 -->
@@ -48,6 +52,7 @@
                                     <label class="labelText" for="stock_quantity">
                                         存貨數量
                                     </label>
+                                    <br />
                                     <input class="input-shadow text-grey-darker mb-3 input-focus-blue" name="stock_quantity" type="number" placeholder="100" required>
                                 </div>
                                 <!-- 折價率 -->
@@ -55,6 +60,7 @@
                                     <label class="labelText" for="discount_rate input-focus-blue">
                                         商品折價率(預設/最多 1)
                                     </label>
+                                    <br />
                                     <input class="input-shadow text-grey-darker mb-3 input-focus-blue" name="discount_rate" type="number" step="0.01" placeholder="1.00" max="1">
                                 </div>
                                 <!-- 星級評價 -->
@@ -62,6 +68,7 @@
                                     <label class="labelText" for="discount_rate input-focus-blue">
                                         星級評價(預設/最多 5 )
                                     </label>
+                                    <br />
                                     <input class="input-shadow text-grey-darker mb-3 input-focus-blue" name="rating" type="number" step="0.01" placeholder="5.00" max="5">
                                 </div>
                                 <!-- 是否有現貨 -->
@@ -69,6 +76,7 @@
                                     <label class="labelText" for="available">
                                         是否有貨
                                     </label>
+                                    <br />
                                     <select name="available">
                                         <option value="1">是</option>
                                         <option value="0">否</option>

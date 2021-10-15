@@ -20,6 +20,7 @@
                                     <label class="labelText" for="title">
                                         標籤名稱
                                     </label>
+                                    <br />
                                     <input class="input-shadow text-grey-darker input-focus-blue" name="title" type="text" placeholder="3C產品" required>
                                 </div>
                                 <!-- 按鈕操作 -->

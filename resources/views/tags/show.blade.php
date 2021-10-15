@@ -19,6 +19,7 @@
                                     <label class="labelText" for="title">
                                         標籤名稱
                                     </label>
+                                    <br />
                                     <input class="input-shadow text-grey-darker input-focus-blue" name="title" type="text" value="{{ $tag->title }}" readonly>
                                 </div>
                                 <!-- 提示訊息 -->

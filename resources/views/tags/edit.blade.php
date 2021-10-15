@@ -21,6 +21,7 @@
                                     <label class="labelText" for="title">
                                         標籤名稱
                                     </label>
+                                    <br />
                                     <input class="input-shadow text-grey-darker input-focus-blue" name="title" type="text" value="{{ $tag->title }}" required>
                                 </div>
                                 <!-- 操作按鈕 -->

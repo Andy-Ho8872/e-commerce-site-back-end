@@ -21,6 +21,7 @@
                                     <label class="labelText" for="title">
                                         商品名稱
                                     </label>
+                                    <br />
                                     <input class="input-shadow text-grey-darker input-focus-blue" name="title" type="text" value="{{ $product->title }}" required>
                                 </div>
                                 <!-- 敘述 -->
@@ -28,6 +29,7 @@
                                     <label class="labelText" for="description">
                                         商品敘述
                                     </label>
+                                    <br />
                                     <textarea rows="5" class="input-shadow text-grey-darker mb-3 input-focus-blue" name="description" type="text" required>
                                         {{ $product->description }}
                                     </textarea>
@@ -37,6 +39,7 @@
                                     <label class="labelText" for="imgUrl">
                                         商品圖片網址
                                     </label>
+                                    <br />
                                     <input class="input-shadow text-grey-darker mb-3 input-focus-blue" name="imgUrl" type="text" value="{{ $product->imgUrl }}" required>
                                 </div>
                                 <!-- 單價 -->
@@ -44,6 +47,7 @@
                                     <label class="labelText" for="unit_price">
                                         商品單價
                                     </label>
+                                    <br />
                                     <input class="input-shadow text-grey-darker mb-3 input-focus-blue" name="unit_price" type="number" value="{{ $product->unit_price }}" required>
                                 </div>
                                 <!-- 數量 -->
@@ -51,6 +55,7 @@
                                     <label class="labelText" for="stock_quantity">
                                         存貨數量
                                     </label>
+                                    <br />
                                     <input class="input-shadow text-grey-darker mb-3 input-focus-blue" name="stock_quantity" type="number" value="{{ $product->stock_quantity }}" required>
                                 </div>
                                 <!-- 折價率 -->
@@ -58,6 +63,7 @@
                                     <label class="labelText" for="discount_rate input-focus-blue">
                                         商品折價率(預設/最多 1)
                                     </label>
+                                    <br />
                                     <input class="input-shadow text-grey-darker mb-3 input-focus-blue" name="discount_rate" type="number" step="0.01" value="{{ $product->discount_rate }}" max="1">
                                 </div>
                                 <!-- 星級評價 -->
@@ -65,6 +71,7 @@
                                     <label class="labelText" for="discount_rate input-focus-blue">
                                         星級評價(預設/最多 5 )
                                     </label>
+                                    <br />
                                     <input class="input-shadow text-grey-darker mb-3 input-focus-blue" name="rating" type="number" step="0.01" placeholder="5.00" value="{{ $product->rating }}" max="5">
                                 </div>
                                 <!-- 是否有現貨 -->
@@ -72,6 +79,7 @@
                                     <label class="labelText" for="available">
                                         是否有貨
                                     </label>
+                                    <br />
                                     <select name="available">
                                         <option value="1" @if($product->available == 1) selected @endif>是</option>
                                         <option value="0" @if($product->available == 0) selected @endif>否</option>
