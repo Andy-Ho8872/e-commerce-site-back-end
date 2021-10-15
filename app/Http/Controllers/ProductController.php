@@ -90,10 +90,9 @@ class ProductController extends Controller
     }
     public function showById($product_id)
     {
-        $product = Product::findOrFail($product_id);
-        $tags = $product->tags;
+        $product = Product::with(['tags', 'variations'])->findOrFail($product_id);
 
-        return view('products.show', ['product' => $product, 'tags' => $tags]);
+        return view('products.show', ['product' => $product]);
     }
     // 更新產品資料
     public function update(ProductRequest $request, $product_id)

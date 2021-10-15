@@ -56,6 +56,35 @@
                                     <br />
                                     <input class="input-shadow text-grey-darker mb-3 input-focus-blue" name="stock_quantity" type="number" value="{{ $product->stock_quantity }}" readonly>
                                 </div>
+                                @if (count($product->variations) !== 0)
+                                <!-- 規格 -->
+                                <div class="mb-4">
+                                    <label class="labelText" for="variations">
+                                        商品規格
+                                    </label>
+                                    <br />
+                                    <div class="product_variations_container">
+                                        @foreach ( $product->variations as $variation )
+                                        <div class="product_variations mb-16 flex flex-col md:flex-row">
+                                            <!-- title -->
+                                            <div class="variation_title">
+                                                <input class="input-shadow text-grey-darker mb-2 input-focus-blue" name="variations" type="text" value="{{ $variation->title }}" readonly>
+                                            </div>
+                                            <!-- options -->
+                                            <div class="variation_options flex flex-col ml-8 md:w-1/2">
+                                                @foreach ($variation->options as $option)
+                                                <input class="input-shadow text-grey-darker mb-2 input-focus-blue mb-4" name="options" type="text" value="{{ $option }}" readonly>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                @else
+                                <label class="labelText text-pink-600 mb-4" for="variations">
+                                    此商品目前並未設定規格
+                                </label>
+                                @endif
                                 <!-- 折價率 -->
                                 <div class="mb-4">
                                     <label class="labelText" for="discount_rate input-focus-blue">
@@ -90,7 +119,7 @@
                                     </label>
                                     <br />
                                     <div class="flex flex-wrap">
-                                        @foreach($tags as $tag)
+                                        @foreach($product->tags as $tag)
                                         <span class="mr-2 mt-2 p-3 bg-pink-500 text-white text-sm font-bold tracking-widest rounded-full">{{ $tag->title }}</span>
                                         @endforeach
                                     </div>
