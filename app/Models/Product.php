@@ -33,4 +33,9 @@ class Product extends Model
     {
         return $this->belongsToMany(Tag::class);
     }
+    // 產品的規格
+    public function variations() 
+    {
+        return $this->hasMany(Variation::class);
+    }
 }
