@@ -64,16 +64,16 @@
                                     </label>
                                     <br />
                                     <div class="product_variations_container">
-                                        @foreach ( $product->variations as $variation )
+                                        @foreach ( $product->variations as $key => $variation )
                                         <div class="product_variations mb-16 flex flex-col md:flex-row">
                                             <!-- title -->
                                             <div class="variation_title">
-                                                <input class="input-shadow text-grey-darker mb-2 input-focus-blue" name="variations" type="text" value="{{ $variation->title }}" readonly>
+                                                <input class="input-shadow text-grey-darker mb-2 input-focus-blue" name="variation_title[]" type="text" value="{{ $variation->title }}" readonly>
                                             </div>
                                             <!-- options -->
                                             <div class="variation_options flex flex-col ml-8 md:w-1/2">
                                                 @foreach ($variation->options as $option)
-                                                <input class="input-shadow text-grey-darker mb-2 input-focus-blue mb-4" name="options" type="text" value="{{ $option }}" readonly>
+                                                <input class="input-shadow text-grey-darker mb-2 input-focus-blue mb-4" name="variation_options_{{ $key }}[]" type="text" value="{{ $option }}" readonly>
                                                 @endforeach
                                             </div>
                                         </div>

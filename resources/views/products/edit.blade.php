@@ -58,6 +58,42 @@
                                     <br />
                                     <input class="input-shadow text-grey-darker mb-3 input-focus-blue" name="stock_quantity" type="number" value="{{ $product->stock_quantity }}" required>
                                 </div>
+                                @if (count($product->variations) !== 0)
+                                <!-- 規格 -->
+                                <div class="mb-4">
+                                    <label class="labelText" for="variations">
+                                        商品規格
+                                    </label>
+                                    <br />
+                                    <div class="product_variations_container">
+                                        @foreach ($product->variations as $key => $variation)
+                                        <div class="product_variations mb-16 flex flex-col md:flex-row">
+                                            <!-- title -->
+                                            <div class="variation_title">
+                                                <input class="input-shadow text-grey-darker mb-2 input-focus-blue" name="variation_title[]" type="text" value="{{ $variation->title }}" placeholder="ex: 尺寸">
+                                                <!-- delete variation button -->
+                                                <!-- 尚未完成(測試中) -->
+                                                <!-- <form action="{{ route('products.deleteVariation', $product->id) }}" method="POST">
+                                                    @csrf
+                                                    @method("DELETE")
+                                                    <button class="border-2 rounded-xl font-bold text-white tracking-widest p-2 mx-2 transition-300-ease-in-out bg-red-500 hover:bg-red-700"">刪除</button>
+                                                </form> -->
+                                            </div>
+                                            <!-- options -->
+                                            <div class="variation_options flex flex-col ml-8 md:w-1/2">
+                                                @foreach ($variation->options as $option)
+                                                <input class="input-shadow text-grey-darker mb-2 input-focus-blue mb-4" name="variation_options_{{ $key }}[]" type="text" value="{{ $option }}" placeholder="ex: XL">
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                @else
+                                <label class="labelText text-pink-600 mb-4" for="variations">
+                                    此商品目前並未設定規格
+                                </label>
+                                @endif
                                 <!-- 折價率 -->
                                 <div class="mb-4">
                                     <label class="labelText" for="discount_rate input-focus-blue">
@@ -109,6 +145,12 @@
                                 </div>
                             </div>
                         </form>
+                        <!-- 尚未完成(測試中) -->
+                        <!-- <form action="{{ route('products.deleteVariation', $product->id) }}" method="POST">
+                            @csrf
+                            @method("DELETE")
+                            <button type="submit" class="border-2 rounded-xl font-bold text-white tracking-widest p-2 mx-2 transition-300-ease-in-out bg-red-500 hover:bg-red-700"">刪除</button>
+                        </form> -->
                     </div>
                 </div>
             </div>
