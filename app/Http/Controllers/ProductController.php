@@ -8,7 +8,7 @@ use App\Models\Tag;
 
 //* Requests 
 use App\Http\Requests\ProductRequest;
-
+use App\Models\Variation;
 //* Services 
 use App\Services\ProductService;
 
@@ -71,6 +71,16 @@ class ProductController extends Controller
         $product = Product::create($request->validated());
         // 產品標籤關聯
         $product->tags()->sync($request->tags, false);
+        // 產品規格關聯
+        if ($request->has('variation_title')) {
+            foreach ($request->variation_title as $key => $variation) {
+                Variation::create([
+                    'product_id' => $product->id,
+                    'title' => $request->variation_title,
+                    'options' => $request->input("variation_options_${key}")
+                ]);
+            }
+        }
         // 提示訊息
         $message = "商品上架成功";
         // 重新導向
@@ -103,9 +113,29 @@ class ProductController extends Controller
         $product->update($request->validated());
         // 產品標籤關聯
         $product->tags()->sync($request->tags);
+        // 更新產品規格名稱
+        $variations = Variation::where('product_id', $product_id)->get();
+        foreach ($variations as $key => $variation) {
+            // 更新資料
+            Variation::query()
+                ->where('product_id', $product_id)
+                ->where('id', $variation->id)
+                ->update([
+                    'title' => $request->variation_title[$key],
+                    'options' => $request->input("variation_options_${key}")
+                ]);
+        }
         // 提示訊息
         $message = "已經成功變更，請查閱。";
         // 重新導向至該產品
+        return redirect()->route('products.show', ['product_id' => $product_id])->with('message', $message);
+    }
+    public function deleteVariation($product_id)
+    {
+        Variation::where('product_id', $product_id)->delete();
+        // 提示訊息
+        $message = "已經刪除該規格，請查閱。";
+
         return redirect()->route('products.show', ['product_id' => $product_id])->with('message', $message);
     }
     public function edit($product_id)
