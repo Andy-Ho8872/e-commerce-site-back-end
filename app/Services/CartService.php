@@ -33,6 +33,23 @@ class CartService
 
     public function showUserCart()
     {
+        // $carts = Cart::query()
+        //     ->join('products', 'carts.product_id', 'products.id')
+        //     ->select([
+        //         'carts.id', //? 訂單 id
+        //         'user_id',
+        //         'product_id',
+        //         'product_quantity', //? 購買數量
+        //         'title',
+        //         'unit_price',
+        //         'imgUrl',
+        //         'discount_rate', //? 折扣率
+        //         //? 總價 (取整數)
+        //         Cart::raw('floor(unit_price * discount_rate) * product_quantity AS total')
+        //     ])
+        //     ->where('user_id', $this->user_id)
+        //     ->get();
+
         $carts = Cart::query()
             ->join('products', 'carts.product_id', 'products.id')
             ->select([
@@ -48,7 +65,8 @@ class CartService
                 Cart::raw('floor(unit_price * discount_rate) * product_quantity AS total')
             ])
             ->where('user_id', $this->user_id)
-            ->get();
+            ->get()
+            ->groupBy('variation_option_values'); // 若 variation 或 option 的值有相異則為不同組
 
         return response()->json(['carts' => $carts], 200);
     }
