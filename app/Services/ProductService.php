@@ -98,11 +98,16 @@ class ProductService
     //* 顯示單一商品
     public function getSingleProduct($id)
     {
-        $product = Cache::remember("product-${id}", 60 * 2, function () use ($id) {
-            return Product::query()
-                ->with('tags')
+        // $product = Cache::remember("product-${id}", 60 * 2, function () use ($id) {
+        //     return Product::query()
+        //         ->with('tags')
+        //         ->findOrFail($id);
+        // });
+        // return response()->json(['product' => $product], 200);
+
+        $product = Product::query()
+                ->with(['tags', 'variations'])
                 ->findOrFail($id);
-        });
         return response()->json(['product' => $product], 200);
     }
 
