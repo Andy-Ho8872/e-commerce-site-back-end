@@ -34,6 +34,8 @@ Route::prefix('products')->middleware(['auth', 'is_admin'])->group(function () {
     // 編輯頁面
     Route::get('/{product_id}/edit', [ProductController::class, 'edit'])->name('products.edit');
     Route::patch('/{product_id}/update', [ProductController::class, 'update'])->name('products.update');
+    //! 測試中(尚未完成)
+    Route::delete('/{product_id}/variations/delete', [ProductController::class, 'deleteVariation'])->name('products.deleteVariation');
 });
 
 Route::prefix('tags')->middleware(['auth', 'is_admin'])->group(function () {
