@@ -15,6 +15,11 @@ class OrderProduct extends Model
     protected $fillable = [
         'order_id',
         'product_id',
-        'product_quantity'
+        'product_quantity',
+        'variation_option_values'
+    ];
+
+    protected $casts = [
+        'variation_option_values' => 'array',
     ];
 }

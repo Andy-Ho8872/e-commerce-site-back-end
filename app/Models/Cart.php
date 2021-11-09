@@ -12,7 +12,12 @@ class Cart extends Model
     protected $fillable = [
         'user_id',
         'product_id',
-        'product_quantity'
+        'product_quantity',
+        'variation_option_values'
+    ];
+
+    protected $casts = [
+        'variation_option_values' => 'array',
     ];
 
 
