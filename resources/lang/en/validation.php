@@ -108,16 +108,9 @@ return [
     'url' => 'The :attribute format is invalid.',
     'uuid' => 'The :attribute must be a valid UUID.',
 
-    
-    // 'custom' => [
-    //     'attribute-name' => [
-    //         'rule-name' => 'custom-message',
-    //     ],
-    // ],
-
-    // 客製化錯誤訊息
+    //* 自訂錯誤訊息
     'custom' => [
-        // 電子郵件驗證規則
+        //* 電子郵件驗證規則
         'email' => [
             'required' => '請填寫電子郵件欄位',
             'unique' => '電子郵件已經被使用了!!',
@@ -126,13 +119,14 @@ return [
                 'numeric' => '最多只能填入 :max 個英文或數字'
             ],
         ],
-        // 密碼驗證規則
+        //* 密碼驗證規則
         'password' => [
             'required' => '請填寫密碼欄位',
             'alpha_num' => '密碼只能填入英文或數字!!!',
             'min' => [
                 'numeric' => '請最少填入 :min 個英文或數字'
-            ]    
+            ],
+            'confirmed' => '與之前輸入的密碼不相符'    
         ]
     ],
 
