@@ -27,7 +27,7 @@ class RegisterRequest extends FormRequest
     {
         return [
             'email' => 'required|email|unique:users|max:255', // 電子郵件不重複
-            'password' => 'required|alpha_num|min:6' // 只能輸入英文與數字
+            'password' => 'required|alpha_num|min:6|confirmed' //* 只能輸入英文與數字且確認密碼欄位必須吻合
         ];
     }
 }
