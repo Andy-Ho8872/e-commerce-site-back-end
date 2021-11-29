@@ -36,9 +36,9 @@ class ProductController extends Controller
         return $service->getProductTags();
     }
     //* 商品換頁 (pagination) 
-    public function paginate(ProductService $service)
+    public function paginate($orderBy, $sortBy, ProductService $service)
     {
-        return $service->getPaginatedProducts();
+        return $service->getPaginatedProducts($orderBy, $sortBy);
     }
     //* 顯示單一商品
     public function show($id, ProductService $service)

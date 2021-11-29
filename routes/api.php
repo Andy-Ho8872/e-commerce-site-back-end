@@ -20,7 +20,7 @@ Route::prefix('v1/products')->group(function () {
     //? 圖片輪播商品 (10 個)
     Route::get('/carousel', [ProductController::class, 'carousel']);
     //? 商品換頁 (Pagination)
-    Route::get('/pagination', [ProductController::class, 'paginate']);
+    Route::get('/pagination/orderBy/{orderBy}/sortBy/{sortBy}', [ProductController::class, 'paginate']);
     //? 取得商品的標籤 
     Route::get('/tags/getTags', [ProductController::class, 'productTags']);
     //? 依標籤選擇商品
@@ -75,7 +75,6 @@ Route::prefix('v1/auth/user')->middleware('auth:sanctum')->group(function () {
         //? 清空購物車
     Route::delete('/cart/product/deleteAll', [CartController::class, 'destroyAll']);
     // ------------------------------購物車------------------------------ //
-    
     
     // ------------------------------訂 單------------------------------ //
     //* 讀取
