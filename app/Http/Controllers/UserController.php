@@ -29,4 +29,9 @@ class UserController extends Controller
     public function logout(Request $request, UserService $service) {
         return $service->deleteBearerToken($request);
     }
+
+    public function updateProfile(Request $request, UserService $service)
+    {
+        return $service->updateUserProfile($request);
+    }
 }

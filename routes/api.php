@@ -50,6 +50,8 @@ Route::prefix('v1/auth/user')->middleware('auth:sanctum')->group(function () {
     Route::get('/logout', [UserController::class, 'logout']);
         //? 取得登入的使用者
     Route::get('/getUser', [UserController::class, 'getCurrentUser']);
+        //? 更新使用者的資料
+    Route::post('/updateProfile', [UserController::class, 'updateProfile']);
     // ------------------------------使用者------------------------------ //
     
 

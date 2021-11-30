@@ -25,13 +25,18 @@ use App\Notifications\UserRegistered;
 
 class UserService
 {
+    private $user_id;
+
+    public function __construct()
+    {
+        $this->user_id = Auth::id();
+    }
+
     public function getLoggedInUser()
     {
-        $user_id = Auth::id();
-
         $user = User::query()
             ->with('orders')
-            ->findOrFail($user_id);
+            ->findOrFail($this->user_id);
 
         // 回傳資料庫中的使用者資訊
         return response()->json(['user' => $user], 200);
@@ -89,5 +94,17 @@ class UserService
         $request->user()->tokens()->delete();
         // 回傳結果
         return response()->json('您已登出', 201);
+    }
+
+    public function updateUserProfile(Request $request) 
+    {
+        $user = User::where('id', $this->user_id);
+        $user->update([
+            'name' => $request->user_name,
+            'phone' => $request->user_phone,
+            'address' => $request->user_address,
+        ]);
+
+        return response()->json(['message' => "個人資料更改完成"], 201);
     }
 }
