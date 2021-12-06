@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\RegisterRequest; 
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\UpdateProfileRequest;
 
 //* Services 
 use App\Services\UserService;
@@ -30,8 +31,13 @@ class UserController extends Controller
         return $service->deleteBearerToken($request);
     }
 
-    public function updateProfile(Request $request, UserService $service)
+    public function updateProfile(UpdateProfileRequest $request, UserService $service)
     {
         return $service->updateUserProfile($request);
+    }
+
+    public function clearProfile(UserService $service)
+    {
+        return $service->clearUserProfile();
     }
 }

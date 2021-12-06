@@ -51,7 +51,9 @@ Route::prefix('v1/auth/user')->middleware('auth:sanctum')->group(function () {
         //? 取得登入的使用者
     Route::get('/getUser', [UserController::class, 'getCurrentUser']);
         //? 更新使用者的資料
-    Route::post('/updateProfile', [UserController::class, 'updateProfile']);
+    Route::patch('/updateProfile', [UserController::class, 'updateProfile']);
+        //? 清空使用者的資料
+    Route::patch('/clearProfile', [UserController::class, 'clearProfile']);
     // ------------------------------使用者------------------------------ //
     
 

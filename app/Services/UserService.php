@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Notification; //? 推送通知功能
 //* Requests
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\UpdateProfileRequest;
 use Illuminate\Http\Request;
 
 //* Error Exception
@@ -96,7 +97,7 @@ class UserService
         return response()->json('您已登出', 201);
     }
 
-    public function updateUserProfile(Request $request) 
+    public function updateUserProfile(UpdateProfileRequest $request) 
     {
         $user = User::where('id', $this->user_id);
         $user->update([
@@ -106,5 +107,17 @@ class UserService
         ]);
 
         return response()->json(['message' => "個人資料更改完成"], 201);
+    }
+
+    public function clearUserProfile() 
+    {
+        $user = User::where('id', $this->user_id);
+        $user->update([
+            'name' => null,
+            'phone' => null,
+            'address' => null,
+        ]);
+
+        return response()->json(['message' => "個人資料已經清空"], 201);
     }
 }
