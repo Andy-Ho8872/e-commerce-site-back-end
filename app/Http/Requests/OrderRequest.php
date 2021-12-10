@@ -26,8 +26,10 @@ class OrderRequest extends FormRequest
     {
         return [
             //
-            'payment_id' => 'required|integer',
-            'address' => 'required'
+            'payment_id' => 'required|integer|numeric',
+            'address' => 'required',
+            'buyer_name' => 'required',
+            'buyer_phone' => 'required|max:10',
         ];
     }
 }
