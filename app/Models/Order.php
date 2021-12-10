@@ -14,6 +14,8 @@ class Order extends Model
         'user_id',
         'payment_id',
         'address',
+        'buyer_name',
+        'buyer_phone'
     ];
 
     // 屬於使用者的訂單

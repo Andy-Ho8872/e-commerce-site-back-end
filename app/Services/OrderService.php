@@ -65,6 +65,8 @@ class OrderService
                 'user_id' => $this->user_id,
                 'payment_id' => $request->payment_id,
                 'address' => $request->address,
+                'buyer_name' => $request->buyer_name,
+                'buyer_phone' => $request->buyer_phone,
             ]);
             //? 將資料寫入到 order_products 表格裡面做紀錄
             $carts = $this->carts->get();
