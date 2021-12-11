@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\UserRegisteredEvent;
 use Carbon\Carbon; //? 處理時間的函式庫
 
 //* Models
@@ -42,21 +43,7 @@ class UserService
         // 回傳資料庫中的使用者資訊
         return response()->json(['user' => $user], 200);
     }
-    public function notifyWhenUserRegistered($user)
-    {
-        $user_id = User::find($user->id);
-        //* 修正時間格式
-        $created_at = Carbon::now('Asia/Taipei')->format('Y-m-d H:i:s');
-        //* 通知細節
-        $details = [
-            'title' => '歡迎您的加入。',
-            'avatar_url' => 'https://i.imgur.com/DDHgSks.png', // 圖片 URL
-            'body' => "親愛的 $user->email 我們非常高興你能使用我們的服務。",
-            'created_at' => "加入時間 - $created_at"
-        ];
-        //* 發送通知 
-        Notification::send($user_id, new UserRegistered($details));
-    }
+    
     public function registerUser(RegisterRequest $request)
     {
         //* 接收表單的資料，驗證都通過後儲存到資料庫中
@@ -65,9 +52,10 @@ class UserService
             'password' => Hash::make($request->password)
         ]);
         //* 推送通知 
-        $this->notifyWhenUserRegistered($user);
+        event(new UserRegisteredEvent($user));
         // 顯示訊息
         $msg = "使用者 $request->email 註冊成功";
+
         return response()->json(['user' => $user, 'message' => $msg], 201);
     }
 

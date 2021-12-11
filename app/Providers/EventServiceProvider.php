@@ -7,8 +7,12 @@ use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 
+//* Events
 use App\Events\OrderCreatedEvent;
+use App\Events\UserRegisteredEvent;
+//* Listener
 use App\Listeners\OrderCreatedNotificationListener;
+use App\Listeners\UserRegisteredNotificationListener;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -25,6 +29,9 @@ class EventServiceProvider extends ServiceProvider
         OrderCreatedEvent::class => [
             // Custom Listener
             OrderCreatedNotificationListener::class
+        ],
+        UserRegisteredEvent::class => [
+            UserRegisteredNotificationListener::class
         ]
     ];
 
