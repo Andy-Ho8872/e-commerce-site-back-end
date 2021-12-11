@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\OrderCreatedEvent;
 use Carbon\Carbon;
 
 //* Facades
@@ -39,22 +40,6 @@ class OrderService
             ->where('user_id', $this->user_id);
     }
 
-    public function notifyWhenOrderCreated($order)
-    {
-        $user = User::find($this->user_id);
-        //* 修正時間格式
-        $created_at = Carbon::now('Asia/Taipei')->format('Y-m-d H:i:s');
-        //* 通知細節
-        $details = [
-            'title' => '商品訂購成功。',
-            'avatar_url' => 'https://i.imgur.com/3JkI2Qo.png', // 圖片 URL
-            'body' => "訂單編號 - $order->id",
-            'created_at' => "訂購時間 - $created_at"
-        ];
-        //* 發送通知 
-        Notification::send($user, new OrderCreated($details));
-    }
-
     //* 建立訂單並發送通知
     public function createOrderAndSendNotification(OrderRequest $request)
     {
@@ -84,7 +69,8 @@ class OrderService
             //* 訂單建立後刪除購物車內的商品
             $this->carts->delete();   
             //* 推送通知
-            $this->notifyWhenOrderCreated($order);
+            $user = User::find($this->user_id);
+            event(new OrderCreatedEvent($user, $order));
         } else {
             $msg = "購物車內沒有商品，訂單建立失敗。";
             return response()->json(['msg' => $msg], 400);
