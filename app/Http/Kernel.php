@@ -38,7 +38,7 @@ class Kernel extends HttpKernel
             \Illuminate\Session\Middleware\StartSession::class,
             // \Illuminate\Session\Middleware\AuthenticateSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-            \App\Http\Middleware\VerifyCsrfToken::class,
+            \App\Http\Middleware\VerifyCsrfToken::class, //* 若前端執行登入時跑出 CSRF token mismatch 錯誤，請將此 class 註解掉
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
 

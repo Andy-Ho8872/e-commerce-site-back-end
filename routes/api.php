@@ -41,6 +41,9 @@ Route::prefix('v1/user')->group(function () {
     Route::post('/register', [UserController::class, 'register']);
     //? 登入
     Route::post('/login', [UserController::class, 'login']);
+    //? 第三方登入
+    Route::get('/socialiteLogin/{provider}/redirect', [UserController::class, 'socialiteRedirect']);
+    Route::get('/socialiteLogin/{provider}/callback', [UserController::class, 'socialiteLogin']);
 });
 
 // ------------------------------以下操作必須包含 Token------------------------------ //
