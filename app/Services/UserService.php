@@ -59,18 +59,8 @@ class UserService
         return response()->json(['user' => $user, 'message' => $msg], 201);
     }
 
-    public function createBearerToken(LoginRequest $request)
+    public function createBearerToken($user)
     {
-        //* 取得 email 相符的使用者
-        $user = User::query()
-            ->where('email', $request->email)
-            ->first();
-        //* 驗證使用者的 HASH 過後的密碼是否相符
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['帳號或密碼錯誤'],
-            ]);
-        };
         //* 若驗證通過，則建立 Bearer Token 給該使用者。 ex: Bearer *$&*(#%^&*$)65498746134aaaa
         $token = $user->createToken('user-token')->plainTextToken;
         //* 回傳 Token 與 user 的詳細資訊
