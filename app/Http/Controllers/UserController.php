@@ -19,6 +19,7 @@ use App\Services\UserService;
 
 //* 使用 exception 
 use GuzzleHttp\Exception\ClientException;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
@@ -68,7 +69,16 @@ class UserController extends Controller
             'provider' => $provider
         ])->first();
 
-        if(!$user) {
+        if (!$user) {
+            $validator = Validator::make(
+                ['email' => $socialiteUser->getEmail()], // data
+                ['email' => 'unique:users,email'] //如果第三方登入的帳號和資料庫原本的帳號有衝突，則判定失敗
+            );
+
+            if ($validator->fails()) {
+                return response()->json(['error' => '你或許在別的地方使用過這組 Email 了，請改用一般註冊/登入。'], 422);
+            };
+
             $user = User::create([
                 'name' => $socialiteUser->getName(),
                 'email' => $socialiteUser->getEmail(),
