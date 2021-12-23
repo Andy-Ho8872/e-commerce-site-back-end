@@ -56,7 +56,7 @@ class UserController extends Controller
         return Socialite::driver($provider)->stateless()->redirect();
     }
 
-    public function socialiteLogin(UserService $service, $provider)
+    public function socialiteLogin($provider)
     {
         try {
             $socialiteUser = Socialite::driver($provider)->stateless()->user();
@@ -88,7 +88,10 @@ class UserController extends Controller
             ]);
         }
         
-        return $service->createBearerToken($user);
+        $token = $user->createToken('user-token')->plainTextToken;
+
+        // return redirect('http://localhost:3000/auth/redirect?token=' . $token);
+        return redirect(env('SANCTUM_STATEFUL_DOMAINS') . '/auth/redirect?token=' . $token);
     }
     //* 登出使用者
     public function logout(Request $request, UserService $service)
