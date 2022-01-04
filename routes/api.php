@@ -17,8 +17,8 @@ Route::prefix('v1/products')->group(function () {
     Route::get('/', [ProductController::class, 'index']);
     //? 首頁的產品 (5個)
     Route::get('/indexPage', [ProductController::class, 'indexPageProducts']);
-    //? 圖片輪播商品 (10 個)
-    Route::get('/carousel', [ProductController::class, 'carousel']);
+    //! 圖片輪播商品 (10 個) 暫時不使用
+    // Route::get('/carousel', [ProductController::class, 'carousel']);
     //? 商品換頁 (Pagination)
     Route::get('/pagination/orderBy/{orderBy}/sortBy/{sortBy}', [ProductController::class, 'paginate']);
     //? 取得商品的標籤 

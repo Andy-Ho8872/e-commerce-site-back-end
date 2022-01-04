@@ -25,7 +25,7 @@ class ProductController extends Controller
     {
         return $service->index();
     }
-    //* 圖片輪播的商品 (10 個)
+    //! 圖片輪播的商品 (10 個) 暫時不使用
     public function carousel(ProductService $service)
     {
         return $service->getCarouselProducts();
