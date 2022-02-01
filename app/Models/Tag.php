@@ -17,6 +17,11 @@ class Tag extends Model
         'title',
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+
     // 標籤在很多產品上
     public function products() 
     {
