@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 //* Controllers
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
@@ -10,6 +11,22 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OrderController;
 
 //! 'auth:api'  (default)
+//* 管理者操作
+Route::prefix('v1/admin/product')->middleware(['auth:sanctum', 'is_admin'])->group(function() {
+    //* 產品 
+    Route::get('/', [AdminController::class, 'showProducts']);
+    Route::get('/{product_id}', [AdminController::class, 'showProduct']);
+    Route::post('/store', [AdminController::class, 'storeProduct']);
+    Route::patch('/{product_id}/update', [AdminController::class, 'updateProduct']);
+    Route::post('/{product_id}/variation/create', [AdminController::class, 'createProductVariation']);
+    Route::delete('/{product_id}/variation/{variation_id}/delete', [AdminController::class, 'deleteProductVariation']);
+    Route::patch('/{product_id}/variation/{variation_id}/update', [AdminController::class, 'deleteProductVariationOption']);
+    //* 產品的標籤
+    Route::get('/tag/getTags', [AdminController::class, 'showProductTags']);
+    Route::get('/tag/{tag_id}', [AdminController::class, 'showProductTag']);
+    Route::post('/tag/store', [AdminController::class, 'storeProductTag']);
+    Route::patch('/tag/{tag_id}/update', [AdminController::class, 'updateProductTag']);
+});
 
 //* 商品
 Route::prefix('v1/products')->group(function () {
