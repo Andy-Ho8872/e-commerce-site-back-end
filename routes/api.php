@@ -16,11 +16,11 @@ Route::prefix('v1/admin/product')->middleware(['auth:sanctum', 'is_admin'])->gro
     //* 產品 
     Route::get('/', [AdminController::class, 'showProducts']);
     Route::get('/{product_id}', [AdminController::class, 'showProduct']);
-    Route::post('/store', [AdminController::class, 'storeProduct']);
+    Route::post('/store', [AdminController::class, 'storeProduct']); //TODO
     Route::patch('/{product_id}/update', [AdminController::class, 'updateProduct']);
     Route::post('/{product_id}/variation/create', [AdminController::class, 'createProductVariation']);
     Route::delete('/{product_id}/variation/{variation_id}/delete', [AdminController::class, 'deleteProductVariation']);
-    Route::patch('/{product_id}/variation/{variation_id}/update', [AdminController::class, 'deleteProductVariationOption']);
+    Route::patch('/{product_id}/variation/{variation_id}/update', [AdminController::class, 'updateProductVariationOption']); //TODO
     //* 產品的標籤
     Route::get('/tag/getTags', [AdminController::class, 'showProductTags']);
     Route::get('/tag/{tag_id}', [AdminController::class, 'showProductTag']);

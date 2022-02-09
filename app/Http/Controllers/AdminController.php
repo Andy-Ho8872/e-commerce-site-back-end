@@ -101,11 +101,13 @@ class AdminController extends Controller
         return response()->json(['message' => $message], 201);
     }
 
-    public function deleteProductVariationOption(Request $request, $product_id, $variation_id)
+    public function updateProductVariationOption(Request $request, $product_id, $variation_id)
     {
         Variation::where('product_id', $product_id)
         ->where('id', $variation_id)
-        ->update($request->only(['variation_options']));
+        ->update([
+            'options' => $request->variation_options
+        ]);
         // 提示訊息
         $message = "已經刪除(變更)該選項，請查閱。";
 
