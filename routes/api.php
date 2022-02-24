@@ -20,12 +20,13 @@ Route::prefix('v1/admin/product')->middleware(['auth:sanctum', 'is_admin'])->gro
     Route::patch('/{product_id}/update', [AdminController::class, 'updateProduct']);
     Route::post('/{product_id}/variation/create', [AdminController::class, 'createProductVariation']);
     Route::delete('/{product_id}/variation/{variation_id}/delete', [AdminController::class, 'deleteProductVariation']);
-    Route::patch('/{product_id}/variation/{variation_id}/update', [AdminController::class, 'updateProductVariationOption']); //TODO
+    Route::patch('/{product_id}/variation/{variation_id}/update', [AdminController::class, 'updateProductVariationOption']);
     //* 產品的標籤
     Route::get('/tag/getTags', [AdminController::class, 'showProductTags']);
     Route::get('/tag/{tag_id}', [AdminController::class, 'showProductTag']);
     Route::post('/tag/store', [AdminController::class, 'storeProductTag']);
     Route::patch('/tag/{tag_id}/update', [AdminController::class, 'updateProductTag']);
+    Route::delete('/tag/{tag_id}/delete', [AdminController::class, 'deleteProductTag']);
 });
 
 //* 商品

@@ -33,16 +33,14 @@ class AdminController extends Controller
         // 新增產品 
         $product = Product::create($request->validated());
         // 產品標籤關聯
-        $product->tags()->sync($request->tags, false);
+        $product->tags()->sync($request->tags);
         // 產品規格關聯
         if ($request->has('variation_title')) {
-            foreach ($request->variation_title as $key => $variation) {
-                Variation::create([
-                    'product_id' => $product->id,
-                    'title' => $request->variation_title,
-                    'options' => $request->input("variation_options_${key}")
-                ]);
-            }
+            Variation::create([
+                'product_id' => $product->id,
+                'title' => $request->variation_title,
+                'options' => $request->input("variation_options")
+            ]);
         }
         // 提示訊息
         $message = "商品上架成功";
@@ -54,25 +52,10 @@ class AdminController extends Controller
     {
         //* 先取得該產品
         $product = Product::findOrFail($product_id);
-        //* 更新產品資料
+        //* 更新產品資料(不包含規格 與 選項)
         $product->update($request->validated());
         //* 產品標籤關聯
         $product->tags()->sync($request->tags);
-        //* 更新產品規格
-        $variations = $request->variations_title;
-        $product->variations()->sync($variations);
-
-        if($variations) {
-            foreach ($variations as $key => $variation) {
-                // 更新資料
-                Variation::query()
-                    ->where('product_id', $product_id)
-                    ->update([
-                        'title' => $request->variation_title[$key],
-                        'options' => $request->input("variation_options_${key}")
-                    ]);
-            }
-        }
         // 提示訊息
         $message = "產品資訊已經成功變更，請查閱。";
         
@@ -109,7 +92,7 @@ class AdminController extends Controller
             'options' => $request->variation_options
         ]);
         // 提示訊息
-        $message = "已經刪除(變更)該選項，請查閱。";
+        $message = "已經變更該選項，請查閱。";
 
         return response()->json(['message' => $message], 201);
     }
@@ -145,6 +128,16 @@ class AdminController extends Controller
         $tag->update($request->validated());
 
         $message = "標籤變更成功";
+
+        return response()->json(['message' => $message]);
+    }
+    public function deleteProductTag($tag_id)
+    {
+        $tag = Tag::find($tag_id);
+
+        $tag->delete();
+
+        $message = "標籤刪除成功";
 
         return response()->json(['message' => $message]);
     }
