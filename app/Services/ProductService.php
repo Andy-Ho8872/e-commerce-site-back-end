@@ -9,9 +9,6 @@ use App\Models\Tag;
 //* Facades
 use Illuminate\Support\Facades\Cache;
 
-//* Requests 
-use App\Http\Requests\StoreAndEditRequest;
-
 class ProductService
 {
     //* 取得商品的標籤 
@@ -80,39 +77,6 @@ class ProductService
         ], 200);
     }
 
-    //! 取得輪播的產品(暫時不用)
-    public function getCarouselProducts()
-    {
-        //* 限時特賣的商品 
-        $flash_sale_products = Cache::remember('flash_sale_products', 60 * 3, function () {
-            return Product::query()
-                ->orderBy('rating', 'desc')
-                ->take(10)
-                ->select(
-                    'id',
-                    'title',
-                    'imgUrl',
-                    'discount_rate',
-                )
-                ->get();
-        });
-        //* 最新上架的商品 
-        $latest_products = Cache::remember('latest_products', 60 * 3, function () {
-            return Product::query()
-                ->orderBy('created_at', 'desc')
-                ->take(10)
-                ->select(
-                    'id',
-                    'title',
-                    'imgUrl',
-                    'discount_rate',
-                    'created_at'
-                )
-                ->get();
-        });
-        return response()->json(['flash_sale_products' => $flash_sale_products, 'latest_products' => $latest_products], 200);
-    }
-
     //* 商品的分頁功能 
     public function getPaginatedProducts($orderBy, $sortBy)
     {
@@ -131,13 +95,6 @@ class ProductService
     //* 顯示單一商品
     public function getSingleProduct($id)
     {
-        // $product = Cache::remember("product-${id}", 60 * 2, function () use ($id) {
-        //     return Product::query()
-        //         ->with('tags')
-        //         ->findOrFail($id);
-        // });
-        // return response()->json(['product' => $product], 200);
-
         $product = Product::query()
                 ->with(['tags', 'variations'])
                 ->findOrFail($id);

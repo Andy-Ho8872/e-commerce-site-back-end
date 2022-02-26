@@ -33,10 +33,8 @@ Route::prefix('v1/admin/product')->middleware(['auth:sanctum', 'is_admin'])->gro
 Route::prefix('v1/products')->group(function () {
     //? 所有商品
     Route::get('/', [ProductController::class, 'index']);
-    //? 首頁的產品 (5個)
+    //? 首頁的產品(包含Slider)
     Route::get('/indexPage', [ProductController::class, 'indexPageProducts']);
-    //! 圖片輪播商品 (10 個) 暫時不使用
-    // Route::get('/carousel', [ProductController::class, 'carousel']);
     //? 商品換頁 (Pagination)
     Route::get('/pagination/orderBy/{orderBy}/sortBy/{sortBy}', [ProductController::class, 'paginate']);
     //? 取得商品的標籤 
@@ -45,8 +43,6 @@ Route::prefix('v1/products')->group(function () {
     Route::get('/tags/{id}', [ProductController::class, 'showByTag']);
     //? 單一商品 
     Route::get('/{id}', [ProductController::class, 'show']);
-    // 搜尋商品 //! 此為舊版本(目前不使用)
-    // Route::get('/search/{search}', [ProductController::class, 'search']); 
     //? 搜尋商品(含分頁) 
     Route::get('/search/{search}/pagination', [ProductController::class, 'searchWithPagination']);
     //? 搜尋字串自動補全 
