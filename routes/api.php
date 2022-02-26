@@ -16,7 +16,7 @@ Route::prefix('v1/admin/product')->middleware(['auth:sanctum', 'is_admin'])->gro
     //* 產品 
     Route::get('/', [AdminController::class, 'showProducts']);
     Route::get('/{product_id}', [AdminController::class, 'showProduct']);
-    Route::post('/store', [AdminController::class, 'storeProduct']); //TODO
+    Route::post('/store', [AdminController::class, 'storeProduct']);
     Route::patch('/{product_id}/update', [AdminController::class, 'updateProduct']);
     Route::post('/{product_id}/variation/create', [AdminController::class, 'createProductVariation']);
     Route::delete('/{product_id}/variation/{variation_id}/delete', [AdminController::class, 'deleteProductVariation']);

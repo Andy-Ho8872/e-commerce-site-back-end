@@ -72,7 +72,12 @@ class ProductService
                 )
                 ->get();
         });
-        return response()->json(['hot_sale_products' => $hot_sale_products, 'flash_sale_products' => $flash_sale_products, 'latest_products' => $latest_products], 200);
+        return response()->json([
+            'hot_sale_products' => $hot_sale_products,
+            'flash_sale_products' => $flash_sale_products,
+            'latest_products' => $latest_products,
+            'success' => true,
+        ], 200);
     }
 
     //! 取得輪播的產品(暫時不用)
