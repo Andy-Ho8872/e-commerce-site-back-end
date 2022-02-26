@@ -35,40 +35,34 @@ class ProductService
     public function index()
     {
         //* 熱門商品 
-        $hot_sale_products = Cache::remember('index', 60 * 3, function () {
-            return Product::query()
-                ->with('tags')
-                ->orderBy('id', 'desc') //* 可按照需求填入想取得的資料 e.g 評級最高、最熱賣、上架時間 等等...
-                ->take(12)
-                ->get();
-        });
+        $hot_sale_products = Product::query()
+            ->with('tags')
+            ->orderBy('id', 'desc') //* 可按照需求填入想取得的資料 e.g 評級最高、最熱賣、上架時間 等等...
+            ->take(12)
+            ->get();
         //* 限時特賣的商品 
-        $flash_sale_products = Cache::remember('flash_sale_products', 60 * 3, function () {
-            return Product::query()
-                ->orderBy('rating', 'desc')
-                ->take(10)
-                ->select(
-                    'id',
-                    'title',
-                    'imgUrl',
-                    'discount_rate',
-                )
-                ->get();
-        });
+        $flash_sale_products = Product::query()
+            ->orderBy('rating', 'desc')
+            ->take(10)
+            ->select(
+                'id',
+                'title',
+                'imgUrl',
+                'discount_rate',
+            )
+            ->get();
         //* 最新上架的商品 
-        $latest_products = Cache::remember('latest_products', 60 * 3, function () {
-            return Product::query()
-                ->orderBy('created_at', 'desc')
-                ->take(10)
-                ->select(
-                    'id',
-                    'title',
-                    'imgUrl',
-                    'discount_rate',
-                    'created_at'
-                )
-                ->get();
-        });
+        $latest_products = Product::query()
+            ->orderBy('created_at', 'desc')
+            ->take(10)
+            ->select(
+                'id',
+                'title',
+                'imgUrl',
+                'discount_rate',
+                'created_at'
+            )
+            ->get();
         return response()->json([
             'hot_sale_products' => $hot_sale_products,
             'flash_sale_products' => $flash_sale_products,
