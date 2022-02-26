@@ -2,13 +2,6 @@
 
 namespace App\Http\Controllers;
 
-//* Models
-use App\Models\Product;
-use App\Models\Tag;
-
-//* Requests 
-use App\Http\Requests\ProductRequest;
-use App\Models\Variation;
 //* Services 
 use App\Services\ProductService;
 
