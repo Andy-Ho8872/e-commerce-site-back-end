@@ -32,9 +32,4 @@ class Cart extends Model
     {
         return $this->belongsToMany(User::class);
     }
-    // 購物車內的商品
-    public function cartItems()
-    {
-        return $this->belongsToMany(Product::class);
-    }
 }

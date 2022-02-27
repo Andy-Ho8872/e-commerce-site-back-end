@@ -22,12 +22,6 @@ class Product extends Model
         'rating'
     ];
 
-    // 定義資料屬性 (選擇性)
-    // protected $casts = [
-    //     'available' => 'boolean',
-    //     'unit_price' => 'decimal:2',
-    // ];
-
     // 產品的標籤
     public function tags() 
     {
