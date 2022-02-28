@@ -60,4 +60,9 @@ class User extends Authenticatable
         return $this->hasMany(Order::class);
     }
 
+    // 信用卡資料
+    public function credit_cards()
+    {
+        return $this->hasMany(CreditCard::class);
+    }
 }

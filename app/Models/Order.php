@@ -15,7 +15,13 @@ class Order extends Model
         'payment_id',
         'address',
         'buyer_name',
-        'buyer_phone'
+        'buyer_phone',
+        //* 信用卡欄位
+        'card_type',
+        'card_number',
+        'card_holder',
+        'card_expiration_date',
+        'card_CVV',
     ];
 
     // 屬於使用者的訂單
