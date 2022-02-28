@@ -10,7 +10,6 @@ class CreditCard extends Model
 {
     use HasFactory;
 
-    // protected $hidden = ['card_number'];
     protected $appends = ['masked_card_number'];
     protected $fillable = [
         // 以下欄位可以支援大量寫入。
@@ -24,6 +23,6 @@ class CreditCard extends Model
 
     public function getMaskedCardNumberAttribute()
     {
-        return Str::snake($this->card_number);
+        return Str::mask($this->card_number, '*', '4', '8');
     }
 }
