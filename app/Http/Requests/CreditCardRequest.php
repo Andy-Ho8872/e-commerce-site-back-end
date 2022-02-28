@@ -24,11 +24,11 @@ class CreditCardRequest extends FormRequest
     public function rules()
     {
         return [
-            'card_type' => 'string',
-            'card_number' => 'numeric|max:16',
-            'card_holder' => 'string',
-            'card_expiration_date' => 'string',
-            'card_CVV' => 'numeric|max:3'
+            'card_type' => 'string|required',
+            'card_number' => 'numeric|max:16|required',
+            'card_holder' => 'string|required',
+            'card_expiration_date' => 'string|required',
+            'card_CVV' => 'numeric|max:3|required'
         ];
     }
 }
