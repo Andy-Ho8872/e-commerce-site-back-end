@@ -3,27 +3,19 @@
 namespace App\Services;
 
 use App\Events\UserRegisteredEvent;
-use Carbon\Carbon; //? 處理時間的函式庫
 
 //* Models
 use App\Models\User;
+use App\Models\CreditCard;
 
 //* Facades
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash; //? 密碼加密功能
-use Illuminate\Support\Facades\Notification; //? 推送通知功能
 
 //* Requests
 use App\Http\Requests\RegisterRequest;
-use App\Http\Requests\LoginRequest;
 use App\Http\Requests\UpdateProfileRequest;
 use Illuminate\Http\Request;
-
-//* Error Exception
-use Illuminate\Validation\ValidationException; //? 顯示錯誤訊息
-
-//* Notification
-use App\Notifications\UserRegistered;
 
 class UserService
 {
@@ -37,7 +29,7 @@ class UserService
     public function getLoggedInUser()
     {
         $user = User::query()
-            ->with('orders')
+            ->with(['orders', 'credit_cards'])
             ->findOrFail($this->user_id);
 
         // 回傳資料庫中的使用者資訊
@@ -97,5 +89,21 @@ class UserService
         ]);
 
         return response()->json(['message' => "個人資料已經清空"], 201);
+    }
+
+    public function storeCreditCard(Request $request) 
+    {   
+        CreditCard::create([
+            'user_id' => $this->user_id,
+            'card_type' => $request->type,
+            'card_number' => $request->number,
+            'card_holder' => $request->holder_name,
+            'card_expiration_date' => $request->expiration_month, //* ex: 04/28
+            'card_CVV' => $request->cvv,
+        ]);
+
+        $msg = "信用卡新增成功";
+
+        return response()->json(["msg" => $msg], 201);
     }
 }
