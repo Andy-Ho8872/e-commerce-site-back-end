@@ -108,4 +108,9 @@ class UserController extends Controller
     {
         return $service->clearUserProfile();
     }
+
+    public function addCreditCard(Request $request, UserService $service)
+    {
+        return $service->storeCreditCard($request);
+    }
 }

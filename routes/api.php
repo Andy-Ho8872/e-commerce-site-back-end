@@ -71,6 +71,8 @@ Route::prefix('v1/auth/user')->middleware('auth:sanctum')->group(function () {
     Route::patch('/updateProfile', [UserController::class, 'updateProfile']);
         //? 清空使用者的資料
     Route::patch('/clearProfile', [UserController::class, 'clearProfile']);
+        //? 新增信用卡
+    Route::post('/addCreditCard', [UserController::class, 'addCreditCard']);
     // ------------------------------使用者------------------------------ //
     
 
