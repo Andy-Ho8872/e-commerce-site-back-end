@@ -113,4 +113,9 @@ class UserController extends Controller
     {
         return $service->storeCreditCard($request);
     }
+
+    public function deleteCreditCard($card_id, UserService $service)
+    {
+        return $service->deleteUserCreditCard($card_id);
+    }
 }

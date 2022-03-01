@@ -98,11 +98,22 @@ class UserService
             'card_type' => $request->type,
             'card_number' => $request->number,
             'card_holder' => $request->holder_name,
-            'card_expiration_date' => $request->expiration_month, //* ex: 04/28
+            'card_expiration_date' => $request->expiration_month . '/' . $request->expiration_year, //* ex: 04/28
             'card_CVV' => $request->cvv,
         ]);
 
         $msg = "信用卡新增成功";
+
+        return response()->json(["msg" => $msg], 201);
+    }
+
+    public function deleteUserCreditCard($card_id)
+    {
+        CreditCard::where('user_id', $this->user_id)
+            ->where('id', $card_id)
+            ->delete();
+
+        $msg = "信用卡刪除成功";
 
         return response()->json(["msg" => $msg], 201);
     }
