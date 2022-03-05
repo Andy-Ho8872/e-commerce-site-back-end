@@ -52,6 +52,11 @@ class OrderService
                 'address' => $request->address,
                 'buyer_name' => $request->buyer_name,
                 'buyer_phone' => $request->buyer_phone,
+                'card_type' => $request->card_type,
+                'card_number' => $request->card_number,
+                'card_holder' => $request->card_holder,
+                'card_expiration_date' => $request->card_expiration_month . '/' .$request->card_expiration_year,
+                'card_CVV' => $request->card_CVV,
             ]);
             //? 將資料寫入到 order_products 表格裡面做紀錄
             $carts = $this->carts->get();
