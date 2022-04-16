@@ -74,15 +74,11 @@ class ProductService
     //* 商品的分頁功能 
     public function getPaginatedProducts($orderBy, $sortBy)
     {
-        //* 目前為一頁有 12 個商品
-        $currentPage = request()->input('page', 1); //* 當前頁數
-        //* 使用 Cache 
-        $products = Cache::remember("pagination-${currentPage}-${orderBy}-${sortBy}", 60 * 2, function () use($orderBy, $sortBy) {
-            return Product::query()
+        $products = Product::query()
                 ->with('tags')
                 ->orderBy($orderBy, $sortBy)
                 ->paginate(12);
-        });
+        
         return response()->json(['products' => $products], 200);
     }
 
@@ -98,7 +94,7 @@ class ProductService
     //* 藉由商品標籤取的商品(猜你喜歡列表)
     public function getProductsByTags($id)
     {
-        $tag =Tag::query()
+        $tag = Tag::query()
                 ->with(['products' => function($query) {
                     $query->limit(12);
                 }, 'products.tags'])
