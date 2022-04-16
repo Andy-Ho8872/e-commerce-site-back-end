@@ -95,14 +95,15 @@ class ProductService
         return response()->json(['product' => $product], 200);
     }
 
-    //* 藉由商品標籤取的商品
+    //* 藉由商品標籤取的商品(猜你喜歡列表)
     public function getProductsByTags($id)
     {
-        $tag = Cache::remember("tag-${id}", 60 * 2, function () use ($id) {
-            return Tag::query()
-                ->with('products')
+        $tag =Tag::query()
+                ->with(['products' => function($query) {
+                    $query->limit(12);
+                }, 'products.tags'])
                 ->findOrFail($id);
-        });
+        
         return response()->json(['tag' => $tag], 200);
     }
 
