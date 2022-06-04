@@ -42,6 +42,7 @@ class CartService
                 'product_id',
                 'product_quantity', //? 購買數量
                 'title',
+                'variation_option_values',
                 'unit_price',
                 'imgUrl',
                 'discount_rate', //? 折扣率
@@ -78,6 +79,8 @@ class CartService
         $product_exists = Product::where('id', $this->product_id)->exists();
         //? 輸入的商品數量 
         $product_quantity = $request->input('product_quantity', 1);
+        //? 規格選項
+        $variation_option_values = $request->input('variation_option_values', []);
         //? 該使用者的購物車
         $cart = $this->itemInCart;
 
@@ -92,7 +95,8 @@ class CartService
             Cart::create([
                 'user_id' => $this->user_id,
                 'product_id' => $this->product_id,
-                'product_quantity' => $product_quantity //* 未輸入數量的話 預設值 1
+                'product_quantity' => $product_quantity,
+                'variation_option_values' => $variation_option_values
             ]);
             $msg = "您新增了商品至購物車，商品編號為 $this->product_id";
         } else {
