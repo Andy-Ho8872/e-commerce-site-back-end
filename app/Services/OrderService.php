@@ -58,14 +58,15 @@ class OrderService
                 'card_expiration_date' => $request->card_expiration_month . '/' .$request->card_expiration_year,
                 'card_CVV' => $request->card_CVV,
             ]);
-            //? 將資料寫入到 order_products 表格裡面做紀錄
+            //? 將資料寫入到 order_product 表格裡面做紀錄
             $carts = $this->carts->get();
             $items = [];  //? 宣告為陣列
             foreach($carts as $cart) {
                 $items[] = [
                     'order_id' => $order->id,
                     'product_id' => $cart->product_id,
-                    'product_quantity' => $cart->product_quantity
+                    'product_quantity' => $cart->product_quantity,
+                    'variation_option_values' => json_encode($cart->variation_option_values), //* Array外圍必須加上json_encode()函式否則會跑出"array to string conversion"的錯誤
                 ];
             }
             DB::table('order_product')->insert($items);
