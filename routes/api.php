@@ -85,7 +85,7 @@ Route::prefix('v1/auth/user')->middleware('auth:sanctum')->group(function () {
     //* 新增
         //? 加入購物車
     Route::get('/cart/product/{product_id}/create', [CartController::class, 'create']);
-        //? 加入購物車(包含數量)
+        //? 加入購物車(包含數量、規格)
     Route::post('/cart/product/{product_id}/create', [CartController::class, 'create']);
     //* 修改
         //? 變更數量
