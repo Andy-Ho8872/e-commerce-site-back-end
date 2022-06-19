@@ -23,7 +23,6 @@ class Order extends Model
         'card_expiration_date',
         'card_CVV',
     ];
-
     // 屬於使用者的訂單
     public function user()
     {
@@ -33,14 +32,14 @@ class Order extends Model
     // 一筆訂單中可以有很多的商品
     public function items()
     {
-        return $this->belongsToMany(Product::class, 'order_product')
+        return $this->belongsToMany(Product::class, 'order_product')->using(OrderProductPivot::class)
         ->select(
             'title',
             'unit_price',
             'discount_rate',
             'imgUrl',
             Order::raw('floor(unit_price * discount_rate) * product_quantity AS subtotal')
-        )->withPivot('product_quantity')->orderBy('pivot_product_id');
+        )->withPivot(['product_quantity', 'variation_option_values'])->orderBy('pivot_product_id');
     }
 
     // 計算訂單總金額
