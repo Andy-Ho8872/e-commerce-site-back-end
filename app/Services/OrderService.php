@@ -2,24 +2,20 @@
 
 namespace App\Services;
 
+//* Events
 use App\Events\OrderCreatedEvent;
-use Carbon\Carbon;
 
 //* Facades
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Notification;
 
 //* Models
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\User;
+use App\Models\OrderProduct;
 
 //* Requests
 use App\Http\Requests\OrderRequest;
-
-//* Notification
-use App\Notifications\OrderCreated;
 
 class OrderService
 {
@@ -69,7 +65,7 @@ class OrderService
                     'variation_option_values' => json_encode($cart->variation_option_values), //* Array外圍必須加上json_encode()函式否則會跑出"array to string conversion"的錯誤
                 ];
             }
-            DB::table('order_product')->insert($items);
+            OrderProduct::insert($items);
             // 回傳訊息
             $msg = "訂單建立成功";
             //* 訂單建立後刪除購物車內的商品
