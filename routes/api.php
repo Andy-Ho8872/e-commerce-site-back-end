@@ -11,8 +11,9 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OrderController;
 
 //! 'auth:api'  (default)
+$API_VERSION = 'v1';
 //* 管理者操作
-Route::prefix('v1/admin/product')->middleware(['auth:sanctum', 'is_admin'])->group(function() {
+Route::prefix("$API_VERSION/admin/product")->middleware(['auth:sanctum', 'is_admin'])->group(function() {
     //* 產品 
     Route::get('/', [AdminController::class, 'showProducts']);
     Route::get('/{product_id}', [AdminController::class, 'showProduct']);
@@ -30,7 +31,7 @@ Route::prefix('v1/admin/product')->middleware(['auth:sanctum', 'is_admin'])->gro
 });
 
 //* 商品
-Route::prefix('v1/products')->group(function () {
+Route::prefix("$API_VERSION/products")->group(function () {
     //? 所有商品(測試用)
     Route::get('/', [ProductController::class, 'test']);
     //? 首頁的產品(包含Slider)
@@ -50,7 +51,7 @@ Route::prefix('v1/products')->group(function () {
 });
 
 //* 使用者
-Route::prefix('v1/user')->group(function () {
+Route::prefix("$API_VERSION/user")->group(function () {
     //? 註冊
     Route::post('/register', [UserController::class, 'register']);
     //? 登入
@@ -61,7 +62,7 @@ Route::prefix('v1/user')->group(function () {
 });
 
 // ------------------------------以下操作必須包含 Token------------------------------ //
-Route::prefix('v1/auth/user')->middleware('auth:sanctum')->group(function () {
+Route::prefix("$API_VERSION/auth/user")->middleware('auth:sanctum')->group(function () {
     // ------------------------------使用者------------------------------ //
         //? 登出
     Route::get('/logout', [UserController::class, 'logout']);
