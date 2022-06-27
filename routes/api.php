@@ -31,8 +31,8 @@ Route::prefix('v1/admin/product')->middleware(['auth:sanctum', 'is_admin'])->gro
 
 //* 商品
 Route::prefix('v1/products')->group(function () {
-    //? 所有商品
-    Route::get('/', [ProductController::class, 'index']);
+    //? 所有商品(測試用)
+    Route::get('/', [ProductController::class, 'test']);
     //? 首頁的產品(包含Slider)
     Route::get('/indexPage', [ProductController::class, 'indexPageProducts']);
     //? 商品換頁 (Pagination)
