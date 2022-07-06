@@ -76,7 +76,11 @@ class UserController extends Controller
             );
 
             if ($validator->fails()) {
-                return response()->json(['error' => '你或許在別的地方使用過這組 Email 了，請改用一般註冊/登入。'], 422);
+                // return response()->json(['error' => '你或許在別的地方使用過這組 Email 了，請改用一般註冊/登入。'], 422);
+                $token = null;
+                $errorCode = 422;
+                $errorMessage = '你或許在別的地方使用過這組 Email 了，請改用一般註冊/登入。';
+                return redirect(env('SANCTUM_STATEFUL_DOMAINS') . '/auth/redirect?token='. $token. '&errorCode='. $errorCode .'&errorMessage='. $errorMessage);
             };
 
             $user = User::create([
@@ -90,7 +94,6 @@ class UserController extends Controller
         
         $token = $user->createToken('user-token')->plainTextToken;
 
-        // return redirect('http://localhost:3000/auth/redirect?token=' . $token);
         return redirect(env('SANCTUM_STATEFUL_DOMAINS') . '/auth/redirect?token=' . $token);
     }
     //* 登出使用者
