@@ -40,9 +40,9 @@ class CartController extends Controller
     }
 //* 刪除
     //? 移除購物車內的商品 (單筆)
-    public function destroy(CartService $service)
+    public function destroy(CartRequest $request, CartService $service)
     {
-        return $service->deleteItemFromCart();
+        return $service->deleteItemFromCart($request);
     }
     //? 清空購物車
     public function destroyAll(CartService $service)

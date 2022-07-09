@@ -52,25 +52,6 @@ class CartService
             ->where('user_id', $this->user_id)
             ->get();
 
-        //! 以下為測試用
-        // $carts = Cart::query()
-        //     ->join('products', 'carts.product_id', 'products.id')
-        //     ->select([
-        //         'carts.id', //? 訂單 id
-        //         'user_id',
-        //         'product_id',
-        //         'product_quantity', //? 購買數量
-        //         'title',
-        //         'unit_price',
-        //         'imgUrl',
-        //         'discount_rate', //? 折扣率
-        //         //? 總價 (取整數)
-        //         Cart::raw('floor(unit_price * discount_rate) * product_quantity AS total')
-        //     ])
-        //     ->where('user_id', $this->user_id)
-        //     ->get()
-        //     ->groupBy('variation_option_values'); // 若 variation 或 option 的值有相異則為不同組
-
         return response()->json(['carts' => $carts], 200);
     }
 
@@ -81,8 +62,6 @@ class CartService
         $product_quantity = $request->input('product_quantity', 1);
         //? 規格選項
         $variation_option_values = $request->input('variation_option_values', []);
-        //? 該使用者的購物車
-        $cart = $this->itemInCart;
 
         //* 判定該商品是否存在 
         if (!$product_exists) {
@@ -90,8 +69,8 @@ class CartService
             return response()->json(["msg" => $msg], 404);
         }
 
-        //* 如果購物車內沒有該商品則寫入   
-        if (!$cart->exists()) {
+        //* 如果購物車內沒有該商品(規格)則寫入   
+        if ($this->itemInCart->value('variation_option_values') != $variation_option_values ||count($variation_option_values) === 0) { 
             Cart::create([
                 'user_id' => $this->user_id,
                 'product_id' => $this->product_id,
@@ -99,9 +78,10 @@ class CartService
                 'variation_option_values' => $variation_option_values
             ]);
             $msg = "您新增了商品至購物車，商品編號為 $this->product_id";
-        } else {
+        }
+        else {
             //* 如果購物車內已經存在該商品
-            $cart->increment('product_quantity', $product_quantity); //* 未輸入數量的話 預設值 1
+            $this->itemInCart->increment('product_quantity', $product_quantity); //* 未輸入數量的話 預設值 1
             $msg = "新增的商品已重複，該商品數量增加，商品編號為 $this->product_id";
         }
 
@@ -160,14 +140,13 @@ class CartService
         return response()->json(['msg' => $msg], 201);
     }
 
-    public function deleteItemFromCart()
+    public function deleteItemFromCart(CartRequest $request)
     {
         if (!$this->itemInCartExists) {
             $msg = "該商品不存在，操作無效";
             return response()->json(['msg' => $msg], 404);
         } 
-
-        $this->itemInCart->delete();
+        $this->itemInCart->where('id', $request->cart_id)->delete();
         // 回傳訊息
         $msg = "您移除了購物車中的一項商品，請查看";
         return response()->json(['msg' => $msg], 201);
