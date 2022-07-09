@@ -22,6 +22,10 @@ class Product extends Model
         'rating'
     ];
 
+    protected $casts = [
+        'unit_price' => 'integer',
+    ];
+
     // 產品的標籤
     public function tags() 
     {
