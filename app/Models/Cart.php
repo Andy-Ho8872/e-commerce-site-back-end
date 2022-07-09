@@ -18,6 +18,7 @@ class Cart extends Model
 
     protected $casts = [
         'variation_option_values' => 'array',
+        'unit_price' => 'integer'
     ];
 
 
