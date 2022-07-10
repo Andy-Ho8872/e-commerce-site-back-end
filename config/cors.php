@@ -22,10 +22,10 @@ return [
 
     'allowed_methods' => ['*'],
 
-    //'allowed_origins' => ['*'], // default
+    'allowed_origins' => ['*'], // default
 
     //* 設定前端的 URL 可以進行跨網域(CORS)存取
-    'allowed_origins' => ['http://localhost:3000'], // new
+    // 'allowed_origins' => ['http://localhost:3000'], // new
 
     'allowed_origins_patterns' => [],
 
