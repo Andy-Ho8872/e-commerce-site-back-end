@@ -29,20 +29,20 @@ class CartController extends Controller
         return $service->updateQuantityByInput($request);
     }
     //? 數量 + 1
-    public function increaseByOne(CartService $service)
+    public function increaseByOne(CartService $service, $cart_id)
     {
-        return $service->increaseQuantityByOne();
+        return $service->increaseQuantityByOne($cart_id);
     }
     //? 數量 - 1
-    public function decreaseByOne(CartService $service)
+    public function decreaseByOne(CartService $service, $cart_id)
     {
-        return $service->decreaseQuantityByOne();
+        return $service->decreaseQuantityByOne($cart_id);
     }
 //* 刪除
     //? 移除購物車內的商品 (單筆)
-    public function destroy(CartRequest $request, CartService $service)
+    public function destroy(CartService $service, $cart_id)
     {
-        return $service->deleteItemFromCart($request);
+        return $service->deleteItemFromCart($cart_id);
     }
     //? 清空購物車
     public function destroyAll(CartService $service)

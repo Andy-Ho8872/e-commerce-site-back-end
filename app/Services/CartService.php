@@ -23,11 +23,13 @@ class CartService
         $this->user_id = Auth::id();
         //* 欲加入的商品 id
         $this->product_id = $request->route('product_id');
-        //* 該使用者的購物車商品
+        //* 購物車 id 
+        $this->cart_id = $request->route('cart_id');
+        //* 該使用者的購物車
         $this->itemInCart = Cart::query()
             ->where('user_id', $this->user_id)
-            ->where('product_id', $this->product_id);
-        //* 商品是否存在於購物車
+            ->where('id', $this->cart_id);
+        //* 購物車內是否有商品
         $this->itemInCartExists = $this->itemInCart->exists();
     }
 
@@ -40,6 +42,7 @@ class CartService
                 'carts.id', //? 訂單 id
                 'user_id',
                 'product_id',
+                'stock_quantity', //? 商品庫存數量
                 'product_quantity', //? 購買數量
                 'title',
                 'variation_option_values',
@@ -57,35 +60,57 @@ class CartService
 
     public function addItemToCart(CartRequest $request)
     {
-        $product_exists = Product::where('id', $this->product_id)->exists();
         //? 輸入的商品數量 
         $product_quantity = $request->input('product_quantity', 1);
         //? 規格選項
         $variation_option_values = $request->input('variation_option_values', []);
-
+        //* 判定購物車內是否有相同的商品 
+        $user_cart_items = Cart::query()
+            ->where('user_id', $this->user_id)
+            ->where('product_id', $this->product_id);
         //* 判定該商品是否存在 
-        if (!$product_exists) {
+        if (!Product::where('id', $this->product_id)->exists()) {
+            $type = "error";
             $msg = "該商品不存在，此次操作無效";
-            return response()->json(["msg" => $msg], 404);
+            return response()->json(["msg" => $msg, "type" => $type], 404);
         }
-
-        //* 如果購物車內沒有該商品(規格)則寫入   
-        if ($this->itemInCart->value('variation_option_values') != $variation_option_values ||count($variation_option_values) === 0) { 
+        //* 購買數量限制 
+        if($product_quantity > Product::where('id', $this->product_id)->first()->stock_quantity) {
+            $type = "warning";
+            $msg = "已經超出最大購買數量，請於購物車內確認";
+            return response()->json(["msg" => $msg, "type" => $type], 400);
+        }
+        //* 若有選取規格
+        if(count($variation_option_values) !== 0) {
+            //* 無商品存在則寫入
             Cart::create([
                 'user_id' => $this->user_id,
                 'product_id' => $this->product_id,
                 'product_quantity' => $product_quantity,
                 'variation_option_values' => $variation_option_values
             ]);
-            $msg = "您新增了商品至購物車，商品編號為 $this->product_id";
+            $type = "success";
+            $msg = "成功新增至購物車";
+            return response()->json(['msg' => $msg, 'type' => $type], 201); 
+        }
+        //* 若並無規格可選且購物車內並無商品
+        if(count($variation_option_values) === 0 && !$user_cart_items->exists()) {
+            Cart::create([
+                'user_id' => $this->user_id,
+                'product_id' => $this->product_id,
+                'product_quantity' => $product_quantity,
+                'variation_option_values' => $variation_option_values
+            ]);
+            $type = "success";
+            $msg = "成功新增至購物車";
+            return response()->json(['msg' => $msg, 'type' => $type], 201);
         }
         else {
             //* 如果購物車內已經存在該商品
-            $this->itemInCart->increment('product_quantity', $product_quantity); //* 未輸入數量的話 預設值 1
-            $msg = "新增的商品已重複，該商品數量增加，商品編號為 $this->product_id";
+            $type = "warning";
+            $msg = "新增的商品已重複，請於購物車內查看";
+            return response()->json(['msg' => $msg, 'type' => $type], 200);
         }
-
-        return response()->json(['msg' => $msg], 201);
     }
 
     public function updateQuantityByInput(CartRequest $request)
@@ -100,12 +125,11 @@ class CartService
             return response()->json(['msg' => $msg], 400);
         }
 
-        $this->itemInCart->update([
-            'product_quantity' => $request->input('product_quantity')
-        ]);
+        $this->itemInCart->update(['product_quantity' => $request->input('product_quantity')]);
         // 回傳訊息
         $msg = "您更改了購物車中的商品數量，請查看";
-        return response()->json(['msg' => $msg], 201);
+        $type= "warning";
+        return response()->json(['msg' => $msg, 'type' => $type], 201);
     }
     public function increaseQuantityByOne()
     {
@@ -117,7 +141,8 @@ class CartService
         $this->itemInCart->increment('product_quantity', 1);
         // 回傳訊息
         $msg = "您增加了購物車中的商品數量，請查看";
-        return response()->json(['msg' => $msg], 201);
+        $type= "warning";
+        return response()->json(['msg' => $msg, 'type' => $type], 201);
     }
 
     public function decreaseQuantityByOne()
@@ -133,23 +158,26 @@ class CartService
         if ($cart->product_quantity > 1) {
             $cart->decrement('product_quantity', 1);
             $msg = "您減少了購物車中的商品數量，請查看";
+            $type= "warning";
         } else {
             $msg = "商品數量最少為 1，此次更動無效。";
+            $type= "error";
         }
 
-        return response()->json(['msg' => $msg], 201);
+        return response()->json(['msg' => $msg, 'type' => $type], 201);
     }
 
-    public function deleteItemFromCart(CartRequest $request)
+    public function deleteItemFromCart()
     {
         if (!$this->itemInCartExists) {
             $msg = "該商品不存在，操作無效";
             return response()->json(['msg' => $msg], 404);
         } 
-        $this->itemInCart->where('id', $request->cart_id)->delete();
+        $this->itemInCart->delete();
         // 回傳訊息
         $msg = "您移除了購物車中的一項商品，請查看";
-        return response()->json(['msg' => $msg], 201);
+        $type= "warning";
+        return response()->json(['msg' => $msg, 'type' => $type], 201);
     }
     public function deleteAllItemsFromCart()
     {   
@@ -162,6 +190,7 @@ class CartService
         Cart::where('user_id', $this->user_id)->delete();
         // 回傳訊息
         $msg = "已經清空您的購物車";
-        return response()->json(['msg' => $msg], 201);
+        $type= "warning";
+        return response()->json(['msg' => $msg, 'type' => $type], 201);
     }
 }
