@@ -34,7 +34,7 @@ class OrderCreatedNotificationListener
         //* 通知細節
         $details = [
             'title' => '商品訂購成功。',
-            'avatar_url' => 'https://i.imgur.com/3JkI2Qo.png', // 圖片 URL
+            'avatar_url' => 'https://i.imgur.com/P3DRg3q.png', // 圖片 URL
             'body' => "訂單編號 - " . $event->order->id,
             'created_at' => "訂購時間 - ". $created_at
         ];
